@@ -280,17 +280,19 @@ Tested on **Apollo v2.1** — a production shadcn/ui-based design system:
 | Metric | Before | After |
 |---|---|---|
 | System maturity | 3.5 / 5 | 4.5 / 5 |
-| Total variables | 883 | 901 |
+| Total variables | 883 | 907 |
 | Button variants | 138 | 156 |
 | Input variants | 28 | 36 |
 | Checkbox variants | 8 | 12 |
 | Token scopes polluting all pickers | 72 (`ALL_SCOPES`) | 0 |
 | Hardcoded cornerRadius on Button | ✗ | ✓ bound to token |
 | Motion tokens | 0 | 11 (duration + easing) |
-| Z-index tokens | 0 | 7 |
+| Z-index tokens | 0 | 6 |
 | Spacing scope coverage | gap only | gap + width/height |
+| Radius tokens visible in pickers | ✗ | ✓ (CORNER_RADIUS scope) |
+| Letter-spacing scope | ALL_SCOPES | LETTER_SPACING |
 
-**11 issues found · 10 action plan steps executed · 0 visual regressions**
+**13 issues found · 12 action plan steps executed · 0 visual regressions**
 
 ---
 
