@@ -315,6 +315,32 @@ Tested on **Apollo v2.1** — a production shadcn/ui-based design system, across
 
 ---
 
+## Real output — Apollo v2.1
+
+The [`examples/apollo-v2/`](examples/apollo-v2/) directory contains the full output of running this skill on a production shadcn/ui-based design system across two audit runs (v2 + v3):
+
+```
+examples/apollo-v2/
+├── tokens/
+│   ├── tokens.json          ← W3C Design Token format (Style Dictionary compatible)
+│   ├── tokens.css           ← CSS custom properties, light + dark modes
+│   ├── tokens.ts            ← TypeScript token map with full type safety
+│   └── tailwind.tokens.js   ← Drop-in Tailwind theme extension
+├── components/
+│   ├── Button.types.ts / Button.stories.tsx
+│   ├── Input.types.ts / Input.stories.tsx
+│   ├── Checkbox.types.ts / Checkbox.stories.tsx
+│   ├── Badge.types.ts / Badge.stories.tsx
+│   ├── Select.types.ts / Select.stories.tsx
+│   ├── Switch.types.ts / Switch.stories.tsx
+│   └── RadioGroup.types.ts / RadioGroup.stories.tsx
+├── audit-history/
+│   └── 2026-04-13.json      ← Versioned audit snapshot (maturity 4.2, UX quality 3.8)
+└── HANDOFF.md               ← Full system doc: tokens, components, design identity, UX patterns
+```
+
+---
+
 ## Example triggers
 
 ```
