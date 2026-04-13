@@ -8,6 +8,8 @@
 
 **A Claude Code skill that thinks like a Design Systems Lead, acts like a Senior Product Designer, and executes like a Frontend Architect.**
 
+> v3 — now with UX Quality auditing (touch targets, hover, motion, icon system) and Design Intentionality scoring.
+
 [![Claude Code](https://img.shields.io/badge/Claude_Code-Skill-8B5CF6?style=flat-square&logo=anthropic&logoColor=white)](https://claude.ai/code)
 [![Figma MCP](https://img.shields.io/badge/Figma_MCP-Required-F24E1E?style=flat-square&logo=figma&logoColor=white)](https://www.figma.com)
 [![shadcn/ui](https://img.shields.io/badge/shadcn%2Fui-Aligned-000000?style=flat-square)](https://ui.shadcn.com)
@@ -233,11 +235,12 @@ Generates `HANDOFF.md` — a comprehensive, human-readable reference covering th
 
 ---
 
-## Audit scope
+## Audit scope — 4 layers
 
 <table>
-<tr><th>Area</th><th>What's analyzed</th></tr>
+<tr><th>Layer</th><th>Area</th><th>What's analyzed</th></tr>
 <tr>
+<td rowspan="4"><strong>1 — Technical</strong></td>
 <td><strong>🎨 Tokens</strong></td>
 <td>Primitive → semantic → component hierarchy · naming consistency · missing categories (motion, z-index, opacity) · hardcoded values · variable scopes · alias chains</td>
 </tr>
@@ -250,24 +253,35 @@ Generates `HANDOFF.md` — a comprehensive, human-readable reference covering th
 <td>Type scale completeness · line-height rhythm · text style coverage · font weight tokenization · letter spacing</td>
 </tr>
 <tr>
-<td><strong>🧩 Components</strong></td>
-<td>Coverage vs. shadcn/ui baseline · variant completeness · state coverage (hover/focus/error/loading/disabled/empty/indeterminate) · composability · redundancy</td>
-</tr>
-<tr>
-<td><strong>♿ Accessibility</strong></td>
-<td>WCAG 2.2 AA/AAA contrast · focus visibility · touch targets (48×48px min) · keyboard navigation · semantic clarity</td>
-</tr>
-<tr>
-<td><strong>📚 Storybook</strong></td>
-<td>Variant → props mapping · token usage in code · controls definition · dev-ready API clarity</td>
-</tr>
-<tr>
 <td><strong>🔀 Drift Detection</strong></td>
 <td>Design ↔ code token divergences · Figma vs codebase value comparison · regression tracking across audit runs</td>
 </tr>
 <tr>
+<td rowspan="2"><strong>2 — UX Quality</strong></td>
+<td><strong>👆 Touch Targets</strong></td>
+<td>WCAG 2.5.5 minimum (44×44px) · all interactive components measured · exceptions documented with rationale</td>
+</tr>
+<tr>
+<td><strong>🎬 Motion &amp; Feedback</strong></td>
+<td>Hover states on all interactive surfaces · transitions in 150–300ms range using motion tokens · icon system consistency (SVG-only, aria-hidden decorative)</td>
+</tr>
+<tr>
+<td rowspan="2"><strong>3 — Accessibility</strong></td>
+<td><strong>♿ WCAG 2.2</strong></td>
+<td>AA/AAA contrast on all text + icon states · focus visibility (ring token) · touch targets · keyboard navigation · semantic clarity</td>
+</tr>
+<tr>
+<td><strong>📚 Code Exports</strong></td>
+<td>Storybook variant → props mapping · token usage in code · controls definition · dev-ready API clarity</td>
+</tr>
+<tr>
+<td rowspan="2"><strong>4 — Design Intentionality</strong></td>
+<td><strong>🎯 Aesthetic POV</strong></td>
+<td>Design identity scoring (strong / moderate / weak) · palette coherence · radius + motion + density as intentional system · brand expression vs. generic defaults</td>
+</tr>
+<tr>
 <td><strong>📄 Documentation</strong></td>
-<td>Naming conventions · usage guidelines · Do/Don't patterns · contribution readiness</td>
+<td>Naming conventions · usage guidelines · Do/Don't patterns · contribution readiness · component checklist</td>
 </tr>
 </table>
 
@@ -275,24 +289,29 @@ Generates `HANDOFF.md` — a comprehensive, human-readable reference covering th
 
 ## Real-world results
 
-Tested on **Apollo v2.1** — a production shadcn/ui-based design system:
+Tested on **Apollo v2.1** — a production shadcn/ui-based design system, across two audit runs:
 
-| Metric | Before | After |
-|---|---|---|
-| System maturity | 3.5 / 5 | 4.5 / 5 |
-| Total variables | 883 | 907 |
-| Button variants | 138 | 156 |
-| Input variants | 28 | 36 |
-| Checkbox variants | 8 | 12 |
-| Token scopes polluting all pickers | 72 (`ALL_SCOPES`) | 0 |
-| Hardcoded cornerRadius on Button | ✗ | ✓ bound to token |
-| Motion tokens | 0 | 11 (duration + easing) |
-| Z-index tokens | 0 | 6 |
-| Spacing scope coverage | gap only | gap + width/height |
-| Radius tokens visible in pickers | ✗ | ✓ (CORNER_RADIUS scope) |
-| Letter-spacing scope | ALL_SCOPES | LETTER_SPACING |
+| Metric | Baseline | After v2 | After v3 |
+|---|---|---|---|
+| System maturity | 3.5 / 5 | 4.2 / 5 | 4.2 / 5 |
+| UX quality score | — | — | 3.8 / 5 |
+| Design POV | — | — | Strong |
+| Total variables | 883 | 907 | 907 |
+| Button variants | 138 | 156 | 156 |
+| Input variants | 28 | 36 | 36 |
+| Checkbox variants | 8 | 12 | 12 |
+| Token scopes polluting all pickers | 72 (`ALL_SCOPES`) | 0 | 0 |
+| Hardcoded cornerRadius on Button | ✗ | ✓ token-bound | ✓ token-bound |
+| Motion tokens | 0 | 11 (duration + easing) | 11 |
+| Z-index tokens | 0 | 6 | 6 |
+| Radius tokens visible in pickers | ✗ | ✓ (`CORNER_RADIUS` scope) | ✓ |
+| Letter-spacing scope | ALL_SCOPES | LETTER_SPACING | LETTER_SPACING |
+| Select Menu/Item height | 32px | 32px | **40px** (touch target fixed) |
+| Radio/Item height | 41px | 41px | **44px** (touch target fixed) |
+| Checkbox row height | 40px | 40px | **44px** (touch target fixed) |
 
-**13 issues found · 12 action plan steps executed · 0 visual regressions**
+**v2: 13 issues found · 12 steps executed · 0 visual regressions**
+**v3: 4 UX issues found · 3 fixed (Button sm deferred) · 0 visual regressions**
 
 ---
 
@@ -310,6 +329,9 @@ Tested on **Apollo v2.1** — a production shadcn/ui-based design system:
 "export our tokens to CSS and TypeScript"
 "generate Storybook stories from our Figma components"
 "check if our Figma tokens match what's in tailwind.config"
+"are our touch targets WCAG compliant?"
+"does our design system have a strong visual identity or does it look generic?"
+"check our hover states and motion — are they consistent?"
 ```
 
 ---
@@ -350,6 +372,9 @@ The skill is built around [shadcn/ui](https://ui.shadcn.com/) architecture conve
 - **Every issue gets a fix** — identification without remediation is noise
 - **System over local** — prefer root-cause fixes over patches
 - **Drift is regression** — any divergence between Figma and code is a bug, not a preference
+- **UX consistency is a token** — touch targets, motion, hover patterns are system decisions, not component-level choices
+- **Design POV is not optional** — a system without aesthetic identity is a collection of parts, not a design system
+- **Code craft matters** — exported stories and types must be production-quality, not illustrative scaffolding
 
 ---
 
