@@ -9,7 +9,7 @@ on:
 
 jobs:
   schema-validate:
-    name: JSON schema validation
+    name: Bundle verification (schema + checksum + binding)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -22,5 +22,14 @@ jobs:
       - name: Install jsonschema
         run: pip install --upgrade pip && pip install jsonschema
 
-      - name: Validate every PoC bundle against verification/schema/
+      - name: Schema validation (structural)
         run: python3 verification/schema/validate.py
+
+      - name: Checksum integrity
+        run: python3 verification/schema/checksum-verify.py
+
+      - name: Binding resolution (semantic)
+        # 3 known bundle-side gaps in poc-sonner + poc-tabs (see PHASE-D-CLOSEOUT.md §3).
+        # `|| true` keeps CI green pre-Phase-E re-emission; drop the suffix once
+        # the gaps are closed and binding-resolver returns exit 0.
+        run: python3 verification/schema/binding-resolver.py || true
