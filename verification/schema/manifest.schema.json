@@ -1,0 +1,203 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/lsanchez-g2/ds-architect/verification/schema/manifest.schema.json",
+  "title": "BUNDLE MANIFEST.json",
+  "description": "Bundle header. Defined in BUNDLE_SPEC.md §3. Counts and checksum are tamper-evident; consumers verify checksum.files against the actual file SHA-256.",
+  "type": "object",
+  "required": ["bundleVersion", "system", "source", "counts", "modes", "checksum"],
+  "additionalProperties": true,
+  "properties": {
+    "$schema": { "type": "string" },
+    "bundleVersion": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(-[a-zA-Z0-9.-]+)?$" },
+    "bundleId": { "type": "string", "minLength": 1 },
+    "bundleStatus": { "type": "string", "enum": ["proof-of-concept", "draft", "release-candidate", "released", "deprecated"] },
+    "spec": {
+      "type": "object",
+      "required": ["name", "version"],
+      "properties": {
+        "name": { "type": "string" },
+        "version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(-[a-zA-Z0-9.-]+)?$" },
+        "status": {
+          "type": "string",
+          "description": "Lifecycle hint. MUST contain at least one of DRAFT|LOCKED|DEPRECATED somewhere in the string. Optional version prefix and informative qualifiers permitted (e.g. 'DRAFT (atom phase)', 'v0.2.0 LOCKED + v0.3.0 DRAFT').",
+          "pattern": "(DRAFT|LOCKED|DEPRECATED)"
+        },
+        "patches": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              { "type": "string" },
+              { "type": "object" }
+            ]
+          }
+        },
+        "$comment": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "system": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name": { "type": "string" },
+        "version": { "type": "string" },
+        "description": { "type": "string" },
+        "owner": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "source": {
+      "type": "object",
+      "required": ["type"],
+      "properties": {
+        "type": { "type": "string", "enum": ["figma", "penpot", "sketch", "code"] },
+        "fileKey": { "type": "string" },
+        "fileUrl": { "type": "string", "format": "uri" },
+        "rootNodeId": { "type": "string" },
+        "lastModified": { "type": "string", "format": "date-time" },
+        "extractedBy": { "type": "string" },
+        "extractedAt": { "type": "string", "format": "date-time" }
+      },
+      "additionalProperties": true
+    },
+    "counts": {
+      "type": "object",
+      "properties": {
+        "components": { "type": "integer", "minimum": 0 },
+        "componentSets": { "type": "integer", "minimum": 0 },
+        "componentClass": { "type": "string", "enum": ["atom", "molecule", "organism", "template", "pattern"] },
+        "variantAxes": { "type": "integer", "minimum": 0 },
+        "variantCells": { "type": "integer", "minimum": 0 },
+        "variantCellsEmitted": { "type": "integer", "minimum": 0 },
+        "variantCellsCoverage": { "type": "number", "minimum": 0, "maximum": 1 },
+        "tokens": { "type": "integer", "minimum": 0 },
+        "tokensNew": { "type": "integer", "minimum": 0 },
+        "tokensSharedWithPriorBundles": { "type": "integer", "minimum": 0 },
+        "tokensUniqueToAvatar": { "type": "integer", "minimum": 0 },
+        "tokensUniqueToCheckbox": { "type": "integer", "minimum": 0 },
+        "icons": { "type": "integer", "minimum": 0 },
+        "iconsExtracted": { "type": "integer", "minimum": 0 },
+        "iconsTransitive": { "type": "integer", "minimum": 0 },
+        "images": { "type": "integer", "minimum": 0 },
+        "interactions": { "type": "integer", "minimum": 0 },
+        "screenshots": { "type": "integer", "minimum": 0 },
+        "shadowPrimitives": { "type": "integer", "minimum": 0 },
+        "shadowComposites": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": true
+    },
+    "modes": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "target": {
+      "type": "object",
+      "properties": {
+        "platform": { "type": "string" },
+        "framework": { "type": "string" },
+        "styling": { "type": "string" },
+        "componentBaseline": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "checksum": {
+      "type": "object",
+      "required": ["algorithm", "files"],
+      "properties": {
+        "algorithm": { "type": "string", "enum": ["sha256"] },
+        "$comment": { "type": "string" },
+        "files": {
+          "type": "object",
+          "patternProperties": {
+            "^.+$": {
+              "oneOf": [
+                { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+                {
+                  "type": "object",
+                  "required": ["sha256"],
+                  "properties": {
+                    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+                    "bytes": { "type": "integer", "minimum": 0 }
+                  },
+                  "additionalProperties": true
+                }
+              ]
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": true
+    },
+    "auditFindings": {
+      "type": "object",
+      "properties": {
+        "$comment": { "type": "string" }
+      },
+      "patternProperties": {
+        "^F[0-9]+$": {
+          "type": "object",
+          "properties": {
+            "severity": {
+              "type": "string",
+              "description": "SHOULD start with one of HIGH|MEDIUM|LOW|DOC; compound qualifiers (e.g. 'MEDIUM-doc') allowed.",
+              "pattern": "^(HIGH|MEDIUM|LOW|DOC)([-_].+)?$"
+            },
+            "summary": { "type": "string" },
+            "$comment": { "type": "string" }
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "knownGaps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "description"],
+        "properties": {
+          "id": { "type": "string" },
+          "description": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "properties": {
+        "loadOrder": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "companionBundles": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "crossBundleRefs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["slot", "bundle", "component"],
+            "properties": {
+              "slot": { "type": "string" },
+              "bundle": { "type": "string" },
+              "component": { "type": "string" },
+              "variant": { "type": "string" },
+              "figmaKey": { "type": "string" }
+            },
+            "additionalProperties": true
+          }
+        },
+        "omittedDefaults": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "bundleRegistryUrl": { "type": "string", "format": "uri" }
+      },
+      "additionalProperties": true
+    }
+  }
+}

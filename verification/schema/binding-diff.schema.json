@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/lsanchez-g2/ds-architect/verification/schema/binding-diff.schema.json",
+  "title": "BUNDLE verification/binding-diff.json",
+  "description": "Per BUNDLE_SPEC.md §10.3. Binding fidelity is non-negotiable. bindingsPreserved/bindingsChecked MUST equal 1.0 — drift = bug.",
+  "type": "object",
+  "required": ["components"],
+  "additionalProperties": true,
+  "properties": {
+    "components": {
+      "type": "object",
+      "patternProperties": {
+        "^.+$": {
+          "type": "object",
+          "properties": {
+            "bindingsChecked": { "type": "integer", "minimum": 0 },
+            "bindingsPreserved": { "type": "integer", "minimum": 0 },
+            "failures": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["property"],
+                "properties": {
+                  "variantKey": { "type": "string" },
+                  "nodePath": { "type": "string" },
+                  "property": { "type": "string" },
+                  "expectedBinding": { "type": "string" },
+                  "actualBinding": { "type": ["string", "null"] },
+                  "reason": { "type": "string" }
+                },
+                "additionalProperties": true
+              }
+            }
+          },
+          "additionalProperties": true
+        }
+      }
+    }
+  }
+}

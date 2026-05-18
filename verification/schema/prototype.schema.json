@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/lsanchez-g2/ds-architect/verification/schema/prototype.schema.json",
+  "title": "BUNDLE data/prototype.json",
+  "description": "Prototype + interactions per BUNDLE_SPEC.md §9. Easing MUST be named curve or cubic-bezier(...) token ref. Smart Animate spring physics is approximated; approximation documented in $extensions.approximation.",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "flows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "startingPoint"],
+        "properties": {
+          "name": { "type": "string" },
+          "startingPoint": {
+            "type": "object",
+            "properties": {
+              "nodeId": { "type": "string" },
+              "name": { "type": "string" }
+            },
+            "additionalProperties": true
+          },
+          "frames": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "interactions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["sourceNodeId", "trigger", "action"],
+        "properties": {
+          "sourceNodeId": { "type": "string" },
+          "sourceLabel": { "type": "string" },
+          "trigger": {
+            "type": "object",
+            "required": ["type"],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "ON_CLICK", "ON_HOVER", "ON_PRESS", "ON_DRAG",
+                  "ON_KEY_DOWN", "ON_KEY_UP", "ON_KEY_PRESS",
+                  "AFTER_TIMEOUT", "MOUSE_ENTER", "MOUSE_LEAVE",
+                  "MOUSE_UP", "MOUSE_DOWN",
+                  "ON_CLICK_OUTSIDE"
+                ]
+              }
+            },
+            "additionalProperties": true
+          },
+          "action": {
+            "type": "object",
+            "required": ["type"],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "NAVIGATE", "OVERLAY", "SWAP_OVERLAY", "SCROLL_TO",
+                  "BACK", "CLOSE_OVERLAY", "URL", "SET_VARIABLE",
+                  "CHANGE_VARIANT", "CONDITIONAL"
+                ]
+              },
+              "destinationNodeId": { "type": "string" },
+              "toVariant": { "type": "object" },
+              "transition": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "DISSOLVE", "SMART_ANIMATE", "INSTANT",
+                      "PUSH", "SLIDE_IN", "SLIDE_OUT",
+                      "MOVE_IN", "MOVE_OUT"
+                    ]
+                  },
+                  "easing": { "type": "string" },
+                  "duration": { "type": "number", "minimum": 0 }
+                },
+                "additionalProperties": true
+              }
+            },
+            "additionalProperties": true
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/lsanchez-g2/ds-architect/verification/schema/coverage.schema.json",
+  "title": "BUNDLE verification/coverage.json",
+  "description": "Per BUNDLE_SPEC.md §10.1. Variant + binding + token coverage. Acceptance thresholds in §10.4: variantsExtracted/variantsExpected = 1.0; bindingsResolved/bindingsTotal = 1.0; tokens extracted/expected = 1.0.",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "components": {
+      "type": "object",
+      "patternProperties": {
+        "^.+$": {
+          "type": "object",
+          "properties": {
+            "variantsExpected": { "type": "integer", "minimum": 0 },
+            "variantsExtracted": { "type": "integer", "minimum": 0 },
+            "coverage": { "type": "number", "minimum": 0, "maximum": 1 },
+            "bindingsTotal": { "type": "integer", "minimum": 0 },
+            "bindingsResolved": { "type": "integer", "minimum": 0 },
+            "bindingsCoverage": { "type": "number", "minimum": 0, "maximum": 1 }
+          },
+          "additionalProperties": true
+        }
+      }
+    },
+    "tokens": {
+      "type": "object",
+      "properties": {
+        "expectedCount": { "type": "integer", "minimum": 0 },
+        "extractedCount": { "type": "integer", "minimum": 0 },
+        "coverage": { "type": "number", "minimum": 0, "maximum": 1 },
+        "nestedInstanceContributions": {
+          "type": "object",
+          "patternProperties": {
+            "^.+$": { "type": "integer", "minimum": 0 }
+          }
+        }
+      },
+      "additionalProperties": true
+    }
+  }
+}

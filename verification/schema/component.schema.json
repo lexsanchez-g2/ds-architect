@@ -1,0 +1,269 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/lsanchez-g2/ds-architect/verification/schema/component.schema.json",
+  "title": "BUNDLE data/components/<Component>.component.json",
+  "description": "Per BUNDLE_SPEC.md §6.2. API + metadata + bindings map (not geometry — see variants.schema.json). Slots may carry SP-10 variantPropagation / SP-12 INSTANCE_SET / SP-13 $crossBundle.",
+  "$defs": {
+    "variantPropertyValue": {
+      "type": "object",
+      "required": ["type", "values"],
+      "properties": {
+        "type": { "type": "string", "enum": ["VARIANT", "BOOLEAN", "INSTANCE_SWAP", "TEXT"] },
+        "values": {
+          "type": "array",
+          "items": { "type": ["string", "boolean"] },
+          "minItems": 1
+        }
+      },
+      "additionalProperties": true
+    },
+    "exposedProp": {
+      "type": "object",
+      "required": ["name", "type"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "type": {
+          "type": "string",
+          "description": "Figma exposed-property type. Common values: TEXT | BOOLEAN | INSTANCE_SWAP | VARIANT | NUMBER | COLOR | SLOT (extractor extension for geometric slots)."
+        },
+        "default": {},
+        "description": { "type": "string" },
+        "preferredValues": { "type": "array" },
+        "whenVariant": { "type": "object" },
+        "whenSize": { "type": "object" },
+        "whenState": { "type": "object" },
+        "$comment": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "variantConstraint": {
+      "type": "object",
+      "required": ["when"],
+      "properties": {
+        "when": { "type": "object" },
+        "allowedSizes": { "type": "array", "items": { "type": "string" } },
+        "allowedStates": { "type": "array", "items": { "type": "string" } },
+        "disabledProps": { "type": "array", "items": { "type": "string" } },
+        "reason": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "animation": {
+      "type": "object",
+      "required": ["name", "duration"],
+      "properties": {
+        "name": { "type": "string" },
+        "duration": { "type": "string" },
+        "easing": { "type": "string" },
+        "iterations": {
+          "oneOf": [
+            { "type": "string", "enum": ["infinite"] },
+            { "type": "number", "minimum": 0 }
+          ]
+        },
+        "delay": { "type": "string" },
+        "motionReduce": {
+          "type": "object",
+          "required": ["policy"],
+          "properties": {
+            "policy": { "type": "string", "enum": ["slow", "freeze", "skip", "as-is"] },
+            "duration": { "type": "string" },
+            "$reason": { "type": "string" }
+          },
+          "additionalProperties": false,
+          "allOf": [
+            {
+              "if": { "properties": { "policy": { "const": "slow" } } },
+              "then": { "required": ["duration"] }
+            }
+          ]
+        },
+        "$comment": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "variantPropagationEntry": {
+      "type": "object",
+      "required": ["fromAxis", "fromValue", "toComponent", "toAxis", "toValue"],
+      "properties": {
+        "fromAxis": { "type": "string" },
+        "fromValue": {},
+        "toComponent": { "type": "string" },
+        "toAxis": { "type": "string" },
+        "toValue": {},
+        "$source": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "crossBundleRef": {
+      "type": "object",
+      "required": ["$crossBundle", "component"],
+      "properties": {
+        "$crossBundle": { "type": "string" },
+        "component": { "type": "string" },
+        "variantKey": { "type": "string" },
+        "figmaKey": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "slot": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "type": {
+          "type": "string",
+          "description": "Spec-normative slot types: INSTANCE | INSTANCE_SWAP | INSTANCE_SET | TEXT. Extractor MAY also describe the underlying Figma node type (FRAME, ELLIPSE/FRAME, etc.) when the slot is geometric rather than instance-based — bundles in PoC do this for atoms like Switch/Checkbox/Sonner."
+        },
+        "exposedBy": { "type": "string" },
+        "instanceComponent": { "type": "string" },
+        "minInstances": { "type": "integer", "minimum": 0 },
+        "maxInstances": { "type": ["integer", "null"], "minimum": 0 },
+        "constraint": {
+          "type": "object",
+          "required": ["kind"],
+          "properties": {
+            "kind": { "type": "string", "enum": ["exactly-one", "at-most-one", "any", "all"] },
+            "property": { "type": "string" },
+            "value": {}
+          },
+          "additionalProperties": true
+        },
+        "default": {
+          "oneOf": [
+            { "type": "null" },
+            {
+              "type": "object",
+              "properties": {
+                "library": { "type": "string" },
+                "icon": { "type": "string" },
+                "componentRef": { "type": "string" },
+                "animation": { "$ref": "#/$defs/animation" }
+              },
+              "additionalProperties": true
+            },
+            { "$ref": "#/$defs/crossBundleRef" },
+            { "type": "string" }
+          ]
+        },
+        "swapPreferred": { "type": "string" },
+        "swapDefaults": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "variantPropagation": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/variantPropagationEntry" }
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "type": "object",
+  "required": ["id", "name", "level", "variantProperties"],
+  "additionalProperties": true,
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "name": { "type": "string", "minLength": 1 },
+    "level": { "type": "string", "enum": ["token", "atom", "molecule", "organism", "template", "pattern"] },
+    "figmaComponentSetId": { "type": "string" },
+    "description": { "type": "string" },
+    "documentationLinks": {
+      "type": "array",
+      "items": { "type": "string", "format": "uri" }
+    },
+    "variantProperties": {
+      "type": "object",
+      "additionalProperties": { "$ref": "#/$defs/variantPropertyValue" }
+    },
+    "defaultVariant": { "type": "object" },
+    "exposedProps": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/exposedProp" }
+    },
+    "variantConstraints": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/variantConstraint" }
+    },
+    "bindings": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "composition": {
+      "description": "May be a flat array of component names OR an object with uses/usedBy + optional $depth/$sp8Note metadata. Both forms observed in PoC bundles.",
+      "oneOf": [
+        {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        {
+          "type": "object",
+          "properties": {
+            "uses": { "type": "array" },
+            "usedBy": { "type": "array" }
+          },
+          "additionalProperties": true
+        }
+      ]
+    },
+    "a11y": {
+      "type": "object",
+      "properties": {
+        "role": { "type": "string" },
+        "focusRing": { "type": "string" },
+        "minTouchTarget": {
+          "description": "WCAG 2.5.5 target. null is valid for non-interactive components (Avatar, Sonner, etc.).",
+          "oneOf": [
+            { "type": "null" },
+            {
+              "type": "object",
+              "properties": {
+                "width": { "type": "number", "minimum": 0 },
+                "height": { "type": "number", "minimum": 0 }
+              },
+              "additionalProperties": true
+            }
+          ]
+        },
+        "statesRequired": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "additionalProperties": true
+    },
+    "codeConnect": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "react": {
+          "type": "object",
+          "properties": {
+            "source": { "type": "string" },
+            "component": { "type": "string" }
+          },
+          "additionalProperties": true
+        },
+        "perVariantUrls": {
+          "type": "object",
+          "patternProperties": {
+            "^.+$": { "type": "string", "format": "uri" }
+          }
+        },
+        "quality": {
+          "type": "object",
+          "properties": {
+            "perVariantUrlVerified": { "type": "boolean" },
+            "verificationFailures": { "type": "array" },
+            "$comment": { "type": "string" }
+          },
+          "additionalProperties": true
+        }
+      }
+    },
+    "slots": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/slot" }
+    }
+  }
+}

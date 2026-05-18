@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/lsanchez-g2/ds-architect/verification/schema/components-index.schema.json",
+  "title": "BUNDLE data/components/_index.json",
+  "description": "Per BUNDLE_SPEC.md §6.1.",
+  "type": "object",
+  "required": ["components"],
+  "additionalProperties": false,
+  "properties": {
+    "components": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "level", "files"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "name": { "type": "string", "minLength": 1 },
+          "level": { "type": "string", "enum": ["token", "atom", "molecule", "organism", "template", "pattern"] },
+          "figmaComponentSetId": { "type": "string" },
+          "files": {
+            "type": "object",
+            "required": ["spec", "variants"],
+            "properties": {
+              "spec": { "type": "string" },
+              "variants": { "type": "string" }
+            },
+            "additionalProperties": true
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  }
+}

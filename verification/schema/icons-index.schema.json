@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/lsanchez-g2/ds-architect/verification/schema/icons-index.schema.json",
+  "title": "BUNDLE data/icons/_index.json",
+  "description": "Per BUNDLE_SPEC.md §7.1. SVGs normalized: no inline style when binding exists; currentColor for monochrome; preserve viewBox.",
+  "type": "object",
+  "required": ["icons"],
+  "additionalProperties": true,
+  "properties": {
+    "icons": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "svg", "viewBox"],
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "semantic": { "type": "string" },
+          "svg": { "type": "string", "pattern": "\\.svg$" },
+          "defaultSize": { "type": "string" },
+          "viewBox": { "type": "string", "pattern": "^-?[0-9.]+ -?[0-9.]+ -?[0-9.]+ -?[0-9.]+$" },
+          "figmaComponentKey": { "type": "string" },
+          "source": { "type": "string" },
+          "license": { "type": "string" },
+          "usedBy": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                { "type": "string" },
+                { "type": "object" }
+              ]
+            }
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  }
+}

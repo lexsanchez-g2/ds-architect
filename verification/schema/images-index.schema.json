@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/lsanchez-g2/ds-architect/verification/schema/images-index.schema.json",
+  "title": "BUNDLE data/images/_index.json",
+  "description": "Per BUNDLE_SPEC.md §7.2. Image fills reference content-hashed file, not Figma URL.",
+  "type": "object",
+  "required": ["images"],
+  "additionalProperties": true,
+  "properties": {
+    "images": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["hash", "file", "format"],
+        "properties": {
+          "hash": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+          "file": { "type": "string" },
+          "format": { "type": "string", "enum": ["webp", "png", "jpeg", "jpg", "gif", "avif", "svg"] },
+          "naturalWidth": { "type": "integer", "minimum": 1 },
+          "naturalHeight": { "type": "integer", "minimum": 1 },
+          "altText": { "type": "string" },
+          "usedBy": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                { "type": "string" },
+                { "type": "object" }
+              ]
+            }
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  }
+}

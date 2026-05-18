@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/lsanchez-g2/ds-architect/verification/schema/styles-legacy.schema.json",
+  "title": "BUNDLE data/styles.legacy.json",
+  "description": "Legacy Figma styles (paint/text/effect) not yet migrated to variables. Per BUNDLE_SPEC.md §5. Empty object if migration complete.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "paintStyles": {
+      "type": "object",
+      "patternProperties": {
+        "^S:.+$": {
+          "type": "object",
+          "required": ["name", "value"],
+          "properties": {
+            "name": { "type": "string" },
+            "value": { "type": "string" }
+          },
+          "additionalProperties": true
+        }
+      }
+    },
+    "textStyles": {
+      "type": "object",
+      "patternProperties": {
+        "^S:.+$": {
+          "type": "object",
+          "required": ["name"],
+          "properties": {
+            "name": { "type": "string" },
+            "font": {
+              "type": "object",
+              "properties": {
+                "family": { "type": "string" },
+                "style": { "type": "string" },
+                "weight": { "type": "number" },
+                "size": { "type": "number" }
+              },
+              "additionalProperties": true
+            },
+            "lineHeight": {
+              "type": "object",
+              "properties": {
+                "unit": { "type": "string", "enum": ["PIXELS", "PERCENT", "AUTO"] },
+                "value": { "type": "number" }
+              },
+              "additionalProperties": false
+            },
+            "letterSpacing": {
+              "type": "object",
+              "properties": {
+                "unit": { "type": "string", "enum": ["PIXELS", "PERCENT"] },
+                "value": { "type": "number" }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": true
+        }
+      }
+    },
+    "effectStyles": {
+      "type": "object"
+    }
+  }
+}

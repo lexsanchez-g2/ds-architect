@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/lsanchez-g2/ds-architect/verification/schema/tokens.schema.json",
+  "title": "BUNDLE data/tokens.json",
+  "description": "W3C Design Tokens Format Module — extended per BUNDLE_SPEC.md §4. Recursive: object keys are token group names; leaves carry $value + $type. Alias chains preserved with {path.to.token} syntax. Mode-aware values are objects keyed by mode (mode names declared in MANIFEST.modes).",
+  "$defs": {
+    "tokenType": {
+      "enum": [
+        "color", "dimension", "fontFamily", "fontWeight", "fontStyle",
+        "lineHeight", "letterSpacing", "duration", "cubicBezier",
+        "number", "boolean", "string",
+        "shadow", "border", "gradient", "transition", "typography", "strokeStyle"
+      ]
+    },
+    "tokenValue": {
+      "description": "$value: literal | alias ({a.b.c}) | mode-aware object | composite object",
+      "anyOf": [
+        { "type": "string" },
+        { "type": "number" },
+        { "type": "boolean" },
+        { "type": "object" },
+        { "type": "array" },
+        { "type": "null" }
+      ]
+    },
+    "tokenLeaf": {
+      "type": "object",
+      "required": ["$value", "$type"],
+      "properties": {
+        "$value": { "$ref": "#/$defs/tokenValue" },
+        "$type": { "$ref": "#/$defs/tokenType" },
+        "$description": { "type": "string" },
+        "$extensions": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "intent": { "type": "string" },
+            "shadcn": { "type": "string" },
+            "tailwind": { "type": "string" },
+            "css": { "type": "string" },
+            "unsupported": { "type": "boolean" },
+            "figmaExpression": { "type": "string" },
+            "figma": {
+              "type": "object",
+              "properties": {
+                "variableId": { "type": "string" },
+                "collectionId": { "type": "string" },
+                "scopes": { "type": "array", "items": { "type": "string" } }
+              },
+              "additionalProperties": true
+            },
+            "usedBy": {
+              "type": "array",
+              "items": { "type": "string" }
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "tokenGroup": {
+      "description": "Recursive: any key is either a group (object without $value/$type) or a leaf. $comment / $description / $extensions allowed as group-level meta siblings.",
+      "type": "object",
+      "properties": {
+        "$comment": { "type": "string" },
+        "$description": { "type": "string" },
+        "$extensions": { "type": "object" }
+      },
+      "additionalProperties": {
+        "anyOf": [
+          { "$ref": "#/$defs/tokenLeaf" },
+          { "$ref": "#/$defs/tokenGroup" },
+          { "type": "string" }
+        ]
+      }
+    }
+  },
+  "type": "object",
+  "properties": {
+    "$schema": { "type": "string" },
+    "$metadata": { "type": "object" },
+    "$comment": { "type": "string" }
+  },
+  "additionalProperties": {
+    "oneOf": [
+      { "$ref": "#/$defs/tokenLeaf" },
+      { "$ref": "#/$defs/tokenGroup" },
+      { "type": "string" }
+    ]
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/lsanchez-g2/ds-architect/verification/schema/graph.schema.json",
+  "title": "BUNDLE data/graph.json",
+  "description": "Composition + token graph per BUNDLE_SPEC.md §8. Powers drift detection, dead-token analysis, impact assessment.",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "components": {
+      "type": "object",
+      "patternProperties": {
+        "^.+$": {
+          "type": "object",
+          "properties": {
+            "uses": { "type": "array", "items": { "type": "string" } },
+            "usedBy": { "type": "array", "items": { "type": "string" } }
+          },
+          "additionalProperties": true
+        }
+      }
+    },
+    "tokens": {
+      "type": "object",
+      "patternProperties": {
+        "^.+$": {
+          "type": "object",
+          "properties": {
+            "aliases": {
+              "oneOf": [
+                { "type": "array", "items": { "type": "string" } },
+                { "type": "object", "additionalProperties": { "type": "string" } }
+              ]
+            },
+            "usedBy": { "type": "array", "items": { "type": "string" } }
+          },
+          "additionalProperties": true
+        }
+      }
+    }
+  }
+}
