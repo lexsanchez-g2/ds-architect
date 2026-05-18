@@ -1,0 +1,50 @@
+{
+  "$schema": "../../../../BUNDLE_SPEC.md#section-6.2",
+  "$bundleSchemaVersion": "0.3.0",
+  "id": "sonner",
+  "name": "Sonner",
+  "level": "molecule",
+  "figmaComponentSetId": "18482:48401",
+  "figmaFileKey": "3401ZFUHoboOwA6GGjAEsq",
+  "description": "Toast notification (named after the Sonner React lib). Conditional icon + title + description + action-button slots.",
+  "documentationLinks": ["https://ui.shadcn.com/docs/components/sonner"],
+
+  "variantProperties": { "state": { "type": "VARIANT", "values": ["Default", "Focus"] } },
+  "totalVariantCells": 2,
+  "defaultVariant": { "state": "Default" },
+
+  "exposedProps": [
+    { "name": "titleText",       "type": "TEXT",    "default": "Title Text" },
+    { "name": "descriptionText", "type": "TEXT",    "default": "This is a toast description." },
+    { "name": "icon",            "type": "BOOLEAN", "default": false, "description": "Reveal 20×20 icon slot at left." },
+    { "name": "description",     "type": "BOOLEAN", "default": false, "description": "Reveal description text below title." },
+    { "name": "action",          "type": "BOOLEAN", "default": false, "description": "Reveal action button at right (Undo by default)." }
+  ],
+
+  "slots": [
+    { "name": "icon",        "type": "INSTANCE", "exposedBy": "icon",        "geometry": "20×20" },
+    { "name": "title",       "type": "TEXT",     "typography": "{typography.text-sm-leading-normal-medium}", "fill": "{color.base.popover-foreground}" },
+    { "name": "description", "type": "TEXT",     "exposedBy": "description", "typography": "{typography.text-sm-leading-normal-normal}", "fill": "{color.base.muted-foreground}", "$tokenNote": "References text-sm-leading-normal-normal which is in this bundle but not in tokens.json above — TBD inclusion." },
+    { "name": "action",      "type": "FRAME",    "exposedBy": "action",      "$role": "Mini-button with 'Undo' default text", "geometry": "h-24 raw × px-8 raw", "fill": "{color.base.primary}", "radius": "4px raw", "$shadowNote": "Uses shadow/xs (referenced but tokens not in get_variable_defs response — F26 nested-token leak)." }
+  ],
+
+  "layout": {
+    "container": {
+      "mode": "HORIZONTAL", "gap": "{spacing.2}", "padding": "{spacing.4}",
+      "width": "336px (hardcoded)",
+      "fill": "{color.base.popover}",
+      "border": "{border-width.border} solid {color.base.border}",
+      "radius": "{border-radius.rounded-md}",
+      "$shadow": "INLINE rgba(0,0,0,0.1) drop-shadow — NOT bound to a token. F26 audit candidate."
+    }
+  },
+
+  "$new_audit_findings": {
+    "F26": "NEW (MEDIUM). Sonner container shadow is emitted as inline `shadow-[0px_4px_12px_-1px_rgba(0,0,0,0.1)]` — NOT bound to a shadow/* token. Other Apollo components (Tabs) use `{shadow.sm}` properly. Source-DS audit: add `shadow/md` or `shadow/popover` token and rebind.",
+    "F27": "Action button uses `shadow/xs/*` primitives (offset-x, offset-y, blur-radius, color) but those tokens didn't appear in `get_variable_defs` on Sonner subtree — same nested-token leak class as Avatar Badge F-pattern."
+  },
+
+  "$step2_known_gaps": [
+    { "id": "GAP-Son1", "field": "Focus state styling — likely adds ring or border-color shift", "resolution": "Walk 18482:48402" }
+  ]
+}

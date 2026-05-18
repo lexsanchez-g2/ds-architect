@@ -1,0 +1,46 @@
+{
+  "$schema": "../../BUNDLE_SPEC.md#section-3",
+  "bundleVersion": "0.3.0",
+  "bundleId": "apollo-v2-item-bundle-poc",
+  "bundleStatus": "proof-of-concept",
+  "system": { "name": "Apollo v2 (SA)", "owner": "lsanchez-g2" },
+  "source": { "type": "figma", "fileKey": "3401ZFUHoboOwA6GGjAEsq", "rootNodeId": "18672:198607", "extractedBy": "ds-architect@v3", "extractedAt": "2026-05-18T13:15:00Z" },
+  "spec": { "name": "BUNDLE_SPEC.md", "version": "0.3.0", "status": "DRAFT" },
+
+  "counts": {
+    "components": 1, "componentClass": "molecule",
+    "variantAxes": 2, "variantCells": 9, "variantCellsEmitted": 1,
+    "tokens": 30, "tokensNew": 2,
+    "icons": 1, "images": 0,
+    "$crossBundleReferences": 1
+  },
+
+  "modes": ["light"],
+
+  "checksum": {
+    "algorithm": "sha256",
+    "files": {
+      "data/tokens.json":                          { "sha256": "5bc0ab13f5445534a50f04247e00ffb3c4e50b5d5b8e8a43eb2fb399d09584f2", "bytes": 4819 },
+      "data/components/Item.component.json":       { "sha256": "f31dc9243c54f8b74449db11da9c58b865075273bd58e1f0283e5ab8d22265df", "bytes": 6378 },
+      "data/icons/_index.json":                    { "sha256": "d83d9b5b1894239c16984ad61bef0c81a598c4bc10424dd53960b977cdef95b9", "bytes": 701 },
+      "assets/icons/folder.svg":                   { "sha256": "bd1e66f6d4bb5819fc078848b965bae582b13a19c3cd01d9d4acd9b85cc016cf", "bytes": 419 }
+    }
+  },
+
+  "auditFindings": {
+    "F28": { "severity": "LOW", "summary": "Item title uses leading-4 (16px) — tighter line-height than typical text-sm (20px). Documented as intentional." },
+    "F29": { "severity": "DOC", "summary": "First cross-bundle composition. Item.Actions defaults to Button.variant=Outline from poc-button bundle." }
+  },
+
+  "v0_4_0_candidates": {
+    "SP-13": "Cross-bundle composition reference (HIGH). Bundle spec needs $crossBundle declaration + resolution rules."
+  },
+
+  "extensions": {
+    "loadOrder": ["SKILL.md", "MANIFEST.json", "data/"],
+    "companionBundles": ["../poc-button (Actions defaults to Button.variant=Outline)"],
+    "$crossBundleRefs": [
+      { "slot": "actions", "bundle": "apollo-v2-button-bundle-poc", "component": "Button", "variant": "variant=Outline,state=Default,size=default", "figmaKey": "37:1477" }
+    ]
+  }
+}

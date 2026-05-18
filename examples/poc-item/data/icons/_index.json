@@ -1,0 +1,15 @@
+{
+  "$schema": "../../../../BUNDLE_SPEC.md#section-7.1",
+  "$bundleSchemaVersion": "0.3.0",
+  "$metadata": { "source": { "fileKey": "3401ZFUHoboOwA6GGjAEsq", "scope": "Item (18672:198607)" }, "iconSet": { "name": "Lucide Icons", "license": "ISC" } },
+  "icons": [
+    {
+      "id": "icon-folder", "name": "icon/folder", "semantic": "folder",
+      "svg": "assets/icons/folder.svg",
+      "viewBox": "0 0 24 24", "license": "ISC",
+      "figma": { "parentNodeId": "5197:3696", "componentName": "Lucide Icon / Folder" },
+      "usedBy": [{ "component": "Item", "$role": "ItemMedia default icon" }]
+    }
+  ],
+  "$coverage": { "iconsUsedByItem": 1, "iconsExtracted": 1, "extractionCompleteness": 1.0 }
+}

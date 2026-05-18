@@ -1,0 +1,122 @@
+{
+  "$schema": "../../../../BUNDLE_SPEC.md#section-6.2",
+  "$bundleSchemaVersion": "0.3.0",
+  "id": "item",
+  "name": "Item",
+  "level": "molecule",
+  "figmaComponentSetId": "18672:198607",
+  "figmaFileKey": "3401ZFUHoboOwA6GGjAEsq",
+  "description": "Generic list/menu item molecule. Composes ItemMedia + ItemContent + optional Actions (Button reference). First PoC with CROSS-BUNDLE composition (uses Button from poc-button bundle as Actions slot).",
+  "documentationLinks": ["https://ui.shadcn.com/docs/components/item"],
+
+  "variantProperties": {
+    "variant": { "type": "VARIANT", "values": ["Default", "Outline", "Muted"] },
+    "size":    { "type": "VARIANT", "values": ["default", "sm", "xs"] }
+  },
+  "variantConstraints": [],
+  "totalVariantCells": 9,
+
+  "defaultVariant": { "variant": "Default", "size": "default" },
+
+  "exposedProps": [
+    { "name": "titleText",       "type": "TEXT",          "default": "Item title" },
+    { "name": "descriptionText", "type": "TEXT",          "default": "Item description goes here" },
+    { "name": "showTitle",       "type": "BOOLEAN",       "default": true },
+    { "name": "showDescription", "type": "BOOLEAN",       "default": true },
+    { "name": "showMedia",       "type": "BOOLEAN",       "default": true },
+    { "name": "showActions",     "type": "BOOLEAN",       "default": true },
+    { "name": "showHeader",      "type": "BOOLEAN",       "default": false },
+    { "name": "swapHeader",      "type": "INSTANCE_SWAP", "default": null, "description": "Custom header slot content. Second PoC INSTANCE_SWAP after Field's inputType." }
+  ],
+
+  "slots": [
+    { "name": "header",      "type": "INSTANCE_SWAP", "exposedBy": "showHeader",      "$default": "Placeholder slot frame" },
+    { "name": "media",       "type": "INSTANCE",     "exposedBy": "showMedia",       "$default": "ItemMedia (32×32 with Lucide Folder)" },
+    { "name": "title",       "type": "TEXT",         "exposedBy": "showTitle",       "typography": "text-sm + font-weight medium + line-height {line-height.leading-4} (16)", "fill": "{color.base.foreground}" },
+    { "name": "description", "type": "TEXT",         "exposedBy": "showDescription", "typography": "{typography.text-sm-leading-normal-normal}", "fill": "{color.base.muted-foreground}" },
+    { "name": "actions",     "type": "INSTANCE_SET", "exposedBy": "showActions",     "$default": "Button.variant=Outline.size=default (cross-bundle reference)", "$crossBundle": "First PoC instance of cross-bundle composition. Actions slot embeds Apollo v2 Button atom." }
+  ],
+
+  "$itemMediaSubComponent": {
+    "$role": "32×32 frame containing a Lucide icon. Default: Folder icon.",
+    "geometry": "w-8 × h-8 (32×32)",
+    "fill": "{color.base.muted}",
+    "border": "1px solid {color.base.border}",
+    "radius": "{border-radius.rounded-sm}",
+    "iconSlot": "16×16 Lucide Folder (5197:3696)"
+  },
+
+  "layout": {
+    "container": {
+      "mode": "VERTICAL",
+      "gap": "{spacing.2-5}",
+      "padding-x": "{spacing.3}",
+      "padding-y": "{spacing.2-5}",
+      "width": "460px (hardcoded — all 9 cells)",
+      "$widthBindingStatus": "hardcoded",
+      "radius": "{border-radius.rounded-lg}",
+      "clipsContent": true
+    },
+    "flex": {
+      "$role": "Horizontal row holding media + content + actions",
+      "mode": "HORIZONTAL",
+      "gap": "{spacing.2}",
+      "primaryAxisAlignItems": "MIN"
+    },
+    "itemContent": {
+      "mode": "VERTICAL",
+      "gap": "{spacing.1}",
+      "primaryAxisAlignItems": "MIN",
+      "$role": "Wraps title + description, takes flex-1"
+    }
+  },
+
+  "bindings": {
+    "variant-axis": {
+      "Default": { "$role": "Bare item, no border/bg",                     "$tbdStep3": "size=default walked; sm/xs not walked but uniform dimensions" },
+      "Outline": { "$role": "Adds border around container",                "$tbdStep3": "Walk 18672:198608" },
+      "Muted":   { "$role": "Adds muted fill (likely base/muted) around container", "$tbdStep3": "Walk 18672:198628" }
+    },
+    "size-axis": {
+      "default": "Walked 18672:6323 — 460×64",
+      "sm":      "460×64 (same dimensions; differs in internal padding/spacing TBD)",
+      "xs":      "460×60 (slightly smaller height)"
+    }
+  },
+
+  "composition": {
+    "uses": [
+      { "name": "ItemMedia (local sub-component)", "ref": "32×32 inline frame with Lucide Folder" },
+      { "name": "Lucide / Folder",                  "ref": "Lucide Icons / Folder (5197:3696)", "$transitive": true },
+      { "name": "Button",                           "ref": "Apollo v2 Button.variant=Outline (37:1477)", "$crossBundle": "apollo-v2-button-bundle-poc", "$role": "Actions slot default — first cross-bundle composition" }
+    ]
+  },
+
+  "a11y": {
+    "role": "TBD (depends on usage — list item, menu item, link, etc.)",
+    "preferredElement": "<li> in lists; <button> if interactive; <a> if navigation",
+    "$comment": "Item is a generic surface — a11y role determined by consumer context."
+  },
+
+  "codeConnect": {
+    "candidates": [
+      { "framework": "react", "library": "shadcn/ui", "url": "https://ui.shadcn.com/docs/components/item" }
+    ]
+  },
+
+  "$new_audit_findings": {
+    "F28": "NEW (LOW). Item title uses `line-height/leading-4` (16px) — tighter than `text-sm/line-height` (20px) used elsewhere. Distinguishes title from description visually. Documented; not a bug.",
+    "F29": "NEW (DOC). First cross-bundle composition — Item.Actions defaults to Button.variant=Outline. Renderer must resolve cross-bundle references; bundle index needs to declare both bundles loaded."
+  },
+
+  "$v0_4_0_candidates": {
+    "SP-13": "Cross-bundle composition reference (NEW). Item uses Button.variant=Outline by reference. Bundle needs $crossBundle declarations + resolution rules. Could be HIGH if Apollo's molecule batch reveals more cross-references.",
+    "SP-12 (carried)": "Actions slot may need INSTANCE_SET if multiple buttons commonly render. Currently shows 1 Button default."
+  },
+
+  "$step2_known_gaps": [
+    { "id": "GAP-I1", "field": "Outline + Muted variant styling deltas", "resolution": "Walk 18672:198608 + 18672:198628" },
+    { "id": "GAP-I2", "field": "sm vs xs size internal differences", "resolution": "Walk sm + xs cells" },
+    { "id": "GAP-I3", "field": "Header slot with swapHeader instance-swap behavior", "resolution": "Walk showHeader=true cell" }
+  ]
+}
