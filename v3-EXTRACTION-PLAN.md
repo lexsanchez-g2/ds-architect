@@ -45,58 +45,70 @@ v2 audit-and-fix is the **input** to v3 extraction. Order: audit → fix → THE
 - [x] `v3-EXTRACTION-PLAN.md` drafted
 - [ ] JSON schemas for each bundle file at `verification/schema/*.json` (deferred to Phase B start)
 
-### Phase B — Button PoC
-Run `PoC-PLAN.md` end-to-end against Apollo v2 Button.
+### Phase B — Button PoC — **CLOSED 2026-05-15**
+Ran `PoC-PLAN.md` end-to-end against Apollo v2 Button. All acceptance gates in `PoC-PLAN.md §1` met.
 
-**Exit criteria:** all acceptance gates in `PoC-PLAN.md §1` met. Spec bumped to v0.2.0 with patch log.
+**Delivered:**
+- `examples/poc-button/` — 264 cells, 84 tokens, 3 Lucide icons.
+- Spec v0.2.0 **LOCKED** for atom phase (4 smoke tests / 31 distinct render checks on Claude Design, 100% conformant).
+- Patches: SP-1 (whenVariant), SP-3 (token aliases), SP-5 (motion primitives), SP-6 (rich text spans), SP-7 (per-side padding), SP-8 (nested-instance token scope).
+- Smoke tests #3 + #4 surfaced v0.3.0 patches (SP-4 ext + SP-9). v0.3.0 DRAFT — locks on Loading-state animation re-test.
 
-**Estimated effort:** 10 working days.
+**Effort actual:** ~9 working days.
 
-### Phase C — Atom batch (5 more atoms)
-Parallel extraction of: **Input, Checkbox, Switch, Avatar, Icon**.
+### Phase C — Atom batch — **CLOSED 2026-05-15**
+Delivered Input, Checkbox, Switch, Avatar (Icon deferred — covered transitively by every other bundle's icon pipeline).
 
-Each follows the PoC workflow (Steps 1–9). Goal: stress-test the spec across diverse atom archetypes.
+**Delivered:**
+- `examples/poc-input/` — 15 cells, 24 tokens.
+- `examples/poc-checkbox/` — 40 cells, 30 tokens, 1 icon (check). F14: indeterminate state missing from source.
+- `examples/poc-switch/` — 64 cells, 39 tokens.
+- `examples/poc-avatar/` — 15 cells, 17 tokens, 1 icon + 1 raster image (first image pipeline).
+- Spec v0.3.0 DRAFT — no atom-phase patches needed beyond what Button already surfaced.
 
-- **Input** — exposes text-range overrides (placeholder text styling), focus/error states.
-- **Checkbox** — `aria-checked="mixed"` indeterminate state, custom vector glyphs in indicator.
-- **Switch** — micro-motion (thumb slide), prototype interactions, dual-color tracks.
-- **Avatar** — image fills, fallback initials, `shape=circle` (validates pill round-trip on a different component).
-- **Icon** — pure-vector component, validates SVG export pipeline.
+**Effort actual:** ~6 working days (no parallel; spec held additively, no extractor-tooling rebuilds).
+
+**Deferred:** Icon-as-component bundle (pure-vector archetype); reusable extractor scripts → `tooling/` (manual `use_figma` flow proved sustainable).
+
+### Phase D — Molecule batch — **CLOSED 2026-05-18**
+
+See `PHASE-D-CLOSEOUT.md` for the full receipt.
+
+**Delivered:**
+- `examples/poc-field/` — 6 cells, 25 tokens, 3 icons transitive (5-level nested composition). Surfaced SP-10 (variantPropagation) + SP-11 (axis remap).
+- `examples/poc-tabs/` — 3 cells, 30 tokens with decomposed shadow primitives (10 prim + 1 composite). Surfaced SP-12 (`INSTANCE_SET` sibling-set).
+- `examples/poc-sonner/` — 2 cells, 12 tokens (popover-surface). F26: container shadow inline rgba, not token-bound.
+- `examples/poc-item/` — 9 cells, 30 tokens, 1 icon. **First cross-bundle composition** — `actions` slot defaults to Button.variant=Outline. Surfaced SP-13 (`$crossBundle`).
+- `examples/poc-menuitem/` — 18 cells, 20 tokens, 2 icons. Radio/Checkbox variants restructure slots — validates SP-1 whenVariant under load (F31).
+- Spec v0.4.0 DRAFT shipped — SP-10 / SP-11 / SP-12 / SP-13, strictly additive.
+
+**Effort actual:** ~3 working days (solo, post-Phase-C momentum).
+
+**Deferred:** override-fidelity verifier schema; 5th molecule originally planned was Tab → delivered. ListItem ≈ Item; MenuItem = MenubarItem; ToastItem = Sonner; FormField = Field — all five archetypes covered under different names.
+
+**Lock prerequisite:** re-test confirming `variantPropagation` + `INSTANCE_SET` + `$crossBundle` resolution honored end-to-end on real molecule cells (queued for Phase E Week 1).
+
+### Phase E — Organism batch — **QUEUED for post-OOO start (Sep 1, 2026)**
+
+See `PHASE-E-PLAN.md` for the full plan.
+
+Final candidates (Tabs delivered in Phase D, replaced by Menubar):
+- **Card** — slot defaults across multiple cross-bundle refs.
+- **Menubar** — recursive cross-bundle composition (SP-14 candidate).
+- **Dialog / Modal** — portal rendering + multi-trigger prototype (SP-15 + SP-16 candidates).
+- **Form** — N × Field + Submit Button cross-bundle (SP-17 candidate).
+- **Table / DataTable** — repeated-row INSTANCE_SET with declared data shape (SP-18 candidate).
+
+**Week 1 (Sep 1 – 7):** v0.3.0 + v0.4.0 lock re-tests; no organism extraction starts until both LOCKED.
+
+**Weeks 2–8 (Sep 8 – Oct 26):** one organism per week, last two on Table (densest cell matrix).
 
 **Exit criteria:**
-- All 6 atoms (Button + 5) green per `BUNDLE_SPEC.md §10.4`.
-- Spec bumped to v0.3.0 with any additive patches.
-- Reusable extractor scripts (or use_figma prompt templates) checked into `tooling/`.
-
-**Estimated effort:** 12 working days (parallel-ish; 3 atoms × 2 engineers × 2 days each + 2 day verifier loop).
-
-### Phase D — Molecule batch (5 molecules)
-Parallel extraction of: **FormField (Label+Input+Helper+Error), ListItem, MenuItem, ToastItem, Tab**.
-
-These introduce **nested composition** and **instance overrides**. The spec already accommodates them in §6.4 (INSTANCE node schema), but real-world overrides surface edge cases.
-
-**New verification:** override fidelity. If a FormField overrides the Input's placeholder text and error color, the override MUST survive the round-trip.
-
-**Exit criteria:**
-- All 11 components (atoms + molecules) green.
-- Spec bumped to v0.4.0.
-- Override-fidelity verifier added to `verification/binding-diff.json` schema.
-
-**Estimated effort:** 10 working days.
-
-### Phase E — Organism batch (5 organisms)
-Parallel extraction of: **Card, Modal/Dialog, Form, Table, Tabs**.
-
-These introduce **deep nesting**, **multi-level overrides**, and **multi-trigger prototype interactions** (e.g. Modal: ON_CLICK opens, ESC closes, click-outside dismisses).
-
-**New verification:** prototype-fidelity. Bundle's `prototype.json` re-rendered as interactive flow MUST match the source Figma prototype.
-
-**Exit criteria:**
-- All 16 components green.
-- Spec bumped to v0.5.0.
+- All 15 components green per `BUNDLE_SPEC.md §10.4`.
+- Spec bumped to v0.5.0, LOCKED on organism re-test.
 - Prototype-fidelity verifier added.
 
-**Estimated effort:** 12 working days.
+**Estimated effort:** ~40 working days solo (Sep 1 – Oct 26).
 
 ### Phase F — Template + pattern batch
 - App shells (header + nav + content + footer).
@@ -161,10 +173,11 @@ Run v3 against a non-Apollo source to prove portability. Candidates:
 
 Parallel pairs (atom batch, molecule batch, organism batch) can compress timeline ~30% with two engineers.
 
-**Key constraint:** author OOO May 26 → Sep 1. Realistic milestones:
-- **Pre-OOO (May 15 → May 25, ~7 working days):** complete Phase A + start Phase B (likely Steps 0–4 of PoC).
-- **Sep 1 onward:** resume Phase B Steps 5–10, then C/D/E.
-- **Target full DS coverage:** Q1 2027 if solo, Q4 2026 if co-driver.
+**Key constraint:** author OOO May 26 → Sep 1, 2026. Realistic milestones:
+- **Pre-OOO actual (May 15 → May 18, ~3 working days):** Phase A drafted; Phase B + C + D **all CLOSED** ahead of plan. 10 bundles shipped, BUNDLE_SPEC at v0.4.0 DRAFT. See `PHASE-D-CLOSEOUT.md`.
+- **Sep 1 onward:** Phase E (organisms) per `PHASE-E-PLAN.md`. Week 1 = v0.3.0 + v0.4.0 lock re-tests, weeks 2–8 = organism batch, target close Oct 26.
+- **Phases F (templates) + G (full DS sweep):** Nov 2026 onward; depend on Phase E lock.
+- **Target full DS coverage:** Q1 2027 solo, Q4 2026 with co-driver.
 
 ---
 
