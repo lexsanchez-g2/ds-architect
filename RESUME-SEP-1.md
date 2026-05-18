@@ -140,6 +140,7 @@ Then bump component-class counts in `MANIFEST.json`, refresh per-bundle `auditFi
 | `tooling/extract-node/resolve-variant-ids.js` | REST dump → figmaNodeId per queue entry | `node tooling/extract-node/resolve-variant-ids.js --bundle … --component-set …` |
 | `tooling/extract-node/merge-variants.js` | Per-cell JSONs → canonical variants.json + MANIFEST sync | `node tooling/extract-node/merge-variants.js --bundle … --inputs …` |
 | `tooling/token-overlap/analyze.py` | Cross-bundle token overlap + drift detection | `python3 tooling/token-overlap/analyze.py` |
+| `tooling/findings-to-issues/generate.py` | Fan AUDIT-APOLLO-V2.md into per-finding issue bodies + INDEX.json | `python3 tooling/findings-to-issues/generate.py` |
 | `verification/schema/validate.py` | Structural schema validation | `python3 verification/schema/validate.py` |
 | `verification/schema/checksum-verify.py` | MANIFEST checksum integrity | `python3 verification/schema/checksum-verify.py` |
 | `verification/schema/binding-resolver.py` | Semantic check: `{token.path}` resolution | `python3 verification/schema/binding-resolver.py` |

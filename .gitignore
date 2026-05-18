@@ -5,3 +5,4 @@ __pycache__/
 report.html
 extract-queue.json
 examples/poc-*/extract-queue.json
+tooling/findings-to-issues/output/
