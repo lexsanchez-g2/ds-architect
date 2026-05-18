@@ -32,7 +32,14 @@ No args → walks every `examples/poc-*` bundle. Pass one or more bundle directo
 
 Exit 0 = all files pass. Exit 1 = at least one schema violation.
 
-## CI integration (sketch)
+## CI integration
+
+Ready-to-use GitHub Actions workflow at [`ci-example.yml`](ci-example.yml). To enable:
+
+1. Copy it to `.github/workflows/validate-bundles.yml` (path requires `workflow` PAT scope — easiest via GitHub web UI: **Add file → Create new file**, paste contents).
+2. Push. Workflow runs on push to main, PRs to main, and manual dispatch.
+
+Sketch:
 
 ```yaml
 - name: Validate bundle schemas

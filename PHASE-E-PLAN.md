@@ -59,7 +59,7 @@ Hard dependencies on Phase D close-out — **none of Phase E starts before Week 
 Best-effort; not blockers — but each one saves a day in Week 1+.
 
 - [x] **DONE 2026-05-18** — `verification/schema/*.json` JSON schemas + `validate.py` shipped. 14 schemas, 40/40 PoC files pass. Run with `python3 verification/schema/validate.py`. CI hookup is next.
-- [ ] Apollo v2 source-DS audit fixes F1, F14, F26, F29 (see `PHASE-D-CLOSEOUT.md` §3). Card + Dialog + Form depend on Button.disabled treatment being canonical; Menubar depends on shortcut-rendering decision (F30).
+- [ ] Apollo v2 source-DS audit fixes per [`AUDIT-APOLLO-V2.md`](AUDIT-APOLLO-V2.md). Card + Dialog + Form depend on Button.disabled treatment being canonical (Pattern A); Menubar depends on shortcut-rendering decision (Pattern E / F30). One-week sprint covers everything; P0+P1 items (F1 + F14 + Pattern A + Pattern B) are the hard minimum.
 - [ ] Apollo v2 Figma node-ID inventory for the 5 organism candidates. Format expected:
 
   ```

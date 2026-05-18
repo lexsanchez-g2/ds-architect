@@ -78,7 +78,7 @@ Reports at `/Users/gsancheztorres/Desktop/claude-g2/report-2/` (mirrored into ea
 |---|---|---|---|
 | 1 | Lock v0.3.0 via Loading-state animation re-test | lsanchez-g2 | v0.4.0 lock |
 | 2 | Lock v0.4.0 via molecule re-test (Field + Tabs + Item one cell each) | lsanchez-g2 | Phase E start |
-| 3 | Source-DS audit fixes F1–F31 in Apollo v2 Figma | lsanchez-g2 | Phase G (full sweep) |
+| 3 | Source-DS audit fixes F1–F31 in Apollo v2 Figma — see [`AUDIT-APOLLO-V2.md`](AUDIT-APOLLO-V2.md) for consolidated receipt + recommended fix order | lsanchez-g2 | Phase G (full sweep) |
 | 4 | ~~JSON schemas at `verification/schema/*.json` (deferred from Phase A)~~ | ~~lsanchez-g2~~ | **DONE 2026-05-18** — 14 schemas + `validate.py`, 40/40 PoC files pass. Hook into CI as next item. |
 | 5 | Tooling extraction — `tooling/extract-node.js`, schema validator, image differ | lsanchez-g2 | Phase G scale-out |
 | 6 | Phase E organism batch (see `PHASE-E-PLAN.md`) | lsanchez-g2 | v0.5.0 |

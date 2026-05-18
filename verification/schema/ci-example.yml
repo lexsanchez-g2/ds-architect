@@ -1,0 +1,26 @@
+name: validate-bundles
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch: {}
+
+jobs:
+  schema-validate:
+    name: JSON schema validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install jsonschema
+        run: pip install --upgrade pip && pip install jsonschema
+
+      - name: Validate every PoC bundle against verification/schema/
+        run: python3 verification/schema/validate.py
