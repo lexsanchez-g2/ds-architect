@@ -1,0 +1,159 @@
+{
+  "$schema": "../../../../BUNDLE_SPEC.md#section-6.2",
+  "$bundleSchemaVersion": "0.3.0",
+
+  "id": "tabs",
+  "name": "Tabs",
+  "level": "molecule",
+  "$molecule": "Container with SIBLING-SET slot. Holds N TabsTrigger children, exactly one with active=true.",
+  "figmaComponentSetId": "21133:27311",
+  "figmaFileKey": "3401ZFUHoboOwA6GGjAEsq",
+  "description": "Tab-bar container with raised-tab pill toggle. Holds N TabsTrigger buttons; renderer enforces exactly-one-active.",
+  "documentationLinks": ["https://ui.shadcn.com/docs/components/tabs"],
+
+  "variantProperties": {
+    "variant":     { "type": "VARIANT", "values": ["Default", "Line"] },
+    "orientation": { "type": "VARIANT", "values": ["Default", "Vertical"] }
+  },
+  "variantConstraints": [
+    {
+      "when": { "variant": "Line" },
+      "allowedValues": { "orientation": ["Default"] },
+      "reason": "Line variant only supports horizontal orientation."
+    }
+  ],
+  "totalVariantCells": 3,
+
+  "defaultVariant": { "variant": "Default", "orientation": "Default" },
+
+  "exposedProps": [
+    { "name": "children", "type": "SLOT", "$role": "SIBLING-SET slot accepting N TabsTrigger instances — see slots[name=items] below." }
+  ],
+
+  "slots": [
+    {
+      "name": "items",
+      "$type": "INSTANCE_SET",
+      "$role": "Sibling-set slot. Apollo v2 source emits 3 TabsTrigger children by default (1 active + 2 inactive).",
+      "instanceComponent": "TabsTrigger",
+      "minInstances": 2,
+      "maxInstances": null,
+      "constraint": {
+        "kind": "exactly-one",
+        "property": "active",
+        "value": true,
+        "$role": "Exactly one TabsTrigger child has active=true at render time. Renderer enforces via click handler."
+      },
+      "$sp12Note": "SP-12 candidate (v0.4.0): formalize sibling-set slot type. Current spec doesn't have INSTANCE_SET — only INSTANCE_SWAP (single instance). Tabs is the first PoC to need a sibling-set with cross-sibling constraints."
+    }
+  ],
+
+  "layout": {
+    "container": {
+      "mode": "HORIZONTAL",
+      "padding": "3px (raw, all sides)",
+      "$paddingBindingStatus": "hardcoded",
+      "$paddingNote": "Apollo v2 has no spacing token at 3px. Closest: spacing/1 (4) or spacing/0-5 (2). Source-DS audit candidate.",
+      "height": "{height.h-8}",
+      "primaryAxisAlignItems": "MIN",
+      "counterAxisAlignItems": "CENTER"
+    }
+  },
+
+  "bindings": {
+    "container-fill": {
+      "Default": "{color.base.muted}",
+      "Line":    "transparent (TBD — walk Line cell)"
+    },
+    "container-radius": "{border-radius.rounded-lg}",
+
+    "$tabsTriggerNotes": "Active/inactive styling lives on the TabsTrigger child component. See $tabsTriggerStyling below for the captured bindings (extracted from walked TabsTrigger nodes inside the Tabs container)."
+  },
+
+  "$tabsTriggerStyling": {
+    "$comment": "TabsTrigger is its own sub-component. Walked inline via Tabs container codegen.",
+    "axes": {
+      "variant": "Default (inherited)",
+      "orientation": "Default (inherited)",
+      "active": ["true", "false"],
+      "state": "Default (likely Hover/Focus/Disabled exist; not walked)",
+      "showIcon": "BOOLEAN",
+      "badge": "BOOLEAN"
+    },
+    "slots": ["icon", "text", "badge"],
+    "bindings": {
+      "active": {
+        "true": {
+          "container-fill":   "{color.custom.background-dark-input-30}",
+          "container-border": "1px solid {color.custom.dark-input} (transparent — layout-preserving)",
+          "container-shadow": "{effect.shadow-sm}",
+          "text-fill":        "{color.base.foreground}",
+          "$role": "Raised-tab appearance"
+        },
+        "false": {
+          "container-fill":   "none",
+          "container-border": "none",
+          "container-shadow": "none",
+          "text-fill":        "{color.base.muted-foreground}",
+          "$role": "Flat inactive"
+        }
+      }
+    },
+    "geometry": {
+      "padding-x": "{spacing.1-5}",
+      "padding-y": "{spacing.1}",
+      "gap":       "{spacing.1-5}",
+      "radius":    "{border-radius.rounded-md}",
+      "icon-size": "16×16 (raw, not bound)"
+    },
+    "typography": "{typography.text-sm-leading-normal-medium}",
+    "badge": {
+      "geometry": "h-5 (20×min-20) raw + spacing/1 padding-x + gap spacing/1",
+      "fill":     "{color.base.primary}",
+      "border":   "1px solid {color.tailwind.base.transparent}",
+      "radius":   "{border-radius.rounded-full}",
+      "text":     "primary-foreground (#fff) at text-xs medium",
+      "$defaultContent": "8"
+    }
+  },
+
+  "composition": {
+    "uses": [
+      { "name": "TabsTrigger",     "ref": "Apollo v2 sub-component (defined inline in source)", "$role": "Sibling-set children" },
+      { "name": "Lucide / Circle", "ref": "Lucide Icons / Circle (5197:735)",                  "$transitive": true, "$role": "Optional showIcon glyph inside TabsTrigger" }
+    ]
+  },
+
+  "a11y": {
+    "role": "tablist",
+    "preferredElement": "<div role='tablist'>",
+    "ariaOrientation": { "Default": "horizontal", "Vertical": "vertical" },
+    "tabsTriggerA11y": {
+      "role": "tab",
+      "ariaSelected": { "active=true": "true", "active=false": "false" },
+      "$renderer": "Each TabsTrigger should be <button role='tab' aria-selected={active}>. Active panel id via aria-controls."
+    }
+  },
+
+  "codeConnect": {
+    "candidates": [
+      { "framework": "react", "library": "shadcn/ui", "url": "https://ui.shadcn.com/docs/components/tabs" }
+    ]
+  },
+
+  "$new_audit_findings_from_step3": {
+    "F23": "NEW (MEDIUM). TabsTrigger active state is child-managed; parent Tabs doesn't propagate. Renderer enforces 'exactly one active' at runtime. Apollo could add a parent-level `value` or `selectedIndex` prop for explicit control.",
+    "F24": "NEW (LOW). Line variant lacks Vertical orientation. variantConstraints captures.",
+    "F25": "NEW (LOW). TabsTrigger likely has Hover/Focus/Disabled states unwalked in this PoC — Default-only sample-first."
+  },
+
+  "$v0_4_0_candidates": {
+    "SP-12": "Sibling-set slot type (HIGH). Tabs.items slot needs INSTANCE_SET with `constraint.kind: exactly-one`. Different from INSTANCE_SWAP (single instance). Formalize in BUNDLE_SPEC v0.4.0."
+  },
+
+  "$step2_known_gaps": [
+    { "id": "GAP-T1", "field": "Line variant styling (underline vs pill)", "resolution": "Walk 21133:27312" },
+    { "id": "GAP-T2", "field": "Vertical orientation layout details", "resolution": "Walk 21133:31196" },
+    { "id": "GAP-T3", "field": "TabsTrigger Hover/Focus/Disabled states", "resolution": "Sample-walk one of each" }
+  ]
+}

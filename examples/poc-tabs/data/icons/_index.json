@@ -1,0 +1,15 @@
+{
+  "$schema": "../../../../BUNDLE_SPEC.md#section-7.1",
+  "$bundleSchemaVersion": "0.3.0",
+  "$metadata": { "source": { "fileKey": "3401ZFUHoboOwA6GGjAEsq", "scope": "Tabs (21133:27311)" }, "iconSet": { "name": "Lucide Icons", "license": "ISC" } },
+  "icons": [
+    {
+      "id": "icon-circle", "name": "icon/circle", "semantic": "circle",
+      "svg": "assets/icons/circle.svg",
+      "viewBox": "0 0 24 24", "license": "ISC", "monochrome": true, "renderColor": "currentColor",
+      "figma": { "parentNodeId": "5197:735", "componentName": "Lucide Icon / Circle" },
+      "usedBy": [{ "component": "Tabs", "$transitive": true, "$via": "TabsTrigger.showIcon", "$role": "Optional icon slot inside TabsTrigger" }]
+    }
+  ],
+  "$coverage": { "iconsUsedByTabs": 1, "iconsExtracted": 1, "extractionCompleteness": 1.0 }
+}

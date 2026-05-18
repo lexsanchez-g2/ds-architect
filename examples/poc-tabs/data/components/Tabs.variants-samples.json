@@ -1,0 +1,97 @@
+{
+  "$schema": "../../../../BUNDLE_SPEC.md#section-6.3",
+  "$bundleSchemaVersion": "0.3.0",
+  "componentId": "tabs",
+  "variantCount": 3,
+  "$samplesOnly": true,
+  "$samplesNote": "1 of 3 cells (Default/Default). Demonstrates sibling-set slot with 3 TabsTrigger children (1 active + 2 inactive).",
+
+  "variants": [
+    {
+      "key": "variant=Default,orientation=Default",
+      "figmaNodeId": "183:539",
+      "node": {
+        "type": "COMPONENT",
+        "elementHint": "<div role='tablist' aria-orientation='horizontal'>",
+        "geometry": { "width": 234, "height": 32 },
+        "fills": [{ "type": "SOLID", "color": "#f5f5f5", "boundVariable": "{color.base.muted}" }],
+        "layout": {
+          "mode": "HORIZONTAL",
+          "paddingTop": 3, "paddingRight": 3, "paddingBottom": 3, "paddingLeft": 3,
+          "$paddingBindingStatus": "hardcoded",
+          "$paddingNote": "3px raw, no token at this value",
+          "primaryAxisAlignItems": "MIN",
+          "counterAxisAlignItems": "CENTER",
+          "bindings": { "height": "{height.h-8}" }
+        },
+        "cornerRadius": { "topLeft": 10, "boundVariable": { "topLeft": "{border-radius.rounded-lg}" } },
+        "children": [
+          {
+            "type": "FRAME", "name": "Items",
+            "$role": "items (SIBLING-SET slot wrapper)",
+            "layout": { "mode": "HORIZONTAL", "primaryAxisAlignItems": "MIN" },
+            "children": [
+              {
+                "type": "INSTANCE", "name": "TabsTrigger (active)",
+                "$role": "tabsTrigger[0]",
+                "$activeState": true,
+                "props": { "active": true, "showIcon": false, "badge": false, "tabText": "Tabs Text" },
+                "elementHint": "<button role='tab' aria-selected='true'>",
+                "fills": [{ "type": "SOLID", "color": "#fafafa", "boundVariable": "{color.custom.background-dark-input-30}" }],
+                "strokes": [{ "type": "SOLID", "color": "#ffffff00", "boundVariable": "{color.custom.dark-input}" }],
+                "strokeWeight": 1,
+                "effects": [
+                  { "type": "DROP_SHADOW", "offset": { "x": 0, "y": 1 }, "radius": 3, "spread": 0, "color": "#0000001a", "boundVariable": "{shadow.sm.1}" },
+                  { "type": "DROP_SHADOW", "offset": { "x": 0, "y": 1 }, "radius": 2, "spread": -1, "color": "#0000001a", "boundVariable": "{shadow.sm.2}" }
+                ],
+                "$effectsBindingStatus": "fully-bound (composite via {effect.shadow-sm})",
+                "cornerRadius": { "topLeft": 8, "boundVariable": { "topLeft": "{border-radius.rounded-md}" } },
+                "layout": { "paddingX": "{spacing.1-5}", "paddingY": "{spacing.1}", "gap": "{spacing.1-5}" },
+                "children": [
+                  { "type": "TEXT", "$role": "text", "characters": "Tabs Text", "font": { "family": "Open Sans", "weight": 500, "size": 14 }, "fills": [{ "boundVariable": "{color.base.foreground}" }], "boundTextStyle": "{typography.text-sm-leading-normal-medium}" }
+                ]
+              },
+              {
+                "type": "INSTANCE", "name": "TabsTrigger (inactive)",
+                "$role": "tabsTrigger[1]",
+                "$activeState": false,
+                "props": { "active": false, "showIcon": false, "badge": false, "tabText": "Tabs Text" },
+                "elementHint": "<button role='tab' aria-selected='false'>",
+                "fills": [],
+                "strokes": [],
+                "effects": [],
+                "cornerRadius": { "topLeft": 8, "boundVariable": { "topLeft": "{border-radius.rounded-md}" } },
+                "layout": { "paddingX": "{spacing.1-5}", "paddingY": "{spacing.1}", "gap": "{spacing.1-5}" },
+                "children": [
+                  { "type": "TEXT", "$role": "text", "characters": "Tabs Text", "fills": [{ "boundVariable": "{color.base.muted-foreground}" }], "boundTextStyle": "{typography.text-sm-leading-normal-medium}" }
+                ]
+              },
+              {
+                "type": "INSTANCE", "name": "TabsTrigger (inactive)",
+                "$role": "tabsTrigger[2]",
+                "$activeState": false,
+                "$comment": "3rd child, identical to [1]. Confirms sibling-set pattern: multiple non-active siblings."
+              }
+            ]
+          }
+        ],
+        "$sp12Pattern": "Items slot demonstrates SP-12 candidate: INSTANCE_SET with exactly-one-active constraint across N children. Renderer enforces at runtime; bundle preserves the SOURCE state (1 active + 2 inactive in this default rendering)."
+      }
+    }
+  ],
+
+  "$verificationCandidate": {
+    "expectations": [
+      {
+        "cell": "variant=Default,orientation=Default",
+        "expectCSS": [
+          "container: background #f5f5f5, height 32px, padding 3px, border-radius 10px",
+          "active trigger: bg #fafafa, transparent 1px border, shadow-sm (2-layer), text #0a0a0a",
+          "inactive triggers: no bg/border/shadow, text #737373",
+          "all triggers: border-radius 8px, padding 4px 6px, text-sm medium"
+        ],
+        "expectStructure": "<div role='tablist'><div class='items'><button role='tab' aria-selected='true'>Tabs Text</button><button role='tab' aria-selected='false'>Tabs Text</button><button role='tab' aria-selected='false'>Tabs Text</button></div></div>"
+      }
+    ]
+  }
+}
