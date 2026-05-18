@@ -1,0 +1,72 @@
+{
+  "$schema": "../../BUNDLE_SPEC.md#section-3",
+  "bundleVersion": "0.3.0",
+  "bundleId": "apollo-v2-field-bundle-poc",
+  "bundleStatus": "proof-of-concept",
+  "bundleScope": "single-component (Field molecule) — first molecule PoC, partial cell coverage",
+  "system": { "name": "Apollo v2 (SA)", "owner": "lsanchez-g2" },
+
+  "source": {
+    "type": "figma",
+    "fileKey": "3401ZFUHoboOwA6GGjAEsq",
+    "rootNodeId": "18684:15220",
+    "parentSection": "18748:157933",
+    "extractedBy": "ds-architect@v3",
+    "extractedAt": "2026-05-18T12:00:00Z"
+  },
+
+  "spec": {
+    "name": "BUNDLE_SPEC.md",
+    "version": "0.3.0",
+    "status": "DRAFT — first molecule exposes v0.4.0 spec patch candidates (SP-10 + SP-11)",
+    "patches": ["SP-1", "SP-2", "SP-3", "SP-4", "SP-4-ext", "SP-5", "SP-6", "SP-7", "SP-8 (deep recursion 5+ levels)", "SP-9 (N/A)"]
+  },
+
+  "counts": {
+    "components": 1, "componentClass": "molecule",
+    "variantAxes": 3, "variantCells": 6, "variantCellsEmitted": 2, "variantCellsCoverage": 0.33,
+    "tokens": 25,
+    "icons": 3, "iconsExtracted": 3, "iconsTransitive": 3,
+    "images": 0, "interactions": 0, "screenshots": 0,
+    "compositionDepth": 5,
+    "$comment": "First non-atom PoC. compositionDepth 5+ is the largest in PoC. All 3 icons arrive via transitive nested-instance composition (Field → InputGroup → KbdGroup → Kbd → arrows); Field itself directly uses no icon."
+  },
+
+  "modes": ["light"],
+
+  "checksum": {
+    "algorithm": "sha256",
+    "files": {
+      "data/tokens.json":                                       { "sha256": "a35f6555f3370f721737054a0a46729be746ac66656fd718f05718ba1127f4c1", "bytes": 5875 },
+      "data/components/Field.component.json":                   { "sha256": "a1697eda6648c8551876556cc42f2e54ae6f92df08f60edc1bac6c201acc4c15", "bytes": 10795 },
+      "data/components/Field.variants-samples.json":            { "sha256": "9f0fac948a8bc0f72f2df61b00ef5965f96645bacf1955090cd2b884f7a87d67", "bytes": 3532 },
+      "data/icons/_index.json":                                 { "sha256": "213cd338fd3bcd020b8f6f52588a2a5c8996a87908aee85ca8c8a206fced775b", "bytes": 2022 },
+      "assets/icons/search.svg":                                { "sha256": "991eac3230d7d8a04c3d34b9094a1c1543c741a32dfffa15134736d0e6a96678", "bytes": 352 },
+      "assets/icons/arrow-left.svg":                            { "sha256": "c23be0cea5f9e0df7bf88318b90ec705fdb09efc5d4306f89917ad4808f12c94", "bytes": 343 },
+      "assets/icons/arrow-right.svg":                           { "sha256": "66ba81bd6d1b1bd271f368b185e52e7176b3d8f7a4961d8b22e190649567af11", "bytes": 343 }
+    }
+  },
+
+  "auditFindings": {
+    "F20": { "severity": "MEDIUM", "summary": "Field.dataInvalid=True only shifts label color. Inner InputGroup keeps default styling. Codegen doesn't reveal whether instance-overrides exist." },
+    "F21": { "severity": "LOW", "summary": "Field cells carry #with-label doc-URL fragment typo (same class as Input F12)." },
+    "F22": { "severity": "LOW", "summary": "Responsive orientation lacks Description Placement = Under Label." }
+  },
+
+  "v0_4_0_candidates": {
+    "SP-10": "variant-override propagation chain (Field.dataInvalid → InputGroup.state). MEDIUM.",
+    "SP-11": "nested-instance variant remapping (parent + child axis name divergence). LOW."
+  },
+
+  "knownGaps": [
+    { "id": "GAP-cells-4", "description": "4 of 6 cells pending serialization" },
+    { "id": "GAP-F20-propagation", "description": "Need use_figma plugin walk to confirm whether dataInvalid propagates as instance override" },
+    { "id": "GAP-responsive-cell", "description": "Responsive cell (18707:231727) not yet walked in full" }
+  ],
+
+  "extensions": {
+    "loadOrder": ["SKILL.md", "MANIFEST.json", "references/", "data/", "assets/"],
+    "companionBundles": ["../poc-button", "../poc-switch", "../poc-input", "../poc-checkbox", "../poc-avatar"],
+    "$note": "Field composes the Input atom — when consumers want to swap in a real input via inputType prop, reference the Input bundle's variant cells."
+  }
+}

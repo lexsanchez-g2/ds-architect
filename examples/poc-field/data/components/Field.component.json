@@ -1,0 +1,157 @@
+{
+  "$schema": "../../../../BUNDLE_SPEC.md#section-6.2",
+  "$bundleSchemaVersion": "0.3.0",
+
+  "id": "field",
+  "name": "Field",
+  "level": "molecule",
+  "$molecule": "FIRST non-atom PoC. Demonstrates deep composition (5+ levels) and INSTANCE_SWAP exposedProp at molecule level.",
+  "figmaComponentSetId": "18684:15220",
+  "figmaParentSection": "18748:157933",
+  "figmaFileKey": "3401ZFUHoboOwA6GGjAEsq",
+  "description": "Form-field molecule. Wraps an input mechanism (default: InputGroup, swappable via inputType prop) with label, helper/description, and optional link slot. Maps to shadcn/ui Input-with-Label pattern.",
+  "documentationLinks": ["https://ui.shadcn.com/docs/components/input"],
+
+  "variantProperties": {
+    "orientation":          { "type": "VARIANT", "values": ["Vertical", "Responsive"] },
+    "dataInvalid":          { "type": "VARIANT", "values": ["False", "True"] },
+    "descriptionPlacement": { "type": "VARIANT", "values": ["Under Input", "Under Label"] }
+  },
+  "variantConstraints": [
+    {
+      "when": { "orientation": "Responsive" },
+      "allowedValues": { "descriptionPlacement": ["Under Input"] },
+      "reason": "Responsive layout doesn't support Description Placement = Under Label. Cell count: 6 not 8."
+    }
+  ],
+  "totalVariantCells": 6,
+
+  "defaultVariant": { "orientation": "Vertical", "dataInvalid": "False", "descriptionPlacement": "Under Input" },
+
+  "exposedProps": [
+    { "name": "label",            "type": "BOOLEAN",        "default": true,                              "description": "Reveal label slot." },
+    { "name": "labelText",        "type": "TEXT",           "default": "Label",                          "description": "Label content." },
+    { "name": "description",      "type": "BOOLEAN",        "default": true,                              "description": "Reveal description slot." },
+    { "name": "descriptionText",  "type": "TEXT",           "default": "This is an input description.",  "description": "Description / helper content." },
+    { "name": "link",             "type": "BOOLEAN",        "default": false,                             "description": "Reveal link slot (top-right of label row)." },
+    { "name": "linkText",         "type": "TEXT",           "default": "Forgot your password?",          "description": "Link content." },
+    {
+      "name": "inputType",
+      "type": "INSTANCE_SWAP",
+      "default": null,
+      "$defaultFallback": "InputGroup (Type=Input, State=Default with addons)",
+      "preferredValues": ["Input/*", "InputGroup/*", "TextArea/*", "Select/*"],
+      "description": "Input mechanism to embed. NULL renders the default InputGroup. First PoC component to use INSTANCE_SWAP at molecule level — consumers can swap in any compatible input atom or molecule."
+    }
+  ],
+
+  "slots": [
+    { "name": "label",       "type": "TEXT",          "exposedBy": "label",       "typography": "{typography.text-sm-leading-normal-medium}", "fill": { "Default": "{color.base.foreground}", "Invalid": "{color.base.destructive}" } },
+    { "name": "input",       "type": "INSTANCE_SWAP", "exposedBy": "inputType",   "$role": "Default: nested InputGroup (sub-molecule). Consumers swap via inputType prop." },
+    { "name": "description", "type": "TEXT",          "exposedBy": "description", "typography": "{typography.text-sm-leading-normal-normal}", "fill": "{color.base.muted-foreground}" },
+    { "name": "link",        "type": "TEXT",          "exposedBy": "link",        "typography": "{typography.text-sm-leading-normal-normal}", "fill": "{color.base.foreground}", "$position": "absolute top-0 right-0" }
+  ],
+
+  "layout": {
+    "container": {
+      "mode": "VERTICAL",
+      "gap": "{spacing.2}",
+      "primaryAxisAlignItems": "MIN",
+      "counterAxisAlignItems": "MIN",
+      "primaryAxisSizingMode": "AUTO",
+      "counterAxisSizingMode": "FIXED",
+      "width": "433px (hardcoded raw)",
+      "$widthBindingStatus": "hardcoded"
+    },
+    "responsiveOrientation": {
+      "$comment": "Orientation=Responsive switches to HORIZONTAL with label + input on same row. Walk-cell pending. Height drops 100 → 46.",
+      "$tbdStep3": "Responsive cell 18707:231727 not yet walked in full."
+    }
+  },
+
+  "bindings": {
+    "label-fill": {
+      "$axisDependency": "dataInvalid",
+      "False": "{color.base.foreground}",
+      "True":  "{color.base.destructive}",
+      "$confirmed": "Walked 18684:15221 (False) + 18692:40259 (True). Only label color shifts on Invalid."
+    },
+    "description-fill": {
+      "$axisDependency": "dataInvalid",
+      "False": "{color.base.muted-foreground}",
+      "True":  "{color.base.muted-foreground}",
+      "$invalidNote": "Description does NOT shift to destructive on Invalid. Confirmed via cell 18692:40259.",
+      "$auditFinding": "F20 candidate: Apollo v2 may want description to shift to destructive on Invalid (parallel to standard form-field error pattern). Source-DS audit."
+    },
+    "input-state": {
+      "$axisDependency": "dataInvalid",
+      "$comment": "Nested InputGroup's state is NOT obviously propagated from Field's dataInvalid axis. Codegen output for Invalid cell shows InputGroup with default border/colors.",
+      "$auditFindingF20": "Field's dataInvalid=True visually changes only the label (red). The nested InputGroup keeps Default border + colors. EITHER Apollo intended only label-level invalidness signal (incomplete) OR the Invalid cell should pass `state=Invalid` to the InputGroup as an instance override (Figma feature). Codegen doesn't reveal the override; needs use_figma plugin inspection.",
+      "$severity": "MEDIUM"
+    }
+  },
+
+  "composition": {
+    "uses": [
+      { "name": "InputGroup",        "ref": "Apollo v2 InputGroup (node 18672:226415)", "$role": "default input mechanism — wraps Input atom with optional inline addons (Lucide Search + KbdGroup ⌘F)" },
+      { "name": "Lucide / Search",   "ref": "Lucide Icons / Search (5197:3296)",        "$transitive": true, "$role": "Default left-addon icon inside InputGroup" },
+      { "name": "KbdGroup",          "ref": "Apollo v2 KbdGroup (18665:995)",           "$transitive": true, "$role": "Right-addon keyboard shortcut indicator" },
+      { "name": "Kbd",               "ref": "Apollo v2 Kbd (18665:781)",                "$transitive": true, "$role": "Single key chip inside KbdGroup" },
+      { "name": "Lucide / ArrowLeft", "ref": "Lucide Icons / ArrowLeft (5197:209)",     "$transitive": true, "$conditional": "Optional Kbd leading icon" },
+      { "name": "Lucide / ArrowRight","ref": "Lucide Icons / ArrowRight (5197:217)",    "$transitive": true, "$conditional": "Optional Kbd trailing icon" }
+    ],
+    "$depth": "5+ levels — Field → InputGroup → AddonInline → KbdGroup → Kbd → Lucide-Arrow. Deepest PoC composition.",
+    "$sp8Note": "SP-8 nested-instance-token unioning: Field's token surface is the UNION of Field-level + InputGroup + AddonInline + KbdGroup + Kbd tokens. Bundle's tokens.json carries 25 tokens with most contributed by nested instances."
+  },
+
+  "a11y": {
+    "role": "group (form-field wrapper); inner input retains its own role",
+    "labelAssociation": "<label htmlFor={input.id}> + matching id on input element",
+    "ariaInvalid": { "True": "true (renderer applies to inner input element)", "False": "false" },
+    "ariaDescribedby": "Renderer connects description text id to inner input's aria-describedby — Apollo source doesn't encode this; renderer responsibility.",
+    "$ariaPropagationNote": "F20-related: if Field.dataInvalid=True intends to fully invalidate, renderer must propagate to inner input's aria-invalid + (typically) red border."
+  },
+
+  "codeConnect": {
+    "candidates": [
+      { "framework": "react", "library": "shadcn/ui", "url": "https://ui.shadcn.com/docs/components/input" }
+    ],
+    "quality": {
+      "perVariantUrlVerified": false,
+      "verificationFailures": [
+        { "scope": "all 6 cells", "figmaDocLink": "https://ui.shadcn.com/docs/components/input#with-label", "expectedDocLink": "https://ui.shadcn.com/docs/components/input (no fragment OR a Field-specific anchor)", "severity": "low", "auditFinding": "F21 (NEW): Same #with-label fragment issue as Input (F12). Carries the typo at molecule level. Pattern: Apollo v2 sets `#with-label` as the default Input doc fragment, which is wrong for the bare Input atom AND not quite right for Field either." }
+      ]
+    }
+  },
+
+  "$new_audit_findings_from_step3": {
+    "F20": "NEW (MEDIUM). Field dataInvalid=True only shifts label color to destructive. Inner InputGroup keeps default border + colors. Description stays muted. Either incomplete invalidness signal OR codegen-hidden instance-override (use_figma plugin call needed to confirm).",
+    "F21": "NEW (LOW). Field cells carry the same `#with-label` doc-URL fragment typo as Input (F12).",
+    "F22": "NEW (LOW). Responsive orientation lacks Description Placement = Under Label. Asymmetric matrix encoded via variantConstraints (SP-2)."
+  },
+
+  "$step2_known_gaps": [
+    { "id": "GAP-F1", "field": "Responsive cell full node-tree", "resolution": "Walk 18707:231727 — likely HORIZONTAL layout with label + input on same row" },
+    { "id": "GAP-F2", "field": "F20 propagation truth — does Field's dataInvalid actually update InputGroup state via Figma instance overrides?", "resolution": "use_figma plugin walk of 18692:40259 to inspect override chain" },
+    { "id": "GAP-F3", "field": "Link slot positioning details on Responsive orientation", "resolution": "Walk Responsive cell with link=true" }
+  ],
+
+  "$spec_patches_validated": {
+    "v0.2.0": [
+      "SP-1 — whenVariant filter exercised (descriptionPlacement axis filters which slot order is rendered)",
+      "SP-2 — variantConstraints captured Responsive's missing Description=Under-Label cell",
+      "SP-4 — $bindingStatus: hardcoded fires on Field container width (433px raw)",
+      "SP-6 — codeConnect.quality.verificationFailures populated by F21",
+      "SP-8 — DEEP recursion: nested-instance tokens reach 5+ levels (Field → InputGroup → KbdGroup → Kbd → Lucide). Largest SP-8 surface in PoC."
+    ],
+    "v0.3.0": [
+      "SP-4 extension — semantically-mismatched not observed",
+      "SP-9 — N/A (no animation)"
+    ]
+  },
+
+  "$v0_4_0_candidates": [
+    "SP-10 (candidate, MEDIUM): variant-override propagation chain. Field's dataInvalid axis SHOULD propagate to nested InputGroup's state axis. Spec needs to capture override chains explicitly. Currently invisible in MCP codegen — would need use_figma plugin walk.",
+    "SP-11 (candidate, LOW): nested-instance variant remapping. When a parent component's variant axis names DIFFER from a child's (Field uses `dataInvalid`, Input uses `state`), the bundle needs an explicit mapping declaration."
+  ]
+}

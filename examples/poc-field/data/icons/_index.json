@@ -1,0 +1,15 @@
+{
+  "$schema": "../../../../BUNDLE_SPEC.md#section-7.1",
+  "$bundleSchemaVersion": "0.3.0",
+  "$metadata": {
+    "source": { "fileKey": "3401ZFUHoboOwA6GGjAEsq", "scope": "Field molecule + transitive nested-instance icons (SP-8)" },
+    "iconSet": { "name": "Lucide Icons", "version": "lucide-static@1.16.0", "license": "ISC" },
+    "$transitiveNote": "All 3 icons here arrive via NESTED COMPOSITION (Field → InputGroup → KbdGroup → Kbd). Field's own slots do not directly reference an icon. SP-8 deep-recursion validation."
+  },
+  "icons": [
+    { "id": "icon-search",      "name": "icon/search",      "semantic": "search",      "svg": "assets/icons/search.svg",      "viewBox": "0 0 24 24", "license": "ISC", "monochrome": true, "renderColor": "currentColor", "figma": { "parentNodeId": "5197:3296", "componentName": "Lucide Icon / Search" },     "usedBy": [{ "component": "Field", "$transitive": true, "$via": "InputGroup.addon1InlineStart", "$role": "Left-addon icon in default InputGroup" }] },
+    { "id": "icon-arrow-left",  "name": "icon/arrow-left",  "semantic": "arrow-left",  "svg": "assets/icons/arrow-left.svg",  "viewBox": "0 0 24 24", "license": "ISC", "monochrome": true, "renderColor": "currentColor", "figma": { "parentNodeId": "5197:209" },  "usedBy": [{ "component": "Field", "$transitive": true, "$via": "Kbd.showLeftIcon (optional)", "$role": "Optional leading-icon inside Kbd chip" }] },
+    { "id": "icon-arrow-right", "name": "icon/arrow-right", "semantic": "arrow-right", "svg": "assets/icons/arrow-right.svg", "viewBox": "0 0 24 24", "license": "ISC", "monochrome": true, "renderColor": "currentColor", "$note": "Same icon used by Button.rightIcon slot — content-hash matches.", "figma": { "parentNodeId": "5197:217" }, "usedBy": [{ "component": "Field", "$transitive": true, "$via": "Kbd.showRightIcon (optional)" }] }
+  ],
+  "$coverage": { "iconsUsedByField": 3, "iconsExtracted": 3, "extractionCompleteness": 1.0, "$comment": "All 3 icons downloaded for bundle self-containment." }
+}
