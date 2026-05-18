@@ -54,13 +54,39 @@ Queue entry shape:
 }
 ```
 
+## Stage A½ — `resolve-variant-ids.js`
+
+Optional but recommended. Fills in `figmaNodeId` on every pending queue entry so Stage B doesn't have to map variant keys → Figma nodes by hand.
+
+Workflow:
+
+```bash
+# 1. Fetch the component-set tree from Figma REST (one curl per bundle):
+curl -H "X-Figma-Token: $FIGMA_PAT" \
+  "https://api.figma.com/v1/files/<fileKey>/nodes?ids=<rootNodeId>" \
+  > /tmp/component-set.json
+
+# 2. Resolve. No network from the script — feed it the curl output.
+node tooling/extract-node/resolve-variant-ids.js \
+  --bundle examples/poc-button \
+  --component-set /tmp/component-set.json
+```
+
+How it works:
+- Walks the JSON tree (handles `nodes.<id>.document` REST shape + raw `document` + bare node).
+- For every `COMPONENT` child whose `name` contains `=`, normalises whitespace and sorts the key/value pairs.
+- Looks up each pending queue entry's canonicalised key in the resulting map, writes the matched `id` into `entry.figmaNodeId` (and `entry.slot.figmaNodeId`).
+- Reports unresolved entries + Figma children with no queue match (typically already-emitted cells).
+
+`--dry-run` prints the resolution plan without rewriting the queue.
+
 ## Stage B — Walk cells in Figma/MCP
 
 **Not in this scaffold.** Runs in a Claude/MCP session post-OOO.
 
 Workflow:
-1. Open `extract-queue.json` for one bundle.
-2. For each pending entry: use `mcp__figma__get_design_context` (or `use_figma`) against `source.fileKey` + the cell's actual variant nodeId resolved from `source.rootNodeId`.
+1. Open `extract-queue.json` for one bundle. Every pending entry now carries `figmaNodeId` (if Stage A½ ran).
+2. For each pending entry: use `mcp__figma__get_design_context` (or `use_figma`) against `source.fileKey` + `entry.figmaNodeId`.
 3. Populate the BUNDLE_SPEC §6.4 node tree.
 4. Save as `<queue-dir>/cells/<URI-encoded-key>.json` with shape:
 
@@ -114,8 +140,8 @@ Sidebar coverage bars and per-bundle stat tiles reflect the new emitted count.
 
 ## Limitations / future work
 
-- **No live Figma access from this scaffold.** Walking is MCP-dependent.
-- **Variant nodeId resolution is the missing piece.** Component-set children in Figma carry properties on the node name (`variant=Default,state=Default,size=xs`). A Plugin-API walker could enumerate `componentSet.children` and match by `variantProperties` to grab nodeIds directly. Hook for `extract-node/resolve-variant-ids.js` — not built yet.
+- **No live Figma access from this scaffold.** Walking is MCP-dependent; the REST step in Stage A½ is a one-line `curl` you run yourself.
+- **Variant nodeId resolution now lives in `resolve-variant-ids.js`** (Stage A½). Plugin-API alternative — enumerating `componentSet.children` directly from inside Figma — is still on the table for a v2 of this tool but not required.
 - **Sample bundles already have `.variants-samples.json`** as their emitted state. Merger respects that naming via prefer-`.variants.json` heuristic; produces `.variants.json` going forward. Samples file remains untouched for history.
 - **Token resolution** is not part of this scaffold — Stage B is expected to fill in `boundVariable` refs as the walker encounters them. `verification/schema/binding-resolver.py` validates them post-merge.
 
@@ -123,7 +149,8 @@ Sidebar coverage bars and per-bundle stat tiles reflect the new emitted count.
 
 ```
 tooling/extract-node/
-├── expand-matrix.js     # Stage A: matrix expansion
-├── merge-variants.js    # Stage C: per-cell merge + MANIFEST sync
-└── README.md            # this file
+├── expand-matrix.js        # Stage A:  matrix expansion
+├── resolve-variant-ids.js  # Stage A½: match queue cells → Figma nodeIds
+├── merge-variants.js       # Stage C:  per-cell merge + MANIFEST sync
+└── README.md               # this file
 ```
