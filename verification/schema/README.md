@@ -1,6 +1,16 @@
-# verification/schema — Bundle JSON Schemas
+# verification/schema — Bundle JSON Schemas + Verifiers
 
-JSON Schema (draft 2020-12) files validating every emitted bundle artifact against `BUNDLE_SPEC.md`. Run them in CI to catch bundle drift before merge.
+JSON Schema (draft 2020-12) files validating every emitted bundle artifact against `BUNDLE_SPEC.md`, plus three Python verifiers covering structure, integrity, and semantics. Run them in CI to catch bundle drift before merge.
+
+## Verifiers
+
+| Script | What it checks | PoC status |
+|---|---|---|
+| [`validate.py`](validate.py) | Structural — every file conforms to its JSON Schema | 40/40 pass |
+| [`checksum-verify.py`](checksum-verify.py) | Integrity — MANIFEST `checksum.files` SHA-256 + byte count match files on disk | 50/50 pass |
+| [`binding-resolver.py`](binding-resolver.py) | Semantic — every `{token.path}` reference resolves to a leaf in `data/tokens.json` | 631/634 resolve (3 known bundle-side gaps — see `PHASE-D-CLOSEOUT.md §3`) |
+
+Run all three in CI for full coverage. `ci-example.yml` runs only `validate.py` today — adding the other two is a one-line append.
 
 ## Schemas
 

@@ -54,6 +54,16 @@ Strict additive: no field renames, no section renumbering across v0.2.0 → v0.4
 
 F2, F4–F11, F13, F15–F25, F27, F28, F30 — cosmetic, hover-state coverage gaps, container-width hardcoding, shortcut-rendering inconsistencies (Kbd vs Unicode), etc. Full text per bundle's `MANIFEST.auditFindings` and `examples/poc-button/audit-findings-for-source.md`.
 
+### Bundle-side semantic gaps (surfaced by binding-resolver, 2026-05-18)
+
+| Bundle | Unresolved ref | Location | Disposition |
+|---|---|---|---|
+| poc-sonner | `{typography.text-sm-leading-normal-normal}` | `Sonner.component.json::slots.2.typography` | Extractor missed the "normal" weight variant; tokens.json only carries "medium". Add token + re-emit on next Sonner pass. |
+| poc-tabs | `{shadow.sm.1}` | `Tabs.variants-samples.json::variants.0.node.children.0.children.0.effects.0.boundVariable` | Composite shadow group; tokens.json has decomposed primitives (`shadow.sm.1.offset-x`, etc.) but no composite leaf at `shadow.sm.1`. Either emit composite leaf or change refs to primitives. |
+| poc-tabs | `{shadow.sm.2}` | same component, effects.1 | Same as above. |
+
+All three are **bundle emission gaps**, not source-DS audit findings. Bundles otherwise lossless and structurally valid. Re-emit on next Sonner / Tabs pass.
+
 ### Cross-bundle systemic patterns
 
 1. **Disabled treatment** — 4 strategies across atoms (opacity vs muted-fg vs greyscale vs custom token). Pick one, propagate.

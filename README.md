@@ -9,6 +9,8 @@
 **A Claude Code skill that thinks like a Design Systems Lead, acts like a Senior Product Designer, and executes like a Frontend Architect.**
 
 > v2.0 — now with 3 modes: Hardcore (full system), Soft (single component), and Spec (custom requirements).
+>
+> v3.0 — lossless serialization layer for Claude Design round-trip (Phase A/B/C/D **CLOSED** 2026-05-18; Phase E queued for Sep 2026). See [v3 status](#v3-lossless-extraction).
 
 [![Claude Code](https://img.shields.io/badge/Claude_Code-Skill-8B5CF6?style=flat-square&logo=anthropic&logoColor=white)](https://claude.ai/code)
 [![Figma MCP](https://img.shields.io/badge/Figma_MCP-Required-F24E1E?style=flat-square&logo=figma&logoColor=white)](https://www.figma.com)
@@ -417,6 +419,88 @@ cp ds-architect/SKILL.md ~/.claude/skills/design-system-architect/SKILL.md
 ```
 
 Then in Claude Code, run `/reload-plugins` — the skill appears automatically in the available skills list.
+
+---
+
+## v3 — Lossless Extraction
+
+> Status (2026-05-18): Phases A/B/C/D **CLOSED**; Phase E **QUEUED** for Sep 1, 2026.
+
+v3 extends the v2 audit skill with a **lossless serialization layer**. Where v2 produces a thin export (tokens, types, stories), v3 emits a **complete bundle** — every component spec, every variant cell as a full node tree, every token with W3C alias chains preserved, every icon/image/font, plus composition graph and verification artifacts — designed for **round-trip into Claude Design** with ≥99% semantic and ≥97% pixel fidelity.
+
+**North star:** 100 components in Figma = 100 components in Claude Design. Every variant, every binding, every state identical.
+
+### Where to start
+
+| Doc | Purpose |
+|---|---|
+| [`BUNDLE_SPEC.md`](BUNDLE_SPEC.md) | Lossless bundle schema contract (v0.4.0 DRAFT) |
+| [`v3-EXTRACTION-PLAN.md`](v3-EXTRACTION-PLAN.md) | Phased roadmap A → I |
+| [`PHASE-D-CLOSEOUT.md`](PHASE-D-CLOSEOUT.md) | Receipt for Phases A/B/C/D (10 bundles, 436 cells) |
+| [`PHASE-E-PLAN.md`](PHASE-E-PLAN.md) | Organism batch plan (Sep 1 – Oct 26, 2026) |
+| [`AUDIT-APOLLO-V2.md`](AUDIT-APOLLO-V2.md) | Consolidated F1–F31 source-DS audit (hand-off doc) |
+| [`PoC-PLAN.md`](PoC-PLAN.md) | Button validation roadmap (the original PoC) |
+
+### What's shipped
+
+- **10 PoC bundles** under [`examples/poc-*`](examples/) — 5 atoms (button, switch, input, checkbox, avatar) + 5 molecules (field, tabs, sonner, item, menuitem). Total 436 variant cells, 12 icons, 1 image.
+- **`BUNDLE_SPEC.md`** v0.4.0 DRAFT — v0.2.0 LOCKED for atom phase (4 smoke tests on Claude Design, 31 distinct render checks, 100% conformant). v0.3.0 + v0.4.0 patches additive; lock pending re-test post-OOO.
+- **14 JSON schemas** at [`verification/schema/`](verification/schema/) — every emitted bundle artifact validated. 40/40 PoC files pass.
+- **3 verifiers**:
+  - `verification/schema/validate.py` — structural schema validation
+  - `verification/schema/checksum-verify.py` — MANIFEST checksum integrity (50/50 PoC files match)
+  - `verification/schema/binding-resolver.py` — semantic check: every `{token.path}` resolves to an existing leaf
+- **GitHub Actions workflow** at [`verification/schema/ci-example.yml`](verification/schema/ci-example.yml) — drop into `.github/workflows/` to gate every push.
+
+### How the bundle layout works
+
+```
+examples/poc-<component>/
+├── SKILL.md                          # Claude Skill wrapper
+├── MANIFEST.json                     # bundle header + checksums + audit findings
+├── data/
+│   ├── tokens.json                   # W3C tokens, alias chains preserved, mode-aware
+│   ├── components/
+│   │   ├── <Component>.component.json   # API + bindings map
+│   │   └── <Component>.variants.json    # every variant cell as full node tree
+│   ├── icons/_index.json
+│   ├── images/_index.json
+│   ├── graph.json                    # composition + token graph
+│   └── prototype.json                # interactions + animations
+├── assets/
+│   ├── icons/<name>.svg
+│   ├── images/<sha256>.<ext>
+│   └── screenshots/<Component>/<variant-key>@{1x,2x}.png
+└── verification/
+    ├── coverage.json
+    ├── pixel-diff.json
+    └── binding-diff.json
+```
+
+The Claude Design renderer auto-loads `SKILL.md` (progressive disclosure per [Garima Agarwal's "Design Systems in 2026" Part 3](https://www.linkedin.com/in/garimaagarwal/)), then pulls bundle data on demand.
+
+### Patches (v0.2.0 → v0.4.0)
+
+| # | Version | Patch |
+|---|---|---|
+| SP-1 | v0.2.0 | `whenVariant` / `whenSize` / `whenState` conditional exposedProps |
+| SP-3 | v0.2.0 | `textDecoration` decoupled from typography token |
+| SP-4 | v0.2.0 + ext v0.3.0 | `$bindingStatus` enum: fully-bound \| partial \| hardcoded \| semantically-mismatched |
+| SP-5 | v0.2.0 | Per-(variant,state) `swapDefaults` on slot defaults |
+| SP-6 | v0.2.0 | `perVariantUrl` doc-link verification gate |
+| SP-7 | v0.2.0 | Per-side asymmetric padding + `clipsContent` mandatory on containers |
+| SP-8 | v0.2.0 | Nested-instance token union (walks children, accumulates `boundVariable` refs) |
+| SP-9 | v0.3.0 | `motionReduce` policy: slow \| freeze \| skip \| as-is |
+| SP-10 | v0.4.0 | `variantPropagation` chains (parent axis → nested INSTANCE axis) |
+| SP-11 | v0.4.0 | Axis-name remap along propagation chain |
+| SP-12 | v0.4.0 | `INSTANCE_SET` sibling-set slots with cross-sibling constraints |
+| SP-13 | v0.4.0 | `$crossBundle` slot defaults (component references another bundle's variant) |
+
+### Constraints
+
+- Author OOO May 26 → Sep 1, 2026. Pre-OOO work pushed to `origin/main`; Phase E (organisms) resumes Sep 1.
+- v3 ties to Figma Plugin API surface. Non-Figma sources (Penpot, Sketch) not supported.
+- Pixel fidelity caps ~97–99% due to renderer gaps (font anti-aliasing, continuous corner smoothing). Documented in `BUNDLE_SPEC.md §13`.
 
 ---
 
