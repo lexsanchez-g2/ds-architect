@@ -330,6 +330,41 @@ def cell_visual_html(node: dict, tokens: dict[str, dict]) -> str:
     return f'<span class="cell-visual-element" style="{esc(style)}">{esc(label) or "&nbsp;"}</span>'
 
 
+def format_variant_key(key: str) -> str:
+    """Render variant key as key=value chips for cell title."""
+    parts = []
+    for i, pair in enumerate(key.split(",")):
+        if "=" in pair:
+            k, v = pair.split("=", 1)
+            parts.append(f'<span class="k">{esc(k)}</span><span class="sep">=</span><span class="v">{esc(v)}</span>')
+        else:
+            parts.append(f'<span class="v">{esc(pair)}</span>')
+    return '<span class="sep"> · </span>'.join(parts)
+
+
+def tokenize_css(line: str) -> str:
+    """Lightweight CSS syntax coloring for the resolved-CSS pane."""
+    parts = line.split("/*", 1)
+    body = parts[0]
+    comment = f"/*{parts[1]}" if len(parts) > 1 else ""
+    body_html = esc(body)
+    # numbers + units
+    body_html = re.sub(r"(\b\d+(?:\.\d+)?(?:px|%|em|rem|s|ms|deg)?)", r'<span class="tok-number">\1</span>', body_html)
+    # strings
+    body_html = re.sub(r"(&quot;[^&]*?&quot;)", r'<span class="tok-string">\1</span>', body_html)
+    # CSS property names
+    body_html = re.sub(r"^(\s*)([\w-]+)(:)", r'\1<span class="tok-prop">\2</span>\3', body_html)
+    # selectors / keywords
+    body_html = re.sub(r"(\.[\w-]+|none|inline-flex|center|hidden|inherit|transparent|infinite|linear)\b", r'<span class="tok-keyword">\1</span>', body_html)
+    out = body_html
+    if comment:
+        comment_html = esc(comment)
+        # color {token.paths} green inside comments
+        comment_html = re.sub(r"\{([^}]+)\}", r'<span class="tok-token">{\1}</span>', comment_html)
+        out += f'<span class="tok-comment">{comment_html}</span>'
+    return out
+
+
 def cell_css_html(node: dict, variant_key: str, component_name: str) -> str:
     """Emit a code block showing the resolved CSS for the cell."""
     color, color_tok, _ = get_fill_color(node)
@@ -374,7 +409,7 @@ def cell_css_html(node: dict, variant_key: str, component_name: str) -> str:
         lines.append(f"  font-size: {font.get('size', 14)}px;")
         lines.append(f"  font-weight: {font.get('weight', 400)};")
     lines.append("}")
-    return "<pre><code>" + "\n".join(esc(l) for l in lines) + "</code></pre>"
+    return "<pre><code>" + "\n".join(tokenize_css(l) for l in lines) + "</code></pre>"
 
 
 def audit_signals_for_cell(bundle: Bundle, variant: dict) -> list[dict]:
@@ -424,24 +459,25 @@ def variant_cell_html(bundle: Bundle, variant: dict) -> str:
     parts.append(f'<section class="cell" id="{esc(bundle.bundle_id)}--{esc(key)}">')
 
     parts.append('<header class="cell-head">')
-    parts.append(f'<div class="cell-eyebrow">● APOLLO V2 · {esc(bundle.component_name.upper())} · CELL RENDER</div>')
-    parts.append(f'<h2 class="cell-title">{esc(key)}</h2>')
+    parts.append(f'<div class="cell-eyebrow">{esc(bundle.component_name.upper())} · CELL RENDER · LIGHT MODE</div>')
+    parts.append(f'<h2 class="cell-title">{format_variant_key(key)}</h2>')
     desc = bundle.component_spec.get("description", "")
     if desc:
         parts.append(f'<p class="cell-blurb">{esc(desc)}</p>')
     parts.append("</header>")
 
     parts.append('<div class="cell-panes">')
-    parts.append('<div class="pane pane-visual"><div class="pane-label">VISUAL</div>')
+    parts.append('<div class="pane pane-visual"><div class="pane-label"><span>VISUAL</span><span class="mono" style="color:var(--ink-4)">1:1</span></div>')
     parts.append(f'<div class="visual-stage">{cell_visual_html(node, bundle.tokens)}</div>')
-    parts.append(f'<div class="pane-foot">{esc(key)}</div>')
+    geom = node.get("geometry") or {}
+    parts.append(f'<div class="pane-foot"><span>state = default · clipsContent = {str(node.get("clipsContent", False)).lower()}</span><span>{geom.get("width", "—")} × {geom.get("height", "—")}</span></div>')
     parts.append("</div>")
 
-    parts.append('<div class="pane pane-css"><div class="pane-label">RESOLVED CSS</div>')
+    parts.append('<div class="pane pane-css"><div class="pane-label"><span>RESOLVED CSS</span><span class="mono" style="color:var(--ink-4)">css</span></div>')
     parts.append(cell_css_html(node, key, bundle.component_name))
     parts.append("</div></div>")
 
-    parts.append('<table class="prop-table"><thead><tr><th>PROPERTY</th><th>TOKEN REFERENCE</th><th>RESOLVED VALUE</th></tr></thead><tbody>')
+    parts.append('<div class="prop-table-wrap"><table class="prop-table"><thead><tr><th>Property</th><th>Token reference</th><th>Resolved value</th></tr></thead><tbody>')
     for row in rows:
         badges = []
         if row.badge:
@@ -450,12 +486,16 @@ def variant_cell_html(bundle: Bundle, variant: dict) -> str:
             badges.append('<span class="badge badge-warn">hardcoded</span>')
         elif row.binding_status == "semantically-mismatched":
             badges.append('<span class="badge badge-warn">semantically-mismatched</span>')
-        value_cell = f'{esc(row.resolved_value)} {"".join(badges)}'
-        parts.append(f'<tr><td>{esc(row.property)}</td><td>{esc(row.token_ref)}</td><td>{value_cell}</td></tr>')
-    parts.append("</tbody></table>")
+
+        value_html = esc(row.resolved_value)
+        if re.match(r"^#[0-9a-fA-F]{6,8}$", row.resolved_value.strip()):
+            value_html = f'<span class="color-swatch" style="background:{esc(row.resolved_value)}"></span>{esc(row.resolved_value)}'
+        token_html = esc(row.token_ref) if row.token_ref == "—" else f'<span style="color:var(--accent)">{esc(row.token_ref)}</span>'
+        parts.append(f'<tr><td class="col-prop">{esc(row.property)}</td><td class="col-tok">{token_html}</td><td class="col-val">{value_html} {"".join(badges)}</td></tr>')
+    parts.append("</tbody></table></div>")
 
     if signals:
-        parts.append(f'<aside class="audit-signals"><div class="audit-head">AUDIT SIGNALS <span class="audit-count">{len(signals)}</span></div>')
+        parts.append(f'<aside class="audit-signals"><div class="audit-head"><span class="audit-head-label">Audit signals</span><span class="audit-count">{len(signals)}</span></div>')
         for sig in signals:
             sev = sig["severity"]
             parts.append(
@@ -469,121 +509,295 @@ def variant_cell_html(bundle: Bundle, variant: dict) -> str:
 
 
 def bundle_section_html(bundle: Bundle) -> str:
-    parts = [f'<div class="bundle-section" id="{esc(bundle.bundle_id)}">']
-    parts.append(f'<h1 class="bundle-title">{esc(bundle.component_name)} <span class="bundle-class">· {esc(bundle.component_class)}</span></h1>')
-    parts.append(f'<p class="bundle-meta">{esc(bundle.bundle_id)} · {len(bundle.variants)}/{bundle.variants_declared} cells emitted · {len(bundle.tokens)} tokens</p>')
+    klass_label = CLASS_LABEL.get(bundle.component_class, bundle.component_class.title())
+    parts = [f'<section class="bundle-section" id="{esc(bundle.bundle_id)}">']
+    parts.append('<header class="bundle-head">')
+    parts.append(f'<div class="bundle-eyebrow">Apollo v2 · {esc(klass_label)}</div>')
+    parts.append(f'<h1 class="bundle-title">{esc(bundle.component_name)}</h1>')
+    parts.append(f'<div class="bundle-id">{esc(bundle.bundle_id)}</div>')
+    parts.append('<div class="bundle-stats">')
+    parts.append(f'<div class="bundle-stat"><div class="label">Cells</div><div class="value">{len(bundle.variants)} <span style="color:var(--ink-4)">/</span> {bundle.variants_declared or len(bundle.variants)}</div></div>')
+    parts.append(f'<div class="bundle-stat"><div class="label">Tokens</div><div class="value">{len(bundle.tokens)}</div></div>')
+    findings_count = len(bundle.manifest.get("auditFindings") or {})
+    parts.append(f'<div class="bundle-stat"><div class="label">Findings</div><div class="value">{findings_count}</div></div>')
+    parts.append('</div>')
+    parts.append('</header>')
 
     if not bundle.variants:
-        parts.append('<div class="cell cell-stub"><em>No variant cells emitted yet. See bundle MANIFEST for declared matrix.</em></div>')
+        parts.append('<div class="cell cell-stub">No variant cells emitted yet. See bundle MANIFEST for declared matrix.</div>')
     for variant in bundle.variants:
         parts.append(variant_cell_html(bundle, variant))
 
-    parts.append("</div>")
+    parts.append("</section>")
     return "\n".join(parts)
 
 
+CLASS_LABEL = {"atom": "Atom", "molecule": "Molecule", "organism": "Organism", "template": "Template", "pattern": "Pattern"}
+
+
 def sidebar_html(bundles: list[Bundle]) -> str:
-    parts = ['<nav class="sidebar"><div class="brand">DS-Architect · Bundle Report</div>']
-    parts.append('<input type="search" class="sidebar-filter" placeholder="filter… (component or variant)" oninput="filterToc(this.value)">')
+    by_class: dict[str, list[Bundle]] = {}
+    for b in bundles:
+        by_class.setdefault(b.component_class or "atom", []).append(b)
+
+    parts = ['<nav class="sidebar">']
+    parts.append('<div class="brand"><div class="brand-dot"></div><div><div class="brand-title">ds-architect</div><div class="brand-sub">Bundle report</div></div></div>')
+    parts.append('<input type="search" class="sidebar-filter" placeholder="Filter components…" oninput="filterToc(this.value)">')
     parts.append('<ul class="toc">')
-    for bundle in bundles:
-        parts.append(f'<li class="toc-bundle"><a href="#{esc(bundle.bundle_id)}" class="toc-bundle-link">')
-        parts.append(f'<span class="toc-component">{esc(bundle.component_name)}</span>')
-        parts.append(f'<span class="toc-meta">{len(bundle.variants)}/{bundle.variants_declared}</span></a>')
-        if bundle.variants:
-            parts.append('<ul class="toc-cells">')
-            for v in bundle.variants:
-                key = v.get("key", "")
-                short = key.replace("variant=", "").replace("state=", "").replace("size=", "")
-                parts.append(f'<li><a href="#{esc(bundle.bundle_id)}--{esc(key)}">{esc(short)}</a></li>')
-            parts.append("</ul>")
-        parts.append("</li>")
-    parts.append("</ul></nav>")
+    for klass in ("atom", "molecule", "organism", "template", "pattern"):
+        bs = by_class.get(klass) or []
+        if not bs:
+            continue
+        parts.append(f'<li class="toc-section"><div class="toc-section-label">{esc(CLASS_LABEL.get(klass, klass.title()))}</div><ul class="toc-section-list">')
+        for bundle in bs:
+            covered = len(bundle.variants)
+            total = bundle.variants_declared or covered
+            pct = (covered / total) if total else 0
+            parts.append(
+                f'<li class="toc-bundle"><a href="#{esc(bundle.bundle_id)}">'
+                f'<span class="toc-name">{esc(bundle.component_name)}</span>'
+                f'<span class="toc-count">{covered}<span class="toc-count-sep">/</span>{total}</span>'
+                f'<span class="toc-bar"><span class="toc-bar-fill" style="width:{pct * 100:.0f}%"></span></span>'
+                f'</a></li>'
+            )
+        parts.append('</ul></li>')
+    parts.append('</ul></nav>')
     return "\n".join(parts)
 
 
 CSS = """
+:root {
+  --bg: #f7f7f8;
+  --surface: #ffffff;
+  --surface-2: #fafafa;
+  --border: #e5e5e7;
+  --border-2: #efeff1;
+  --ink: #0a0a0a;
+  --ink-2: #3f3f46;
+  --ink-3: #71717a;
+  --ink-4: #a1a1aa;
+  --accent: #5a35c0;
+  --accent-soft: #ede9fe;
+  --warn-bg: #fef3c7;
+  --warn-fg: #92400e;
+  --high-bg: #fee2e2;
+  --high-fg: #991b1b;
+  --low-bg: #dbeafe;
+  --low-fg: #1e40af;
+  --doc-bg: #f4f4f5;
+  --doc-fg: #52525b;
+  --code-bg: #0e0e10;
+  --code-ink: #e4e4e7;
+  --code-comment: #71717a;
+  --code-string: #a5d6ff;
+  --code-keyword: #c084fc;
+  --code-number: #f59e0b;
+  --code-token: #34d399;
+  --shadow-1: 0 1px 2px rgba(15, 15, 20, .04), 0 1px 3px rgba(15, 15, 20, .06);
+  --shadow-2: 0 4px 12px rgba(15, 15, 20, .06), 0 1px 3px rgba(15, 15, 20, .04);
+  --font-ui: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Consolas, monospace;
+}
 * { box-sizing: border-box; }
-body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, sans-serif; color: #0a0a0a; background: #fafafa; }
-code, pre { font-family: ui-monospace, "SF Mono", Consolas, monospace; font-size: 12px; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: var(--font-ui);
+  color: var(--ink);
+  background: var(--bg);
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11', 'ss01';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+code, pre, .mono { font-family: var(--font-mono); font-feature-settings: 'liga' 0, 'calt' 0; }
 a { color: inherit; text-decoration: none; }
-.layout { display: grid; grid-template-columns: 280px 1fr; min-height: 100vh; }
+::selection { background: var(--accent-soft); color: var(--accent); }
 
-.sidebar { position: sticky; top: 0; height: 100vh; overflow-y: auto; padding: 16px 12px; background: #171717; color: #fafafa; }
-.sidebar .brand { font-weight: 600; font-size: 13px; letter-spacing: 0.05em; text-transform: uppercase; opacity: 0.7; margin-bottom: 12px; }
-.sidebar-filter { width: 100%; padding: 6px 10px; margin-bottom: 12px; background: #262626; color: #fafafa; border: 1px solid #404040; border-radius: 6px; font-size: 12px; }
-.sidebar-filter:focus { outline: none; border-color: #5a35c0; }
-ul.toc, ul.toc-cells { list-style: none; padding: 0; margin: 0; }
-.toc-bundle { margin-bottom: 8px; }
-.toc-bundle-link { display: flex; justify-content: space-between; align-items: center; padding: 6px 8px; border-radius: 4px; font-size: 13px; font-weight: 500; }
-.toc-bundle-link:hover { background: #262626; }
-.toc-meta { font-size: 11px; opacity: 0.5; }
-.toc-cells { padding-left: 12px; border-left: 1px solid #404040; margin: 4px 0 4px 8px; }
-.toc-cells li a { display: block; padding: 4px 8px; font-size: 11px; opacity: 0.7; border-radius: 3px; }
-.toc-cells li a:hover { opacity: 1; background: #262626; }
+.layout { display: grid; grid-template-columns: 264px minmax(0, 1fr); min-height: 100vh; }
 
-.main { padding: 32px 40px 80px; max-width: 1100px; }
-.bundle-section { margin-bottom: 64px; }
-.bundle-title { font-size: 28px; font-weight: 700; margin: 0 0 4px; }
-.bundle-class { font-size: 12px; color: #737373; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; }
-.bundle-meta { font-size: 12px; color: #737373; margin: 0 0 24px; font-family: ui-monospace, monospace; }
+/* ===== Sidebar ===== */
+.sidebar {
+  position: sticky; top: 0; align-self: start;
+  height: 100vh; overflow-y: auto;
+  padding: 22px 16px;
+  background: #0a0a0c; color: #e4e4e7;
+  border-right: 1px solid #18181b;
+}
+.brand { display: flex; align-items: center; gap: 10px; padding: 4px 6px 16px; }
+.brand-dot { width: 10px; height: 10px; border-radius: 999px; background: linear-gradient(135deg, #c084fc, #5a35c0); box-shadow: 0 0 14px rgba(192, 132, 252, .6); }
+.brand-title { font-size: 13px; font-weight: 600; letter-spacing: -0.01em; }
+.brand-sub { font-size: 11px; color: #71717a; }
+.sidebar-filter {
+  width: 100%; padding: 8px 12px; margin: 4px 0 18px;
+  background: #18181b; color: #e4e4e7;
+  border: 1px solid #27272a; border-radius: 8px;
+  font-family: var(--font-ui); font-size: 12px;
+  transition: border-color .15s ease, background .15s ease;
+}
+.sidebar-filter::placeholder { color: #52525b; }
+.sidebar-filter:focus { outline: none; border-color: var(--accent); background: #0a0a0c; box-shadow: 0 0 0 3px rgba(90, 53, 192, .25); }
+ul.toc, ul.toc-section-list { list-style: none; padding: 0; margin: 0; }
+.toc-section { margin-bottom: 18px; }
+.toc-section-label {
+  font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+  color: #52525b; padding: 4px 6px; margin-bottom: 4px;
+}
+.toc-bundle a {
+  display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 8px;
+  padding: 8px 10px; border-radius: 7px;
+  font-size: 13px; color: #d4d4d8;
+  transition: background .12s ease, color .12s ease;
+  position: relative;
+}
+.toc-bundle a:hover { background: #18181b; color: #fafafa; }
+.toc-bundle a.is-active { background: rgba(90, 53, 192, .18); color: #fafafa; }
+.toc-bundle a.is-active::before { content: ''; position: absolute; left: 0; top: 8px; bottom: 8px; width: 2px; background: var(--accent); border-radius: 2px; }
+.toc-name { font-weight: 500; letter-spacing: -0.005em; }
+.toc-count { font-family: var(--font-mono); font-size: 11px; color: #71717a; tabular-nums: 1; font-variant-numeric: tabular-nums; }
+.toc-count-sep { color: #3f3f46; padding: 0 1px; }
+.toc-bar { grid-column: 1 / -1; height: 2px; background: #18181b; border-radius: 2px; overflow: hidden; margin-top: 2px; }
+.toc-bar-fill { display: block; height: 100%; background: linear-gradient(90deg, #5a35c0, #c084fc); }
 
-.cell { background: #fff; border: 1px solid #e5e5e5; border-radius: 8px; padding: 24px; margin-bottom: 24px; }
-.cell-stub { color: #737373; }
-.cell-head { margin-bottom: 16px; }
-.cell-eyebrow { font-family: ui-monospace, monospace; font-size: 11px; color: #737373; letter-spacing: 0.05em; }
-.cell-title { font-size: 20px; font-weight: 600; margin: 4px 0 8px; }
-.cell-blurb { font-size: 13px; color: #525252; margin: 0; max-width: 680px; }
+/* ===== Main ===== */
+.main { padding: 48px 56px 120px; max-width: 1100px; min-width: 0; }
+.bundle-section { margin-bottom: 72px; scroll-margin-top: 24px; }
+.bundle-head { padding-bottom: 20px; margin-bottom: 24px; border-bottom: 1px solid var(--border); }
+.bundle-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+.bundle-title {
+  font-size: 36px; font-weight: 600; letter-spacing: -0.02em; margin: 6px 0 6px;
+}
+.bundle-id { font-family: var(--font-mono); font-size: 12px; color: var(--ink-3); }
+.bundle-stats { display: flex; gap: 28px; margin-top: 16px; }
+.bundle-stat { display: flex; flex-direction: column; gap: 2px; }
+.bundle-stat .label { font-size: 10px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-4); }
+.bundle-stat .value { font-family: var(--font-mono); font-size: 14px; color: var(--ink); font-variant-numeric: tabular-nums; }
 
-.cell-panes { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
-.pane { border: 1px solid #e5e5e5; border-radius: 6px; padding: 16px; min-height: 220px; display: flex; flex-direction: column; }
-.pane-label { font-family: ui-monospace, monospace; font-size: 11px; color: #737373; letter-spacing: 0.05em; margin-bottom: 12px; }
-.pane-visual { background: #fff; }
-.pane-css { background: #0a0a0a; color: #fafafa; }
-.pane-css .pane-label { color: #a3a3a3; }
-.pane-css pre { background: transparent; color: inherit; margin: 0; white-space: pre-wrap; word-break: break-word; }
-.visual-stage { flex: 1; display: flex; align-items: center; justify-content: center; background-image: linear-gradient(#fafafa 1px, transparent 1px); background-size: 100% 24px; }
-.pane-foot { font-family: ui-monospace, monospace; font-size: 10px; color: #a3a3a3; text-align: right; margin-top: 8px; }
+/* ===== Cell card ===== */
+.cell {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+  padding: 28px; margin-bottom: 24px;
+  box-shadow: var(--shadow-1);
+  scroll-margin-top: 24px;
+}
+.cell-stub { color: var(--ink-3); padding: 36px; text-align: center; font-style: italic; }
+.cell-head { display: flex; flex-direction: column; gap: 6px; margin-bottom: 20px; }
+.cell-eyebrow { font-family: var(--font-mono); font-size: 11px; color: var(--ink-4); letter-spacing: 0.04em; }
+.cell-title {
+  font-family: var(--font-mono); font-size: 16px; font-weight: 500; color: var(--ink);
+  margin: 0; letter-spacing: -0.005em;
+}
+.cell-title .k { color: var(--ink-3); }
+.cell-title .v { color: var(--ink); font-weight: 600; }
+.cell-title .sep { color: var(--border); padding: 0 6px; }
+.cell-blurb { font-size: 13.5px; line-height: 1.55; color: var(--ink-2); margin: 4px 0 0; max-width: 720px; }
+.cell-blurb code { background: var(--surface-2); padding: 1px 5px; border-radius: 4px; font-size: 12px; border: 1px solid var(--border-2); }
 
-.prop-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-family: ui-monospace, monospace; font-size: 12px; }
-.prop-table th { text-align: left; padding: 8px 12px; background: #fafafa; color: #737373; font-weight: 500; border-bottom: 1px solid #e5e5e5; font-size: 11px; letter-spacing: 0.05em; }
-.prop-table td { padding: 10px 12px; border-bottom: 1px solid #f5f5f5; }
-.prop-table td:first-child { color: #525252; }
-.badge { display: inline-block; padding: 2px 6px; border-radius: 3px; font-size: 10px; margin-left: 6px; }
-.badge-info { background: #e0e7ff; color: #4338ca; }
-.badge-warn { background: #fef3c7; color: #92400e; }
+/* ===== Visual + CSS panes ===== */
+.cell-panes { display: grid; grid-template-columns: 1fr 1.05fr; gap: 14px; margin: 8px 0 18px; }
+.pane { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; min-height: 260px; }
+.pane-label {
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em;
+  color: var(--ink-3); padding: 10px 14px; border-bottom: 1px solid var(--border-2);
+  background: var(--surface-2);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.pane-visual .pane-label { background: var(--surface-2); }
+.visual-stage {
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  background:
+    linear-gradient(transparent 23px, rgba(15,15,20,.04) 24px),
+    linear-gradient(90deg, transparent 23px, rgba(15,15,20,.04) 24px);
+  background-size: 24px 24px;
+  padding: 32px;
+  position: relative;
+}
+.visual-stage::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 40%, rgba(255,255,255,.85) 100%);
+}
+.cell-visual-element { position: relative; z-index: 1; box-shadow: var(--shadow-2); transition: transform .2s ease; }
+.cell-visual-element:hover { transform: scale(1.04); }
+.pane-foot { font-family: var(--font-mono); font-size: 10px; color: var(--ink-4); padding: 8px 14px; border-top: 1px solid var(--border-2); display: flex; justify-content: space-between; background: var(--surface-2); }
 
-.audit-signals { background: #fff7ed; border: 1px solid #fed7aa; border-radius: 6px; padding: 16px; margin-top: 16px; }
-.audit-head { font-family: ui-monospace, monospace; font-size: 11px; color: #9a3412; letter-spacing: 0.05em; margin-bottom: 12px; }
-.audit-count { background: #fed7aa; color: #9a3412; padding: 1px 6px; border-radius: 999px; font-size: 10px; margin-left: 4px; }
-.signal { display: grid; grid-template-columns: 96px 1fr; gap: 12px; padding: 8px 0; border-top: 1px solid #fed7aa; align-items: start; }
+.pane-css { background: var(--code-bg); color: var(--code-ink); }
+.pane-css .pane-label { background: #18181b; border-bottom-color: #27272a; color: #a1a1aa; }
+.pane-css pre { background: transparent; color: inherit; margin: 0; padding: 16px 18px; white-space: pre-wrap; word-break: break-word; font-size: 12.5px; line-height: 1.65; flex: 1; overflow-y: auto; }
+.tok-comment { color: var(--code-comment); font-style: italic; }
+.tok-string { color: var(--code-string); }
+.tok-keyword { color: var(--code-keyword); }
+.tok-number { color: var(--code-number); }
+.tok-token { color: var(--code-token); }
+.tok-prop { color: #93c5fd; }
+
+/* ===== Property table ===== */
+.prop-table-wrap { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin: 18px 0 0; }
+.prop-table { width: 100%; border-collapse: collapse; font-size: 12.5px; font-family: var(--font-mono); }
+.prop-table thead th {
+  text-align: left; padding: 10px 14px; background: var(--surface-2); color: var(--ink-3);
+  font-weight: 500; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;
+  border-bottom: 1px solid var(--border); font-family: var(--font-mono);
+}
+.prop-table tbody tr { border-bottom: 1px solid var(--border-2); transition: background .12s ease; }
+.prop-table tbody tr:last-child { border-bottom: none; }
+.prop-table tbody tr:hover { background: var(--surface-2); }
+.prop-table td { padding: 10px 14px; vertical-align: middle; }
+.prop-table td.col-prop { color: var(--ink-2); width: 18%; }
+.prop-table td.col-tok { color: var(--ink-3); width: 38%; word-break: break-all; }
+.prop-table td.col-val { color: var(--ink); }
+.color-swatch { display: inline-block; width: 14px; height: 14px; border-radius: 3px; vertical-align: -3px; margin-right: 6px; border: 1px solid rgba(0,0,0,.08); }
+.badge { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 999px; font-size: 10.5px; font-family: var(--font-mono); margin-left: 8px; letter-spacing: 0.01em; }
+.badge-info { background: var(--accent-soft); color: var(--accent); }
+.badge-warn { background: var(--warn-bg); color: var(--warn-fg); }
+.badge-high { background: var(--high-bg); color: var(--high-fg); }
+.badge-low { background: var(--low-bg); color: var(--low-fg); }
+.badge-doc { background: var(--doc-bg); color: var(--doc-fg); }
+
+/* ===== Audit signals ===== */
+.audit-signals { margin-top: 22px; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.audit-head { padding: 12px 16px; background: var(--surface-2); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
+.audit-head-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; color: var(--ink-3); text-transform: uppercase; }
+.audit-count { background: var(--ink); color: #fafafa; padding: 2px 8px; border-radius: 999px; font-size: 10px; font-family: var(--font-mono); }
+.signal { display: grid; grid-template-columns: 110px 1fr; gap: 16px; padding: 12px 16px; border-top: 1px solid var(--border-2); align-items: start; }
 .signal:first-of-type { border-top: none; }
-.signal-id { font-family: ui-monospace, monospace; font-size: 11px; padding: 2px 8px; border-radius: 3px; text-align: center; }
-.sev-high { background: #fee2e2; color: #991b1b; }
-.sev-medium { background: #fef3c7; color: #92400e; }
-.sev-low { background: #dbeafe; color: #1e40af; }
-.sev-doc { background: #f5f5f5; color: #525252; }
-.signal-text { font-size: 13px; line-height: 1.5; color: #292524; }
+.signal-id { font-family: var(--font-mono); font-size: 10.5px; padding: 3px 9px; border-radius: 5px; text-align: center; letter-spacing: 0.02em; font-weight: 500; }
+.sev-high { background: var(--high-bg); color: var(--high-fg); }
+.sev-medium { background: var(--warn-bg); color: var(--warn-fg); }
+.sev-low { background: var(--low-bg); color: var(--low-fg); }
+.sev-doc { background: var(--doc-bg); color: var(--doc-fg); }
+.signal-text { font-size: 13px; line-height: 1.55; color: var(--ink-2); }
 
-@media (max-width: 1000px) { .layout { grid-template-columns: 1fr; } .sidebar { position: relative; height: auto; } .cell-panes { grid-template-columns: 1fr; } }
+/* ===== Responsive ===== */
+@media (max-width: 1100px) {
+  .layout { grid-template-columns: 1fr; }
+  .sidebar { position: relative; height: auto; }
+  .cell-panes { grid-template-columns: 1fr; }
+  .main { padding: 32px 24px 80px; }
+}
 """
 
 JS = """
 function filterToc(q) {
   q = q.toLowerCase().trim();
   document.querySelectorAll('.toc-bundle').forEach(b => {
-    const name = b.querySelector('.toc-component').textContent.toLowerCase();
-    const cells = b.querySelectorAll('.toc-cells li');
-    let anyVisible = false;
-    cells.forEach(li => {
-      const text = li.textContent.toLowerCase();
-      const match = !q || name.includes(q) || text.includes(q);
-      li.style.display = match ? '' : 'none';
-      if (match) anyVisible = true;
-    });
-    b.style.display = (!q || name.includes(q) || anyVisible) ? '' : 'none';
+    const name = b.querySelector('.toc-name').textContent.toLowerCase();
+    b.style.display = (!q || name.includes(q)) ? '' : 'none';
+  });
+  document.querySelectorAll('.toc-section').forEach(sec => {
+    const anyVisible = Array.from(sec.querySelectorAll('.toc-bundle')).some(b => b.style.display !== 'none');
+    sec.style.display = anyVisible ? '' : 'none';
   });
 }
+// Mark active TOC entry based on scroll position
+const tocLinks = document.querySelectorAll('.toc-bundle a');
+const sections = Array.from(document.querySelectorAll('.bundle-section'));
+function syncToc() {
+  const fromTop = window.scrollY + 80;
+  let active = sections[0];
+  for (const s of sections) { if (s.offsetTop <= fromTop) active = s; else break; }
+  if (!active) return;
+  tocLinks.forEach(a => a.classList.toggle('is-active', a.getAttribute('href') === '#' + active.id));
+}
+document.addEventListener('scroll', syncToc, { passive: true });
+syncToc();
 """
 
 
@@ -593,7 +807,11 @@ def emit_report(bundles: list[Bundle]) -> str:
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>DS-Architect · Bundle Report</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ds-architect · Bundle Report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>{CSS}</style>
 </head>
 <body>
