@@ -39,11 +39,11 @@ v2 audit-and-fix is the **input** to v3 extraction. Order: audit → fix → THE
 
 ## 2. Phased Delivery
 
-### Phase A — Spec lock (done when this PR merges)
-- [x] `BUNDLE_SPEC.md` v0.1.0 drafted
+### Phase A — Spec lock — **CLOSED 2026-05-18**
+- [x] `BUNDLE_SPEC.md` v0.1.0 drafted (then evolved through v0.2.0 LOCKED + v0.3.0 / v0.4.0 DRAFT)
 - [x] `PoC-PLAN.md` drafted
 - [x] `v3-EXTRACTION-PLAN.md` drafted
-- [ ] JSON schemas for each bundle file at `verification/schema/*.json` (deferred to Phase B start)
+- [x] JSON schemas at `verification/schema/*.json` — 14 schemas + `validate.py`, 40/40 PoC files pass
 
 ### Phase B — Button PoC — **CLOSED 2026-05-15**
 Ran `PoC-PLAN.md` end-to-end against Apollo v2 Button. All acceptance gates in `PoC-PLAN.md §1` met.
