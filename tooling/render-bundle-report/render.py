@@ -280,35 +280,85 @@ def esc(s: Any) -> str:
     return html.escape(str(s), quote=True)
 
 
-def cell_visual_html(node: dict, tokens: dict[str, dict]) -> str:
-    """Reproduce the variant cell as an HTML element with inline CSS."""
-    color, _, _ = get_fill_color(node)
+FLEX_PRIMARY = {"MIN": "flex-start", "CENTER": "center", "MAX": "flex-end", "SPACE_BETWEEN": "space-between"}
+FLEX_COUNTER = {"MIN": "flex-start", "CENTER": "center", "MAX": "flex-end", "BASELINE": "baseline"}
+
+
+def numeric_dim(value: Any) -> str | None:
+    """Return CSS dimension string, or None if not interpretable."""
+    if value is None:
+        return None
+    if isinstance(value, (int, float)):
+        return f"{value}px"
+    if isinstance(value, str):
+        if value == "AUTO":
+            return None
+        if value == "flex-1":
+            return None  # signaled separately
+        try:
+            return f"{float(value)}px"
+        except ValueError:
+            return None
+    return None
+
+
+def collect_text_styles(text_node: dict) -> tuple[str, str, dict]:
+    """Return (color, family, font_dict) — defaults if missing."""
+    color, _, _ = get_fill_color(text_node)
+    font = text_node.get("font") or {}
+    family = font.get("family")
+    font_family = f'"{family}", "Inter", system-ui, sans-serif' if family else '"Inter", system-ui, sans-serif'
+    return color or "inherit", font_family, font
+
+
+def render_node(node: dict, tokens: dict[str, dict], depth: int = 0, parent_layout: dict | None = None) -> str:
+    """Recursively render a variant tree node into nested HTML elements."""
+    if not isinstance(node, dict) or depth > 8:
+        return ""
+
+    ntype = node.get("type", "FRAME")
+
+    # TEXT leaf
+    if ntype == "TEXT":
+        color, font_family, font = collect_text_styles(node)
+        lh = node.get("lineHeight") or {}
+        size = font.get("size", 14)
+        weight = font.get("weight", 400)
+        line_height = lh.get("value", size + 6) if isinstance(lh, dict) else (size + 6)
+        decoration = node.get("textDecoration", "NONE")
+        align = node.get("textAlignHorizontal", "LEFT")
+        styles = [
+            f"color:{color}",
+            f"font-family:{font_family}",
+            f"font-size:{size}px",
+            f"font-weight:{weight}",
+            f"line-height:{line_height}px",
+            f"text-align:{align.lower()}",
+        ]
+        if decoration == "UNDERLINE":
+            styles.append("text-decoration:underline")
+        elif decoration == "STRIKETHROUGH":
+            styles.append("text-decoration:line-through")
+        return f'<span style="{esc(";".join(styles))}">{esc(node.get("characters", ""))}</span>'
+
+    # VECTOR / ICON placeholder — render as a token square
+    if ntype in ("VECTOR", "BOOLEAN_OPERATION", "STAR", "POLYGON", "LINE"):
+        geom = node.get("geometry") or {}
+        w = numeric_dim(geom.get("width")) or "16px"
+        h = numeric_dim(geom.get("height")) or "16px"
+        color, _, _ = get_fill_color(node)
+        if not color or color == "transparent":
+            color = "currentColor"
+        return (
+            f'<span aria-hidden="true" style="display:inline-block;width:{w};height:{h};'
+            f'background:{esc(color)};border-radius:2px;flex:none"></span>'
+        )
+
+    # FRAME / COMPONENT / INSTANCE / GROUP / RECT / ELLIPSE
     geom = node.get("geometry") or {}
-    width = geom.get("width") or "auto"
-    height = geom.get("height") or "auto"
-    cr = node.get("cornerRadius") or {}
-    radius = cr.get("topLeft", 0) if isinstance(cr, dict) else (cr or 0)
     layout = node.get("layout") or {}
-    pt, pr, pb, pl = (layout.get(k, 0) for k in ("paddingTop", "paddingRight", "paddingBottom", "paddingLeft"))
-
-    text_node = collect_text_node(node)
-    label = text_node.get("characters", "") if text_node else ""
-    text_color = "#000"
-    font_size = 14
-    font_weight = 400
-    line_height = 20
-    font_family = "system-ui, sans-serif"
-    if text_node:
-        text_color, _, _ = get_fill_color(text_node)
-        font = text_node.get("font") or {}
-        font_size = font.get("size", 14)
-        font_weight = font.get("weight", 400)
-        family = font.get("family")
-        if family:
-            font_family = f'"{family}", system-ui, sans-serif'
-        lh = text_node.get("lineHeight") or {}
-        line_height = lh.get("value", font_size + 6)
-
+    cr = node.get("cornerRadius") or {}
+    color, _, _ = get_fill_color(node)
     strokes = node.get("strokes") or []
     border = "none"
     if strokes:
@@ -316,18 +366,71 @@ def cell_visual_html(node: dict, tokens: dict[str, dict]) -> str:
         weight = node.get("strokeWeight", 1)
         border = f"{weight}px solid {scolor}"
 
-    style = (
-        f"display:inline-flex;align-items:center;justify-content:center;"
-        f"min-width:{width}px;height:{height}px;"
-        f"padding:{pt}px {pr}px {pb}px {pl}px;"
-        f"background:{color};color:{text_color};"
-        f"border:{border};"
-        f"border-radius:{min(radius, 9999)}px;"
-        f"font-family:{font_family};"
-        f"font-size:{font_size}px;font-weight:{font_weight};line-height:{line_height}px;"
-        f"box-sizing:border-box;"
-    )
-    return f'<span class="cell-visual-element" style="{esc(style)}">{esc(label) or "&nbsp;"}</span>'
+    radius = cr.get("topLeft", 0) if isinstance(cr, dict) else (cr or 0)
+    radius_str = f"{min(radius, 9999)}px"
+    if ntype == "ELLIPSE" or (isinstance(cr, dict) and all(cr.get(k, 0) >= 9999 for k in ("topLeft", "topRight", "bottomLeft", "bottomRight"))):
+        radius_str = "9999px"
+
+    pt = layout.get("paddingTop", 0)
+    pr = layout.get("paddingRight", 0)
+    pb = layout.get("paddingBottom", 0)
+    pl = layout.get("paddingLeft", 0)
+    gap = layout.get("itemSpacing", 0)
+
+    mode = layout.get("mode", "NONE")
+    is_flex = mode in ("HORIZONTAL", "VERTICAL")
+    direction = "row" if mode == "HORIZONTAL" else "column"
+    primary = FLEX_PRIMARY.get(layout.get("primaryAxisAlignItems", "CENTER"), "center")
+    counter = FLEX_COUNTER.get(layout.get("counterAxisAlignItems", "CENTER"), "center")
+
+    styles: list[str] = []
+    if depth == 0:
+        styles.append("position:relative")
+    if is_flex:
+        styles.extend([f"display:flex", f"flex-direction:{direction}", f"align-items:{counter}", f"justify-content:{primary}", f"gap:{gap}px"])
+    else:
+        styles.append("display:flex")
+        styles.append("align-items:center")
+        styles.append("justify-content:center")
+
+    w_str = numeric_dim(geom.get("width"))
+    h_str = numeric_dim(geom.get("height"))
+    if w_str:
+        styles.append(f"width:{w_str}")
+    elif geom.get("width") == "flex-1":
+        styles.append("flex:1 1 auto")
+    if h_str:
+        styles.append(f"height:{h_str}")
+
+    styles.append(f"padding:{pt}px {pr}px {pb}px {pl}px")
+    if color and color != "transparent":
+        styles.append(f"background:{color}")
+    if border != "none":
+        styles.append(f"border:{border}")
+    styles.append(f"border-radius:{radius_str}")
+    if node.get("clipsContent"):
+        styles.append("overflow:hidden")
+    opacity = node.get("opacity")
+    if isinstance(opacity, (int, float)) and opacity != 1:
+        styles.append(f"opacity:{opacity}")
+    styles.append("box-sizing:border-box")
+    styles.append("flex:none")
+
+    children_html_parts = []
+    for child in node.get("children") or []:
+        rendered = render_node(child, tokens, depth + 1, layout)
+        if rendered:
+            children_html_parts.append(rendered)
+
+    inner = "".join(children_html_parts) if children_html_parts else ""
+
+    cls = "cell-visual-element" if depth == 0 else "cv-node"
+    return f'<div class="{cls}" style="{esc(";".join(styles))}">{inner}</div>'
+
+
+def cell_visual_html(node: dict, tokens: dict[str, dict]) -> str:
+    """Reproduce the variant cell as nested HTML elements with inline CSS."""
+    return render_node(node, tokens, depth=0)
 
 
 def format_variant_key(key: str) -> str:
