@@ -1,0 +1,118 @@
+{
+  "$schema": "../../../../BUNDLE_SPEC.md#section-6.2",
+  "$bundleSchemaVersion": "0.3.0",
+  "id": "menubar-item",
+  "name": "MenubarItem",
+  "level": "molecule",
+  "figmaComponentSetId": "419:6748",
+  "figmaFileKey": "3401ZFUHoboOwA6GGjAEsq",
+  "description": "Menu/Menubar item molecule. Supports 2 hierarchy levels, 4 variants (Default/Destructive/Radio/Checkbox), 3 states. Composes Lucide icon + label + optional keyboard shortcut.",
+  "documentationLinks": ["https://ui.shadcn.com/docs/components/menubar"],
+
+  "variantProperties": {
+    "level":   { "type": "VARIANT", "values": ["1", "2"] },
+    "variant": { "type": "VARIANT", "values": ["Default", "Destructive", "Radio", "Checkbox"] },
+    "state":   { "type": "VARIANT", "values": ["Default", "Hover", "Disabled"] }
+  },
+  "variantConstraints": [
+    {
+      "when": { "level": "1" },
+      "allowedValues": { "variant": ["Default", "Destructive"] },
+      "reason": "Level=1 items don't get Radio or Checkbox variants — those are reserved for nested sub-menu items at Level=2."
+    }
+  ],
+  "totalVariantCells": 18,
+
+  "$matrixNote": "Raw matrix 2 × 4 × 3 = 24. variantConstraints removes 6 (Level=1 × Radio/Checkbox × 3 states) → 18 cells.",
+
+  "defaultVariant": { "level": "1", "variant": "Default", "state": "Default" },
+
+  "exposedProps": [
+    { "name": "menubarItemText",  "type": "TEXT",    "default": "Menubar Item Text" },
+    { "name": "shortcutText",     "type": "TEXT",    "default": "⌘P", "$comment": "Keyboard shortcut. Uses Unicode glyphs in default — NOT Kbd component (different from Button KbdGroup)." },
+    { "name": "showShortcutText", "type": "BOOLEAN", "default": true },
+    { "name": "showIcon",         "type": "BOOLEAN", "default": false, "whenVariant": { "$except": ["Radio", "Checkbox"] }, "$comment": "Icon slot exclusive to Default + Destructive variants. Radio/Checkbox use indent for active-indicator instead." },
+    { "name": "active",           "type": "BOOLEAN", "default": false, "whenVariant": { "$in": ["Radio", "Checkbox"] }, "$comment": "Active state for Radio/Checkbox. When true, shows Lucide Check at left in the indent space." }
+  ],
+
+  "slots": [
+    { "name": "icon",           "type": "INSTANCE", "exposedBy": "showIcon",         "$default": "Lucide Smile (5197:2441)", "$role": "Left icon (16×16). Default + Destructive variants only." },
+    { "name": "label",          "type": "TEXT",     "typography": "{typography.text-sm-leading-normal-normal}", "$role": "Main menu-item text" },
+    { "name": "shortcutText",   "type": "TEXT",     "exposedBy": "showShortcutText", "typography": "{typography.text-xs-leading-normal-normal}", "$role": "Right-aligned keyboard shortcut" },
+    { "name": "activeIndicator","type": "INSTANCE", "exposedBy": "active",            "$default": "Lucide Check (5197:613)", "$role": "Active state for Radio/Checkbox variants. 16×16 absolute-positioned in the left-indent space." }
+  ],
+
+  "layout": {
+    "container": {
+      "mode": "VERTICAL (flex-col)",
+      "width": "312px (hardcoded)",
+      "height": "28px"
+    },
+    "innerRow": {
+      "mode": "HORIZONTAL",
+      "gap": "{spacing.1-5}",
+      "padding-y": "{spacing.1}",
+      "padding-x_byVariant": {
+        "Default":     "padding-x = {spacing.1-5} (6) both sides",
+        "Destructive": "padding-x = {spacing.1-5} (6) both sides",
+        "Radio":       "padding-left = {spacing.7} (28, indent for active-indicator) + padding-right = {spacing.1-5}",
+        "Checkbox":    "padding-left = {spacing.7} (28) + padding-right = {spacing.1-5}"
+      },
+      "radius": "{border-radius.rounded-md}"
+    }
+  },
+
+  "bindings": {
+    "text-color": {
+      "$axisDependency": "variant + state",
+      "Default": {
+        "Default":  "{color.base.popover-foreground}",
+        "Hover":    "{color.base.accent-foreground} (TBD verify)",
+        "Disabled": "{color.base.popover-foreground} + opacity-50"
+      },
+      "Destructive": {
+        "Default":  "{color.base.destructive}",
+        "Hover":    "{color.base.destructive} + bg destructive-10-dark-20 (TBD verify)",
+        "Disabled": "{color.base.destructive} + opacity-50"
+      },
+      "Radio":    { "$same-as-Default": true },
+      "Checkbox": { "$same-as-Default": true }
+    },
+    "background": {
+      "Hover (Default+Radio+Checkbox)": "{color.base.accent}",
+      "Hover (Destructive)":            "{color.custom.destructive-10-dark-20}"
+    },
+    "opacity": {
+      "Disabled (all variants)": "{opacity.opacity-50}"
+    }
+  },
+
+  "composition": {
+    "uses": [
+      { "name": "Lucide / Smile", "ref": "Lucide Icons / Smile (5197:2441)", "$default": "showIcon true default icon" },
+      { "name": "Lucide / Check", "ref": "Lucide Icons / Check (5197:613)",  "$role": "Radio/Checkbox active indicator" }
+    ]
+  },
+
+  "a11y": {
+    "role": "menuitem | menuitemradio | menuitemcheckbox (by variant)",
+    "preferredElement": "<div role='menuitem'> for Default/Destructive; <div role='menuitemradio' aria-checked={active}> for Radio; <div role='menuitemcheckbox' aria-checked={active}> for Checkbox",
+    "$keyboardShortcutA11y": "Shortcut text is decorative — actual key binding handled by app keyboard handler. Add aria-keyshortcuts attribute if appropriate."
+  },
+
+  "codeConnect": {
+    "candidates": [
+      { "framework": "react", "library": "shadcn/ui", "url": "https://ui.shadcn.com/docs/components/menubar" }
+    ]
+  },
+
+  "$new_audit_findings": {
+    "F30": "NEW (LOW). MenubarItem uses Unicode glyphs for shortcut text (⌘P), NOT the Kbd component (which Button uses for ⌘F display). Inconsistency within Apollo v2's keyboard-shortcut rendering convention.",
+    "F31": "NEW (DOC). Radio/Checkbox variants change the slot layout structure (replace icon slot with indent+active-indicator). First PoC where variant axis changes SLOT TOPOLOGY, not just styling. Validates SP-1 whenVariant filter pattern."
+  },
+
+  "$step2_known_gaps": [
+    { "id": "GAP-MI1", "field": "Hover state full styling — bg + text-color confirmation", "resolution": "Walk Hover cells" },
+    { "id": "GAP-MI2", "field": "Checkbox variant exact rendering (likely same as Radio with same Check icon — or different glyph?)", "resolution": "Walk Checkbox cell 419:6741" }
+  ]
+}

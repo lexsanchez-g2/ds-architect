@@ -1,0 +1,10 @@
+{
+  "$schema": "../../../../BUNDLE_SPEC.md#section-7.1",
+  "$bundleSchemaVersion": "0.3.0",
+  "$metadata": { "source": { "fileKey": "3401ZFUHoboOwA6GGjAEsq", "scope": "MenubarItem (419:6748)" }, "iconSet": { "name": "Lucide Icons", "license": "ISC" } },
+  "icons": [
+    { "id": "icon-smile", "name": "icon/smile", "semantic": "smile", "svg": "assets/icons/smile.svg", "viewBox": "0 0 24 24", "license": "ISC", "figma": { "parentNodeId": "5197:2441" }, "usedBy": [{ "component": "MenubarItem", "$role": "Default showIcon glyph (Default + Destructive variants)" }] },
+    { "id": "icon-check", "name": "icon/check", "semantic": "check", "svg": "assets/icons/check.svg", "viewBox": "0 0 24 24", "license": "ISC", "figma": { "parentNodeId": "5197:613"  }, "usedBy": [{ "component": "MenubarItem", "$role": "Radio/Checkbox active indicator" }] }
+  ],
+  "$coverage": { "iconsUsedByMenubarItem": 2, "iconsExtracted": 2, "extractionCompleteness": 1.0 }
+}

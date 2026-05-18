@@ -1,0 +1,44 @@
+{
+  "$schema": "../../BUNDLE_SPEC.md#section-3",
+  "bundleVersion": "0.3.0",
+  "bundleId": "apollo-v2-menubar-item-bundle-poc",
+  "bundleStatus": "proof-of-concept",
+  "system": { "name": "Apollo v2 (SA)", "owner": "lsanchez-g2" },
+  "source": { "type": "figma", "fileKey": "3401ZFUHoboOwA6GGjAEsq", "rootNodeId": "419:6748", "extractedBy": "ds-architect@v3", "extractedAt": "2026-05-18T13:30:00Z" },
+  "spec": { "name": "BUNDLE_SPEC.md", "version": "0.3.0", "status": "DRAFT" },
+
+  "counts": {
+    "components": 1, "componentClass": "molecule",
+    "variantAxes": 3, "variantCells": 18, "variantCellsEmitted": 2,
+    "tokens": 20, "tokensNew": 1,
+    "icons": 2, "images": 0
+  },
+
+  "modes": ["light"],
+
+  "checksum": {
+    "algorithm": "sha256",
+    "files": {
+      "data/tokens.json":                              { "sha256": "b2c5e94b70928526aabd3e422637992169ac6a80847e94fc823d5c32c84e424c", "bytes": 3079 },
+      "data/components/MenubarItem.component.json":    { "sha256": "431a766b0814b020e2aa075565e35cbb58e4d63aea15178c139d1ede19fd02f5", "bytes": 6247 },
+      "data/icons/_index.json":                        { "sha256": "dcbfc4abda83777d112866b1063f540feb440cb8671b9a46a9e442fbd1e62c01", "bytes": 948 },
+      "assets/icons/smile.svg":                        { "sha256": "2810c6dcc9e0f3e3fe430be67d3237713139644b8d0716dfb17e764334f9e6ee", "bytes": 445 },
+      "assets/icons/check.svg":                        { "sha256": "693d7d8a4d87aace45de086895b029b8d8ca5d194d79a524352e83b7a3674611", "bytes": 315 }
+    }
+  },
+
+  "auditFindings": {
+    "F30": { "severity": "LOW", "summary": "MenubarItem shortcuts use Unicode glyphs (⌘P) directly in TEXT. Button KbdGroup wraps shortcuts in Kbd component. Cross-component inconsistency." },
+    "F31": { "severity": "DOC", "summary": "Radio/Checkbox variants change SLOT TOPOLOGY — replace icon slot with indent + active-indicator. First PoC where variant axis restructures slots." }
+  },
+
+  "knownGaps": [
+    { "id": "GAP-MI1", "description": "Hover + Disabled cells not walked" },
+    { "id": "GAP-MI2", "description": "Checkbox variant exact glyph (likely same as Radio Check)" }
+  ],
+
+  "extensions": {
+    "loadOrder": ["SKILL.md", "MANIFEST.json", "data/", "assets/"],
+    "companionBundles": ["../poc-sonner (shares base/popover-foreground)", "../poc-button (Kbd inconsistency reference)"]
+  }
+}
