@@ -1,0 +1,64 @@
+{
+  "$schema": "../../BUNDLE_SPEC.md#section-3",
+  "bundleVersion": "0.3.0",
+  "bundleId": "apollo-v2-checkbox-bundle-poc",
+  "bundleStatus": "proof-of-concept",
+  "system": { "name": "Apollo v2 (SA)", "owner": "lsanchez-g2" },
+
+  "source": {
+    "type": "figma",
+    "fileKey": "3401ZFUHoboOwA6GGjAEsq",
+    "rootNodeId": "46:112",
+    "parentCanvas": "46:67",
+    "extractedBy": "ds-architect@v3",
+    "extractedAt": "2026-05-18T01:30:00Z"
+  },
+
+  "spec": {
+    "name": "BUNDLE_SPEC.md",
+    "version": "0.3.0",
+    "status": "DRAFT (atom phase, 4th component)",
+    "patches": ["SP-1", "SP-2", "SP-3", "SP-4", "SP-4-ext", "SP-5", "SP-6", "SP-7", "SP-8", "SP-9"]
+  },
+
+  "counts": {
+    "components": 1, "componentSets": 1,
+    "variantAxes": 4, "variantCells": 40, "variantCellsEmitted": 3, "variantCellsCoverage": 0.075,
+    "tokens": 30, "tokensSharedWithPriorBundles": 26, "tokensUniqueToCheckbox": 4,
+    "icons": 1, "images": 0, "interactions": 0, "screenshots": 0
+  },
+
+  "modes": ["light"],
+  "target": { "platform": "web", "framework": "react", "styling": "tailwind", "componentBaseline": "shadcn-ui" },
+
+  "checksum": {
+    "algorithm": "sha256",
+    "files": {
+      "data/tokens.json":                                       { "sha256": "7f37d19219c35c785f2dcbc2cbf65f0d957ae48173b7d99e245fdf91e8cdb820", "bytes": 7166 },
+      "data/components/Checkbox.component.json":                { "sha256": "5fcccf2960e5fead73848c4e66dde230a48798270b1bd4d4acf3301d23e114fd", "bytes": 10835 },
+      "data/components/Checkbox.variants-samples.json":         { "sha256": "17ff1a9313801d26b4c707f897822b00069db17dbcd3274e66efa6a195f86ccf", "bytes": 7008 },
+      "data/icons/_index.json":                                 { "sha256": "72143ac60e10da06a0834f48c35a5ad693f55b9a92950ab26f9dbfa495f2894a", "bytes": 1512 },
+      "assets/icons/check.svg":                                 { "sha256": "693d7d8a4d87aace45de086895b029b8d8ca5d194d79a524352e83b7a3674611", "bytes": 315 }
+    }
+  },
+
+  "auditFindings": {
+    "F8":  { "carry": "Disabled-treatment inconsistency (carried)" },
+    "F11": { "carry": "Invalid-ring-at-rest (carried, pending Step 3 confirmation on Checkbox Invalid cell)" },
+    "F14": { "severity": "MEDIUM", "summary": "Checkbox lacks Mixed/Indeterminate state — aria-checked='mixed' cannot be represented" },
+    "F15": { "severity": "MEDIUM", "summary": "Checkbox box uses raw 4px corner radius; no token at this value (rounded-md=8 token unused)" }
+  },
+
+  "knownGaps": [
+    { "id": "GAP-cells-37", "description": "37 of 40 cells pending node-tree serialization" },
+    { "id": "GAP-opacity-70-usage", "description": "opacity-70 token exists but usage not observed" },
+    { "id": "GAP-disabled-target", "description": "Disabled opacity application target (box vs outer) TBD" },
+    { "id": "GAP-invalid-cell", "description": "Invalid cell not walked; F11 carryover unconfirmed for Checkbox" },
+    { "id": "GAP-box-type", "description": "Type=Box cell not walked" }
+  ],
+
+  "extensions": {
+    "loadOrder": ["SKILL.md", "MANIFEST.json", "references/", "data/", "assets/"],
+    "companionBundles": ["../poc-button", "../poc-switch", "../poc-input"]
+  }
+}

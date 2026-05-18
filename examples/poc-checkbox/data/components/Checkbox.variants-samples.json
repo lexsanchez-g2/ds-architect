@@ -1,0 +1,118 @@
+{
+  "$schema": "../../../../BUNDLE_SPEC.md#section-6.3",
+  "$bundleSchemaVersion": "0.3.0",
+  "componentId": "checkbox",
+  "variantCount": 40,
+  "$samplesOnly": true,
+  "$samplesNote": "3 of 40 cells. Cells chosen: Checked=Yes/Default (baseline with checkmark glyph), Checked=No/Default (unchecked variant), Checked=Yes/Pressed (NEW opacity-60 application at box level).",
+  "$cellsIncluded": [
+    "checked=Yes,state=Default,type=Default,controlPlacement=Start",
+    "checked=No,state=Default,type=Default,controlPlacement=Start",
+    "checked=Yes,state=Pressed,type=Default,controlPlacement=Start"
+  ],
+
+  "variants": [
+    {
+      "key": "checked=Yes,state=Default,type=Default,controlPlacement=Start",
+      "figmaNodeId": "46:110",
+      "node": {
+        "type": "COMPONENT",
+        "name": "Checked=Yes, State=Default, Type=Default, Control Placement=Start",
+        "figmaNodeId": "46:110",
+        "elementHint": "<button role='checkbox' aria-checked='true'>",
+        "geometry": { "width": 224, "height": 40 },
+        "layout": { "mode": "HORIZONTAL", "itemSpacing": 8, "bindings": { "itemSpacing": "{spacing.2}" } },
+        "children": [
+          {
+            "type": "FRAME", "name": "Checkbox box", "figmaNodeId": "46:69", "$role": "box",
+            "geometry": { "width": 16, "height": 16 },
+            "fills": [{ "type": "SOLID", "color": "#5a35c0", "boundVariable": "{color.base.primary}" }],
+            "strokes": [{ "type": "SOLID", "color": "#5a35c0", "boundVariable": "{color.base.primary}" }],
+            "strokeWeight": 1,
+            "cornerRadius": { "topLeft": 4, "topRight": 4, "bottomLeft": 4, "bottomRight": 4, "$bindingStatus": "hardcoded", "$auditFinding": "F15: raw 4px, no token" },
+            "clipsContent": true,
+            "children": [
+              {
+                "type": "INSTANCE", "name": "Lucide Check", "$role": "checkmark",
+                "geometry": { "width": 14, "height": 14 },
+                "$position": "absolute-centered (translate -50% -50%)",
+                "mainComponent": { "library": "Lucide Icons", "name": "Check", "figmaKey": "5197:4029" },
+                "$strokeNote": "Lucide stock SVG; currentColor inherits from parent. Renderer must set text-color to base/primary-foreground (white)."
+              }
+            ]
+          },
+          {
+            "type": "FRAME", "name": "Field Content", "figmaNodeId": "46:123",
+            "layout": { "mode": "VERTICAL", "itemSpacing": 6, "bindings": { "itemSpacing": "{spacing.1-5}" } },
+            "children": [
+              { "type": "TEXT", "name": "Label", "$role": "label", "characters": "Checkbox Text", "font": { "family": "Open Sans", "weight": 500, "size": 14 }, "lineHeight": { "unit": "PIXELS", "value": 14 }, "fills": [{ "boundVariable": "{color.base.foreground}" }], "boundTextStyle": "{typography.text-sm-leading-none-medium}" },
+              { "type": "TEXT", "name": "Description", "$role": "description", "characters": "This is a checkbox description.", "font": { "family": "Open Sans", "weight": 400, "size": 14 }, "lineHeight": { "unit": "PIXELS", "value": 20 }, "fills": [{ "boundVariable": "{color.base.muted-foreground}" }], "boundTextStyle": "{typography.text-sm-leading-normal-normal}" }
+            ]
+          }
+        ],
+        "a11y": { "role": "checkbox", "ariaChecked": "true" }
+      }
+    },
+
+    {
+      "key": "checked=No,state=Default,type=Default,controlPlacement=Start",
+      "figmaNodeId": "46:111",
+      "$cellNotes": "Checked=No baseline. Demonstrates the absence pattern: no checkmark child in the box. Fill swaps to bg-input-30 (#fafafa). Border swaps to base/input (#a3a3a3).",
+      "node": {
+        "type": "COMPONENT",
+        "name": "Checked=No, State=Default, Type=Default, Control Placement=Start",
+        "figmaNodeId": "46:111",
+        "elementHint": "<button role='checkbox' aria-checked='false'>",
+        "geometry": { "width": 224, "height": 40 },
+        "layout": { "mode": "HORIZONTAL", "itemSpacing": 8, "bindings": { "itemSpacing": "{spacing.2}" } },
+        "children": [
+          {
+            "type": "FRAME", "name": "Checkbox box", "figmaNodeId": "46:68", "$role": "box",
+            "geometry": { "width": 16, "height": 16 },
+            "fills": [{ "type": "SOLID", "color": "#fafafa", "boundVariable": "{color.custom.background-dark-input-30}" }],
+            "strokes": [{ "type": "SOLID", "color": "#a3a3a3", "boundVariable": "{color.base.input}" }],
+            "strokeWeight": 1,
+            "cornerRadius": { "topLeft": 4, "$bindingStatus": "hardcoded" },
+            "clipsContent": false,
+            "children": [],
+            "$emptyNote": "NO checkmark child when Checked=No. Conditional slot exercised — slots[name=checkmark].$exposedWhen='checked=Yes' literally removes the node from the tree."
+          },
+          { "type": "FRAME", "name": "Field Content", "$role": "fieldContent", "$comment": "Identical to Checked=Yes cell — same children." }
+        ],
+        "a11y": { "role": "checkbox", "ariaChecked": "false" }
+      }
+    },
+
+    {
+      "key": "checked=Yes,state=Pressed,type=Default,controlPlacement=Start",
+      "figmaNodeId": "18437:67522",
+      "$cellNotes": "Pressed state. Validates NEW opacity-60 application AT THE BOX (not outer container). Cross-atom audit signal: 3 different Pressed-state opacity-application targets across atoms (Switch + Input have no Pressed; Checkbox box-level opacity-60; Button has Pressed via different fill tokens, not opacity).",
+      "node": {
+        "type": "COMPONENT",
+        "name": "Checked=Yes, State=Pressed, Type=Default, Control Placement=Start",
+        "figmaNodeId": "18437:67522",
+        "elementHint": "<button role='checkbox' aria-checked='true' :pressed>",
+        "geometry": { "width": 224, "height": 40 },
+        "layout": { "mode": "HORIZONTAL", "itemSpacing": 8, "bindings": { "itemSpacing": "{spacing.2}" } },
+        "children": [
+          {
+            "type": "FRAME", "name": "Checkbox box", "figmaNodeId": "18437:67523", "$role": "box",
+            "geometry": { "width": 16, "height": 16 },
+            "fills": [{ "type": "SOLID", "color": "#5a35c0", "boundVariable": "{color.base.primary}" }],
+            "strokes": [{ "type": "SOLID", "color": "#5a35c0", "boundVariable": "{color.base.primary}" }],
+            "strokeWeight": 1,
+            "opacity": 0.6,
+            "$opacityBinding": "{opacity.opacity-60}",
+            "$opacityNote": "F-pattern: Pressed applies opacity-60 AT THE BOX, not outer container. Switch + Input Disabled apply opacity-50 at OUTER container. Three opacity-application strategies across atoms.",
+            "cornerRadius": { "topLeft": 4 },
+            "clipsContent": true,
+            "children": [
+              { "type": "INSTANCE", "name": "Lucide Check", "$role": "checkmark", "$position": "absolute-centered" }
+            ]
+          },
+          { "type": "FRAME", "name": "Field Content", "$role": "fieldContent" }
+        ]
+      }
+    }
+  ]
+}

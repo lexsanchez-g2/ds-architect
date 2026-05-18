@@ -1,0 +1,35 @@
+{
+  "$schema": "../../../../BUNDLE_SPEC.md#section-7.1",
+  "$bundleSchemaVersion": "0.3.0",
+  "$metadata": {
+    "source": { "fileKey": "3401ZFUHoboOwA6GGjAEsq", "scope": "Checkbox (node 46:112)" },
+    "iconSet": { "name": "Lucide Icons", "version": "lucide-static@1.16.0", "license": "ISC", "marker": "{icon-set.lucide-icons}" }
+  },
+  "icons": [
+    {
+      "id": "icon-check",
+      "name": "icon/check",
+      "semantic": "check",
+      "svg": "assets/icons/check.svg",
+      "viewBox": "0 0 24 24",
+      "license": "ISC (lucide-static v1.16.0)",
+      "monochrome": true,
+      "renderColor": "currentColor",
+      "$renderNote": "Inherits parent color. On Checked=Yes the parent Checkbox.box has fill base/primary (#5a35c0); the checkmark stroke uses currentColor which the renderer should set to base/primary-foreground (white #ffffff) via the text-color CSS property on the .checkmark wrapper.",
+      "figma": {
+        "parentNodeId": "5197:4029",
+        "componentName": "Lucide Icon / Check",
+        "synonyms": "tick, checkmark, confirm, done, approve, success, complete"
+      },
+      "usedBy": [
+        {
+          "component": "Checkbox",
+          "slot": "checkmark",
+          "context": "Visible when checked=Yes across all (state × type × controlPlacement) combinations (20 of 40 cells).",
+          "$ref": "Checkbox.component.json.slots[name=checkmark]"
+        }
+      ]
+    }
+  ],
+  "$coverage": { "iconsUsedByCheckbox": 1, "iconsExtracted": 1, "extractionCompleteness": 1.0 }
+}

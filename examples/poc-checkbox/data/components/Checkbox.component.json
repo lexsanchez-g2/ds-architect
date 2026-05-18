@@ -1,0 +1,228 @@
+{
+  "$schema": "../../../../BUNDLE_SPEC.md#section-6.2",
+  "$bundleSchemaVersion": "0.3.0",
+
+  "id": "checkbox",
+  "name": "Checkbox",
+  "level": "atom",
+  "figmaComponentSetId": "46:112",
+  "figmaParentCanvas": "46:67",
+  "figmaFileKey": "3401ZFUHoboOwA6GGjAEsq",
+  "description": "Boolean checkbox with optional label + description. Composes Lucide Check icon as the checkmark glyph. Maps to shadcn/ui Checkbox.",
+  "documentationLinks": ["https://ui.shadcn.com/docs/components/checkbox"],
+
+  "variantProperties": {
+    "checked":          { "type": "VARIANT", "values": ["Yes", "No"] },
+    "state":            { "type": "VARIANT", "values": ["Default", "Focus", "Disabled", "Pressed", "Invalid"] },
+    "type":             { "type": "VARIANT", "values": ["Default", "Box"] },
+    "controlPlacement": { "type": "VARIANT", "values": ["Start", "End"] }
+  },
+  "variantConstraints": [],
+  "totalVariantCells": 40,
+
+  "$matrixNote": "4 axes = 40 cells (Button 264 → Switch 64 → Input 15 → Checkbox 40).",
+
+  "$missingStates": {
+    "absent": ["Hover", "Loading", "Filled"],
+    "$comment": "Hover absent across all atoms (atom-batch pattern). Loading not applicable to Checkbox. Filled is Input-specific."
+  },
+
+  "$missingIndeterminate": {
+    "$severity": "MEDIUM",
+    "$comment": "F14 candidate (NEW): Apollo v2 Checkbox lacks a Mixed/Indeterminate variant value on the Checked axis. WAI-ARIA convention (`aria-checked='mixed'`) for parent-of-partially-selected-children pattern unavailable. SP-11 candidate (tri-state semantics) not exercisable on this PoC.",
+    "$recommendation": "Source-DS: add Checked=Mixed value, render with horizontal line glyph (Lucide Minus icon) replacing the Check glyph. Renderer maps to aria-checked='mixed'."
+  },
+
+  "defaultVariant": { "checked": "Yes", "state": "Default", "type": "Default", "controlPlacement": "Start" },
+
+  "exposedProps": [
+    { "name": "labelText",       "type": "TEXT",    "default": "Checkbox Text",                          "description": "Visible label." },
+    { "name": "descriptionText", "type": "TEXT",    "default": "This is a checkbox description.",        "description": "Helper / description text." },
+    { "name": "showLabel",       "type": "BOOLEAN", "default": true,                                     "description": "Reveal label slot." },
+    { "name": "showDescription", "type": "BOOLEAN", "default": true,                                     "description": "Reveal description slot." }
+  ],
+
+  "slots": [
+    {
+      "name": "box",
+      "type": "FRAME",
+      "$role": "The 16×16 square checkbox. Color + checkmark depend on Checked + State axes.",
+      "geometry": { "width": 16, "height": 16, "bindings": { "width": "16px", "height": "16px" } },
+      "$geometryNote": "16×16 hardcoded (no width/w-* or height/h-* tokens applied directly). Source-DS audit signal — could bind to {height.h-4}/{width.w-4}.",
+      "border": "1px solid base/primary (Checked=Yes) | base/input (Checked=No) | base/destructive (Invalid)",
+      "radius": "4px raw — NOT bound to any token",
+      "$radiusBindingStatus": "hardcoded",
+      "$radiusAuditFinding": "F15 (NEW, MEDIUM): Checkbox box uses raw 4px corner radius. Apollo v2 has rounded-sm (6, added in Button KbdGroup backfill), rounded-md (8, in Checkbox tokens but UNUSED here), rounded-lg (10), rounded-full (9999). No token at 4px. Source-DS audit: add rounded-xs (4) OR rebind to rounded-sm (6) — minor visual change. Confusing that rounded-md exists in tokens but isn't applied."
+    },
+    {
+      "name": "checkmark",
+      "type": "INSTANCE",
+      "$exposedWhen": "checked=Yes",
+      "$role": "Lucide Check icon glyph rendered inside the box when Checked=Yes. Stroke color = base/primary-foreground (white via currentColor).",
+      "$geometry": { "width": 14, "height": 14, "position": "absolute-centered (translate -50% -50%)" },
+      "$iconRef": { "library": "Lucide Icons", "icon": "Check", "figmaKey": "5197:4029" },
+      "$confirmed": "Walked cells 46:110 (Checked=Yes) shows Check icon as 14×14 absolute-centered child. Cell 46:111 (Checked=No) has no child — the icon literally disappears from the node tree when unchecked."
+    },
+    {
+      "name": "label",
+      "type": "TEXT",
+      "exposedBy": "showLabel",
+      "typography": "{typography.text-sm-leading-none-medium}",
+      "fill": {
+        "$all": "{color.base.foreground}",
+        "$comment": "Label color does not shift by state (Disabled relies on outer-container opacity to dim everything uniformly)."
+      }
+    },
+    {
+      "name": "description",
+      "type": "TEXT",
+      "exposedBy": "showDescription",
+      "typography": "{typography.text-sm-leading-normal-normal}",
+      "fill": "{color.base.muted-foreground}"
+    }
+  ],
+
+  "layout": {
+    "container": {
+      "mode": "HORIZONTAL",
+      "gap": "{spacing.2}",
+      "primaryAxisAlignItems": "MIN",
+      "counterAxisAlignItems": "MIN"
+    },
+    "fieldContent": {
+      "mode": "VERTICAL",
+      "gap": "{spacing.1-5}"
+    }
+  },
+
+  "bindings": {
+    "box-fill": {
+      "$axisDependency": "checked + state",
+      "Yes": {
+        "Default":  "{color.base.primary}",
+        "Focus":    "{color.base.primary}",
+        "Disabled": "{color.base.primary}",
+        "Pressed":  "{color.base.primary}",
+        "Invalid":  "{color.base.destructive}",
+        "$confirmed": "Walked 46:110 (Default), 18437:67522 (Pressed). Yes fill = primary or destructive on Invalid. State changes via opacity (Pressed=0.6) + ring (Focus) + border (Invalid), not fill."
+      },
+      "No": {
+        "Default":  "{color.custom.background-dark-input-30}",
+        "Focus":    "{color.custom.background-dark-input-30}",
+        "Disabled": "{color.custom.background-dark-input-30}",
+        "Pressed":  "{color.custom.background-dark-input-30}",
+        "Invalid":  "{color.custom.background-dark-input-30}",
+        "$confirmed": "Walked 46:111 (Checked=No/Default). No fill = bg-input-30 (#fafafa)."
+      }
+    },
+
+    "box-border": {
+      "$axisDependency": "checked + state",
+      "width": "{border-width.border}",
+      "Yes": {
+        "Default":  "{color.base.primary}",
+        "Focus":    "{color.base.primary}",
+        "Disabled": "{color.base.primary}",
+        "Pressed":  "{color.base.primary}",
+        "Invalid":  "{color.base.destructive}"
+      },
+      "No": {
+        "Default":  "{color.base.input}",
+        "Focus":    "{color.base.ring}",
+        "Disabled": "{color.base.input}",
+        "Pressed":  "{color.base.input}",
+        "Invalid":  "{color.base.destructive}"
+      }
+    },
+
+    "box-opacity": {
+      "$axisDependency": "state",
+      "$appliedAt": "box (not outer container, unlike Switch/Input Disabled which apply to outer)",
+      "Default":  "1",
+      "Focus":    "1",
+      "Disabled": "$tbdStep3 (likely opacity-50 at outer container per Switch/Input pattern)",
+      "Pressed":  "{opacity.opacity-60}",
+      "Invalid":  "1",
+      "$pressedNote": "F-pattern (cross-atom): Checkbox introduces opacity-60 at BOX level for Pressed. Differs from Switch+Input Disabled which apply opacity-50 at OUTER container. Two different opacity-application targets.",
+      "$confirmed": "Walked 18437:67522 (Pressed) — opacity-60 applied to box element."
+    },
+
+    "focus-ring": {
+      "$axisDependency": "state",
+      "Default":  null,
+      "Focus":    "{effect.focus-default}",
+      "Disabled": null,
+      "Pressed":  null,
+      "Invalid":  "$tbdStep3 — likely focus-destructive AT REST per F11 atom-batch pattern"
+    },
+
+    "type-axis": {
+      "Default": {
+        "$role": "Bare inline layout — checkbox + label.",
+        "containerHeight": "40px (raw)",
+        "containerWidth": "219–224px (raw, varies slightly)"
+      },
+      "Box": {
+        "$role": "Boxed layout — checkbox + label + description inside a bordered container. Similar to Switch Type=Box.",
+        "containerHeight": "60px (raw)",
+        "containerWidth": "239px (raw)",
+        "$tbdStep3": "Box-type cell not walked. Likely uses base/border + spacing/2-5 padding + rounded-md/lg radius per Switch Type=Box pattern."
+      }
+    },
+
+    "controlPlacement-axis": {
+      "Start": { "$order": "[box, fieldContent]" },
+      "End":   { "$order": "[fieldContent, box]" }
+    }
+  },
+
+  "composition": {
+    "uses": [
+      { "name": "LucideIcon", "ref": "Lucide Icons/Check (figmaKey 5197:4029)", "$role": "checkmark glyph on Checked=Yes" }
+    ]
+  },
+
+  "a11y": {
+    "role": "checkbox",
+    "preferredElement": "<input type='checkbox'> or <button role='checkbox'>",
+    "ariaChecked": { "Yes": "true", "No": "false", "$missing": "Mixed — F14 candidate" },
+    "ariaInvalid": { "Invalid": "true" },
+    "focusRing": "{effect.focus-default}",
+    "minTouchTarget": { "width": 44, "height": 44 },
+    "touchTargetCompliance": {
+      "compliant": ["Type=Box (60h)"],
+      "nonCompliant": ["Type=Default (40h)"],
+      "$comment": "Same compliance pattern as Switch — half the matrix passes WCAG 2.5.5."
+    }
+  },
+
+  "codeConnect": {
+    "candidates": [
+      { "framework": "react", "library": "shadcn/ui", "url": "https://ui.shadcn.com/docs/components/checkbox" }
+    ],
+    "quality": {
+      "perVariantUrlVerified": true,
+      "$note": "Doc URL is clean — no fragment mismatch like Input F12 or Button.Link F3."
+    }
+  },
+
+  "$new_audit_findings_from_step3": {
+    "F14": "NEW (MEDIUM). Checkbox lacks Mixed/Indeterminate state. WAI-ARIA aria-checked='mixed' cannot be represented. Source-DS: add Checked=Mixed value with horizontal-line glyph.",
+    "F15": "NEW (MEDIUM). Checkbox box uses raw 4px corner radius. Apollo v2 has rounded-sm (6), rounded-md (8), rounded-lg (10), rounded-full (9999) but no token at 4px. Confusing — rounded-md is even DECLARED in tokens but unused. Source-DS: add rounded-xs (4) OR rebind."
+  },
+
+  "$step2_known_gaps": [
+    { "id": "GAP-C1", "field": "opacity-70 token usage", "resolution": "OPEN — token exists in source but not observed in walked cells. Could be Box-type Disabled or Invalid-Pressed. Next walk." },
+    { "id": "GAP-C2", "field": "Disabled state opacity application target (box vs outer container)", "resolution": "TBD — walk cell 60:427" },
+    { "id": "GAP-C3", "field": "Invalid state full bindings (border, ring-at-rest, label color)", "resolution": "TBD — walk cell 21124:51547" },
+    { "id": "GAP-C4", "field": "Type=Box layout details", "resolution": "TBD — walk cell 18684:181660" }
+  ],
+
+  "$spec_patches_validated": {
+    "v0.3.0": [
+      "SP-1 — whenVariant filter exercised on slots[checkmark] (only present when checked=Yes)",
+      "SP-4 — $bindingStatus: hardcoded fires on box corner radius (4px raw), box dimensions, container widths",
+      "SP-9 — N/A (Checkbox has no animation declared; check/uncheck is instant)"
+    ]
+  }
+}
