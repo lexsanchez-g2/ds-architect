@@ -1,0 +1,23 @@
+{
+  "$schema": "../../../../BUNDLE_SPEC.md#section-7.2",
+  "$bundleSchemaVersion": "0.3.0",
+  "$metadata": {
+    "source": { "fileKey": "3401ZFUHoboOwA6GGjAEsq", "scope": "Avatar (node 17100:29935)" },
+    "$comment": "First PoC bundle with raster image fills. Validates the BUNDLE_SPEC §7.2 image pipeline (content-hashed filenames, sha256 in index)."
+  },
+  "images": [
+    {
+      "hash": "sha256:6a3fdbaa200bc9cab1b8fe12ff2353640a738a4bacfb6aefc6102a80a6c8b171",
+      "file": "assets/images/6a3fdbaa200bc9cab1b8fe12ff2353640a738a4bacfb6aefc6102a80a6c8b171.png",
+      "format": "png",
+      "bytes": 301027,
+      "naturalDimensions": "TBD (PNG metadata not yet read)",
+      "altText": "Sample user avatar — placeholder",
+      "$source": "Captured from Figma Avatar Type=Image cell 17378:86689 default size.",
+      "usedBy": [
+        { "component": "Avatar", "slot": "image", "context": "Sample raster captured for the Image-type cell. Real consumers replace via exposedProp 'imageSrc' (not yet declared in source DS — F19 candidate)." }
+      ]
+    }
+  ],
+  "$coverage": { "imagesUsedByAvatar": 1, "imagesExtracted": 1, "extractionCompleteness": 1.0 }
+}

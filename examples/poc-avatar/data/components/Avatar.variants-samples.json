@@ -1,0 +1,92 @@
+{
+  "$schema": "../../../../BUNDLE_SPEC.md#section-6.3",
+  "$bundleSchemaVersion": "0.3.0",
+  "componentId": "avatar",
+  "variantCount": 15,
+  "$samplesOnly": true,
+  "$samplesNote": "3 of 15 cells. One per Type axis at size=default to demonstrate the three render modes (Image/Fallback/Icon).",
+  "$cellsIncluded": [
+    "type=Image,size=default",
+    "type=Fallback,size=default",
+    "type=Icon,size=default"
+  ],
+
+  "variants": [
+    {
+      "key": "type=Image,size=default",
+      "figmaNodeId": "17378:86689",
+      "node": {
+        "type": "COMPONENT",
+        "elementHint": "<span role='img' aria-label='User'><img src='...'/></span>",
+        "geometry": { "width": 32, "height": 32 },
+        "fills": [{ "type": "SOLID", "color": "#f5f5f5", "boundVariable": "{color.base.muted}" }],
+        "$fillNote": "base/muted underlying — visible during image load or if src fails.",
+        "cornerRadius": { "topLeft": 9999, "topRight": 9999, "bottomLeft": 9999, "bottomRight": 9999, "boundVariable": { "topLeft": "{border-radius.rounded-full}" } },
+        "children": [
+          {
+            "type": "IMAGE",
+            "$role": "image",
+            "src": "assets/images/6a3fdbaa200bc9cab1b8fe12ff2353640a738a4bacfb6aefc6102a80a6c8b171.png",
+            "$contentHash": "sha256:6a3fdbaa200bc9cab1b8fe12ff2353640a738a4bacfb6aefc6102a80a6c8b171",
+            "fit": "cover",
+            "$fitNote": "object-cover (CSS) — crops to fill the circular mask.",
+            "cornerRadius": { "topLeft": 9999, "boundVariable": { "topLeft": "{border-radius.rounded-full}" } },
+            "$layoutNote": "Absolute inset-0. Inherits container's rounded-full mask via overflow + radius.",
+            "$bindingStatus": "fully-bound (image src is a content-hashed asset reference per BUNDLE_SPEC §7.2)"
+          }
+        ]
+      }
+    },
+
+    {
+      "key": "type=Fallback,size=default",
+      "figmaNodeId": "17378:86690",
+      "node": {
+        "type": "COMPONENT",
+        "elementHint": "<span role='img' aria-label='Username'>CN</span>",
+        "geometry": { "width": 32, "height": 32 },
+        "fills": [{ "type": "SOLID", "color": "#f5f5f5", "boundVariable": "{color.base.muted}" }],
+        "cornerRadius": { "topLeft": 9999, "boundVariable": { "topLeft": "{border-radius.rounded-full}" } },
+        "children": [
+          {
+            "type": "TEXT",
+            "$role": "fallback",
+            "characters": "CN",
+            "$exposedProp": "fallbackText",
+            "font": { "family": "Open Sans", "weight": 400, "size": 14 },
+            "lineHeight": { "unit": "PIXELS", "value": 20 },
+            "textAlignHorizontal": "CENTER",
+            "textAlignVertical": "CENTER",
+            "$layoutNote": "Absolute inset-0 + justify-center for true centering.",
+            "fills": [{ "type": "SOLID", "color": "#737373", "boundVariable": "{color.base.muted-foreground}" }],
+            "boundTextStyle": "{typography.text-sm-leading-normal-normal}"
+          }
+        ]
+      }
+    },
+
+    {
+      "key": "type=Icon,size=default",
+      "figmaNodeId": "21123:30671",
+      "node": {
+        "type": "COMPONENT",
+        "elementHint": "<span role='img' aria-label='Add user'><svg .../></span>",
+        "geometry": { "width": 32, "height": 32 },
+        "fills": [{ "type": "SOLID", "color": "#f5f5f5", "boundVariable": "{color.base.muted}" }],
+        "cornerRadius": { "topLeft": 9999, "boundVariable": { "topLeft": "{border-radius.rounded-full}" } },
+        "children": [
+          {
+            "type": "INSTANCE",
+            "$role": "icon",
+            "geometry": { "width": 16, "height": 16 },
+            "$position": "absolute-centered (translate -50% -50%)",
+            "mainComponent": { "library": "Lucide Icons", "name": "Plus", "figmaKey": "5197:3405" },
+            "$svgAsset": "assets/icons/plus.svg",
+            "$strokeColor": "currentColor (renderer sets to base/muted-foreground)",
+            "$semanticNote": "Lucide Plus = 'add' semantic, NOT a 'user' or 'person' icon. Apollo v2 design choice — Type=Icon Avatar likely communicates 'add new contact' rather than 'avatar unavailable'."
+          }
+        ]
+      }
+    }
+  ]
+}

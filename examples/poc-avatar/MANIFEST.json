@@ -1,0 +1,65 @@
+{
+  "$schema": "../../BUNDLE_SPEC.md#section-3",
+  "bundleVersion": "0.3.0",
+  "bundleId": "apollo-v2-avatar-bundle-poc",
+  "bundleStatus": "proof-of-concept",
+  "system": { "name": "Apollo v2 (SA)", "owner": "lsanchez-g2" },
+
+  "source": {
+    "type": "figma",
+    "fileKey": "3401ZFUHoboOwA6GGjAEsq",
+    "rootNodeId": "17100:29935",
+    "parentCanvas": "23:988",
+    "extractedBy": "ds-architect@v3",
+    "extractedAt": "2026-05-18T11:00:00Z"
+  },
+
+  "spec": {
+    "name": "BUNDLE_SPEC.md",
+    "version": "0.3.0",
+    "status": "DRAFT (atom phase, 5th component — Phase C complete)",
+    "patches": ["SP-1", "SP-2", "SP-3", "SP-4", "SP-4-ext", "SP-5", "SP-6", "SP-7", "SP-8", "SP-9"]
+  },
+
+  "counts": {
+    "components": 1, "componentSets": 1,
+    "variantAxes": 2, "variantCells": 15, "variantCellsEmitted": 3, "variantCellsCoverage": 0.2,
+    "tokens": 17, "tokensUniqueToAvatar": 6,
+    "icons": 1, "images": 1, "interactions": 0, "screenshots": 0,
+    "$comment": "First PoC bundle with raster image fill (in addition to Lucide SVG icon). Validates §7.2 image pipeline alongside §7.1 icon pipeline."
+  },
+
+  "modes": ["light"],
+
+  "checksum": {
+    "algorithm": "sha256",
+    "files": {
+      "data/tokens.json":                                       { "sha256": "1aa658b0ed3034bf0fd183df64b1f7a73bbe74e02c8af4696a90e1627503da43", "bytes": 4444 },
+      "data/components/Avatar.component.json":                  { "sha256": "53a040b968b9b00617753ec9e28f12a01348e538fcb6ad6b7d175b31fcc3fe8f", "bytes": 9376 },
+      "data/components/Avatar.variants-samples.json":           { "sha256": "ad4960475fef39dacb8fb27c731f8ab6fce19b20ba72eace3a2e7421cc610381", "bytes": 4186 },
+      "data/icons/_index.json":                                 { "sha256": "5ec0dacc7291cb979afeeabe112badd86ec5171485bbbc975280f776c0960e96", "bytes": 992 },
+      "data/images/_index.json":                                { "sha256": "a5f2ff3c5d8537c213da0c00732cff0938b56f00c6e94a4887d9289516c3bca6", "bytes": 1169 },
+      "assets/icons/plus.svg":                                  { "sha256": "10e35a39bf5a9404ef3b080da588fb49243d83aa881be41057c1a3adbaf8da61", "bytes": 331 },
+      "assets/images/6a3fdbaa200bc9cab1b8fe12ff2353640a738a4bacfb6aefc6102a80a6c8b171.png": { "sha256": "6a3fdbaa200bc9cab1b8fe12ff2353640a738a4bacfb6aefc6102a80a6c8b171", "bytes": 301027 }
+    }
+  },
+
+  "auditFindings": {
+    "F16": { "severity": "LOW",     "summary": "Only Avatar size=xl meets WCAG 2.5.5 touch-target. Acceptable if non-interactive." },
+    "F17": { "severity": "LOW",     "summary": "Avatar lacks state axis entirely." },
+    "F18": { "severity": "LOW",     "summary": "No altText / accessible-name exposedProp." },
+    "F19": { "severity": "LOW",     "summary": "No imageSrc exposedProp for Type=Image." },
+    "F-icon-choice": { "severity": "DOC", "summary": "Type=Icon uses Lucide Plus (add semantic), not User. Design intent — document or revisit." }
+  },
+
+  "knownGaps": [
+    { "id": "GAP-cells-12", "description": "12 of 15 cells pending serialization" },
+    { "id": "GAP-typography-by-size", "description": "Fallback per-size typography (text-sm vs text-xs) inferred not walked" },
+    { "id": "GAP-icon-size-by-size", "description": "Per-size icon dimensions when Type=Icon" }
+  ],
+
+  "extensions": {
+    "loadOrder": ["SKILL.md", "MANIFEST.json", "references/", "data/", "assets/"],
+    "companionBundles": ["../poc-button", "../poc-switch", "../poc-input", "../poc-checkbox"]
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "$schema": "../../../../BUNDLE_SPEC.md#section-7.1",
+  "$bundleSchemaVersion": "0.3.0",
+  "$metadata": {
+    "source": { "fileKey": "3401ZFUHoboOwA6GGjAEsq", "scope": "Avatar (node 17100:29935)" },
+    "iconSet": { "name": "Lucide Icons", "version": "lucide-static@1.16.0", "license": "ISC" }
+  },
+  "icons": [
+    {
+      "id": "icon-plus",
+      "name": "icon/plus",
+      "semantic": "plus",
+      "svg": "assets/icons/plus.svg",
+      "viewBox": "0 0 24 24",
+      "license": "ISC",
+      "monochrome": true,
+      "renderColor": "currentColor",
+      "figma": { "parentNodeId": "5197:3405", "componentName": "Lucide Icon / Plus", "synonyms": "add, increase, join, combine" },
+      "usedBy": [
+        { "component": "Avatar", "slot": "icon", "context": "Type=Icon (5 cells × all sizes). Semantic intent: 'add new contact' affordance, not 'no avatar' placeholder." }
+      ]
+    }
+  ],
+  "$coverage": { "iconsUsedByAvatar": 1, "iconsExtracted": 1, "extractionCompleteness": 1.0 }
+}

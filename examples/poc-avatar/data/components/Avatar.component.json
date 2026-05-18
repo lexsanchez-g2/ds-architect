@@ -1,0 +1,161 @@
+{
+  "$schema": "../../../../BUNDLE_SPEC.md#section-6.2",
+  "$bundleSchemaVersion": "0.3.0",
+
+  "id": "avatar",
+  "name": "Avatar",
+  "level": "atom",
+  "figmaComponentSetId": "17100:29935",
+  "figmaParentCanvas": "23:988",
+  "figmaFileKey": "3401ZFUHoboOwA6GGjAEsq",
+  "description": "User identifier — circular avatar with three Types (Image / Fallback / Icon) and five Sizes (xs/sm/default/lg/xl). Optional Badge slot for notification indicator.",
+  "documentationLinks": ["https://ui.shadcn.com/docs/components/avatar"],
+
+  "variantProperties": {
+    "type": { "type": "VARIANT", "values": ["Image", "Fallback", "Icon"] },
+    "size": { "type": "VARIANT", "values": ["xs", "sm", "default", "lg", "xl"] }
+  },
+  "variantConstraints": [],
+  "totalVariantCells": 15,
+
+  "$matrixNote": "2 axes = 15 cells. Apollo v2 Avatar lacks a STATE axis entirely — first PoC atom without one. Avatars are pure presentational identifiers; no Default/Hover/Disabled distinction.",
+
+  "$missingStates": {
+    "$comment": "No state axis at all. Avatar is non-interactive in Apollo v2. If wrapped in a clickable context (Avatar-as-trigger pattern), the parent handles state. Audit F17 candidate (LOW): consider adding Disabled visual treatment if Avatar serves as interactive affordance elsewhere."
+  },
+
+  "defaultVariant": { "type": "Image", "size": "default" },
+
+  "exposedProps": [
+    { "name": "fallbackText", "type": "TEXT",    "default": "CN",   "description": "Initials displayed when Type=Fallback.", "whenVariant": { "type": ["Fallback"] } },
+    { "name": "showBadge",    "type": "BOOLEAN", "default": false,  "description": "Reveal the optional Avatar Badge slot (notification dot)." }
+  ],
+
+  "slots": [
+    {
+      "name": "image",
+      "type": "IMAGE",
+      "$exposedWhen": "type=Image",
+      "$role": "Raster image fill (object-cover, rounded-full mask).",
+      "fallbackBg": "{color.base.muted}",
+      "$fallbackBgNote": "Underneath the <img> sits a bg base/muted layer — visible during image load OR if image src fails.",
+      "$assetSamplePath": "assets/images/6a3fdbaa200bc9cab1b8fe12ff2353640a738a4bacfb6aefc6102a80a6c8b171.png",
+      "$assetNote": "Sample raster captured from Figma at default size. Content-hashed per BUNDLE_SPEC §7.2. Real renderer consumes user-supplied URL via exposedProp (not yet declared; renderer should add imageSrc TEXT prop)."
+    },
+    {
+      "name": "fallback",
+      "type": "TEXT",
+      "$exposedWhen": "type=Fallback",
+      "$role": "Initials shown when no image available.",
+      "fill": "{color.base.muted-foreground}",
+      "typography": {
+        "default": "{typography.text-sm-leading-normal-normal}",
+        "$tbdStep3": "Per-size typography mapping: large sizes (xl/lg/default) likely use text-sm; small sizes (sm/xs) likely use text-xs. Walk all 5 Fallback cells to confirm."
+      },
+      "$confirmed": "Walked cell 17378:86690 (default size) uses text-sm-leading-normal-normal."
+    },
+    {
+      "name": "icon",
+      "type": "INSTANCE",
+      "$exposedWhen": "type=Icon",
+      "$role": "Lucide icon glyph centered in container. Default is Lucide Plus (`add` semantic — Apollo v2 design choice).",
+      "$iconRef": { "library": "Lucide Icons", "icon": "Plus", "figmaKey": "5197:3405" },
+      "$strokeColor": "currentColor (renderer sets to {color.base.muted-foreground} to match Fallback initials tone)",
+      "$confirmed": "Walked cell 21123:30671 — Lucide Plus, 16×16 absolute-centered in 32×32 container."
+    },
+    {
+      "name": "badge",
+      "type": "FRAME",
+      "exposedBy": "showBadge",
+      "$role": "Notification dot at bottom-right. Always 10×10 across all sizes (not size-scaled — design choice).",
+      "geometry": "10×10 absolute, bottom-0 right-0",
+      "fill": "tailwind-colors/green/500 (#22c55e)",
+      "border": "2px solid {color.base.background}",
+      "radius": "{border-radius.rounded-full}",
+      "$badgeTokensNote": "tailwind-colors/green/500 + border-2 + base/background tokens used here but NOT returned by get_variable_defs on 17100:29935. SP-8 case: nested-instance tokens (Badge is technically a separate component referenced at canvas level). Per Button bundle's KbdGroup precedent, these should be backfilled into tokens.json if the badge is treated as part of the Avatar bundle."
+    }
+  ],
+
+  "layout": {
+    "container": {
+      "mode": "NONE (single positional element with absolute children)",
+      "shape": "square (width = height per size)",
+      "radius": "{border-radius.rounded-full}",
+      "fill": "{color.base.muted}",
+      "$fillNote": "Container fill is base/muted across ALL 15 cells regardless of Type. Image type overlays the <img>; Fallback shows the bg under initials; Icon shows the bg under the Plus glyph."
+    }
+  },
+
+  "bindings": {
+    "size-axis": {
+      "xs":      { "width": "{width.w-5}",  "height": "{width.w-5}",  "fallback-typography": "{typography.text-xs-leading-normal-normal}", "$typographyTbd": true },
+      "sm":      { "width": "{width.w-6}",  "height": "{width.w-6}",  "fallback-typography": "{typography.text-xs-leading-normal-normal}", "$typographyTbd": true },
+      "default": { "width": "{width.w-8}",  "height": "{width.w-8}",  "fallback-typography": "{typography.text-sm-leading-normal-normal}", "$confirmed": "Walked 17378:86690" },
+      "lg":      { "width": "{width.w-10}", "height": "{width.w-10}", "fallback-typography": "{typography.text-sm-leading-normal-normal}", "$typographyTbd": true },
+      "xl":      { "width": "{width.w-12}", "height": "{width.w-12}", "fallback-typography": "{typography.text-sm-leading-normal-normal}", "$typographyTbd": true },
+      "$heightNote": "Apollo v2 binds height to the SAME width.w-* token as width (square avatar). This is SP-4 semantically-mismatched candidate — width-token used for height axis. Documenting as intentional pattern for square shapes.",
+      "$iconSizeNote": "Per-size icon size (when Type=Icon) needs walk: default=16 (confirmed). xs/sm/lg/xl sizes likely scale proportionally (10/12/20/24 px)."
+    },
+
+    "type-axis": {
+      "Image": {
+        "$role": "Raster fill with rounded-full mask. <img> object-cover.",
+        "children": ["image"]
+      },
+      "Fallback": {
+        "$role": "Initials text centered. bg base/muted shows around text.",
+        "children": ["fallback"]
+      },
+      "Icon": {
+        "$role": "Generic Lucide Plus icon centered. bg base/muted shows around glyph.",
+        "children": ["icon"]
+      }
+    }
+  },
+
+  "composition": {
+    "uses": [
+      { "name": "LucideIcon", "ref": "Lucide Icons/Plus (5197:3405)", "$exposedWhen": "type=Icon" }
+    ],
+    "usedBy": ["Avatar Group (molecule, out of PoC scope)", "Avatar Badge (slot, separate component)"]
+  },
+
+  "a11y": {
+    "role": "img",
+    "preferredElement": "<img alt='User Name'> OR <span role='img' aria-label='User Name'> for Fallback/Icon types",
+    "altText": "$exposedProp candidate — Apollo v2 doesn't yet declare an altText prop. Renderer responsibility to supply.",
+    "$missingAltProp": "Audit F18 candidate (LOW): Avatar should expose an altText TEXT prop for accessible name. Currently relies on renderer + parent context.",
+    "minTouchTarget": null,
+    "$minTouchTargetNote": "Avatar is presentational; touch-target rule doesn't apply unless used as an interactive trigger. Only size=xl (48×48) meets WCAG 2.5.5 if Avatar IS made interactive. F16 audit candidate."
+  },
+
+  "codeConnect": {
+    "candidates": [
+      { "framework": "react", "library": "shadcn/ui", "url": "https://ui.shadcn.com/docs/components/avatar" }
+    ]
+  },
+
+  "$new_audit_findings_from_step3": {
+    "F16": "NEW (LOW). Only Avatar size=xl (48×48) meets WCAG 2.5.5 touch-target. xs/sm/default/lg fail. Acceptable if Avatar is non-interactive; flag if used as clickable affordance.",
+    "F17": "NEW (LOW). Avatar lacks a state axis entirely. If Avatar-as-trigger pattern exists in Apollo v2, add Disabled / Hover state.",
+    "F18": "NEW (LOW). No altText / accessible-name exposedProp. Apollo v2 should add to support screen-reader-friendly rendering.",
+    "F-icon-choice": "Type=Icon uses Lucide Plus, not a person/user icon. Apollo v2 design choice — likely intent is 'add new contact', not 'no avatar'. Worth documenting in handoff."
+  },
+
+  "$step2_known_gaps": [
+    { "id": "GAP-A1", "field": "Per-size icon dimensions when Type=Icon", "resolution": "Walk one Icon cell per size; default = 16 confirmed" },
+    { "id": "GAP-A2", "field": "Fallback typography on xs/sm sizes (text-sm vs text-xs)", "resolution": "Walk cells 17379:199112 (Fallback/sm) + 17379:199118 (Fallback/xs)" },
+    { "id": "GAP-A3", "field": "Per-size badge dimensions (currently inferred constant 10×10)", "resolution": "Walk one badge-bearing cell per size" }
+  ],
+
+  "$spec_patches_validated": {
+    "v0.2.0": [
+      "SP-1 — whenVariant exercised on slots[image]/[fallback]/[icon] (mutually exclusive per Type axis)",
+      "SP-4 — Width-token used for height axis on square avatars (semantically-mismatched candidate but DOCUMENTED here as intentional pattern, not audit signal)",
+      "SP-8 — Badge slot uses 3 tokens (green/500, border-2, background) NOT in get_variable_defs response. Nested-component-tokens pattern, parallel to Button KbdGroup → Kbd."
+    ],
+    "v0.3.0": [
+      "SP-9 — N/A (Avatar has no animation)"
+    ]
+  }
+}
