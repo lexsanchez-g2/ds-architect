@@ -1,4 +1,4 @@
-# BUNDLE_SPEC.md — Lossless Design System Bundle (v0.3.0)
+# BUNDLE_SPEC.md — Lossless Design System Bundle (v0.4.0)
 
 > The serialization contract between **ds-architect** (extractor) and any downstream consumer (Claude Design, Stitch, v0, custom renderers).
 >
@@ -8,14 +8,15 @@
 
 ## 0. Status
 
-- **Version:** 0.3.0 (DRAFT — additive patches from Apollo v2 Button smoke tests #3 + #4)
+- **Version:** 0.4.0 (DRAFT — additive patches from Apollo v2 Phase D molecule batch)
 - **Schema versioning:** semver, declared in `MANIFEST.json` → `bundleVersion`
-- **Compatibility:** consumers MUST refuse bundles with a major version newer than they support. v0.3.0 is fully backward-compatible with v0.2.0 consumers (additive only).
-- **v0.3.0 changelog:** see §17 below.
+- **Compatibility:** consumers MUST refuse bundles with a major version newer than they support. v0.4.0 is fully backward-compatible with v0.3.0 / v0.2.0 consumers (additive only — molecule-specific features that atom bundles don't emit).
+- **v0.4.0 changelog:** see §17 below.
 - **Validation history:**
-  - v0.2.0 cell-level: `examples/poc-button/verification/claude-design-3-cell-report.html` — 16/17 expectations matched + 1 self-correction on asymmetric padding (the self-correction is the proof that SP-7 padding-per-side capture is load-bearing, not a flaw).
-  - v0.2.0 Skill-load + lookup-order: `examples/poc-button/verification/claude-design-skill-load-test.md` — 4 prompts, Hard Rule #1 ("never invent values") enforced.
-  - v0.2.0 Tier-2 retest after GAP closures: `examples/poc-button/verification/round-2/apollo-v2-button-five-cell-report.md` — 5/5 full renders. Surfaced SP-9 + 4th `$bindingStatus` category candidates → patched in this v0.3.0.
+  - v0.2.0 cell-level: `examples/poc-button/verification/claude-design-3-cell-report.html` — 16/17 expectations matched + 1 self-correction on asymmetric padding.
+  - v0.2.0 Skill-load + lookup-order: `examples/poc-button/verification/claude-design-skill-load-test.md` — 4 prompts, Hard Rule #1 enforced.
+  - v0.2.0 Tier-2 retest after GAP closures: `examples/poc-button/verification/round-2/apollo-v2-button-five-cell-report.md` — 5/5 full renders.
+  - v0.3.0 + v0.4.0 PoC bundles: 10 components (5 atoms + 5 molecules), ~436 cells, ~31 audit findings. Spec held end-to-end without breaking changes; 8 additive patches accumulated (SP-1 through SP-13 minus SP-2 which was consolidated into SP-1).
 
 ---
 
@@ -612,6 +613,113 @@ If a field equals the Figma default (e.g. `rotation: 0`, `opacity: 1`, `visible:
 
 ---
 
+### 6.6 Molecule patches (v0.4.0)
+
+The following patches surfaced during the Phase D molecule batch. They extend the spec for composition patterns atoms don't exhibit. Atom bundles never need these fields; consumers reading atom bundles can ignore them.
+
+**SP-10 (v0.4.0):** When a parent component's variant axis controls a nested INSTANCE child's variant axis, the bundle MUST declare the **propagation chain** explicitly. Apollo v2 Field surfaced this: `Field.dataInvalid=True` is intended to propagate to the nested `InputGroup` instance as `state=Invalid`, but MCP codegen flattens the override.
+
+Schema — declared on a component's `slots[]` entry:
+
+```json
+"slots": [{
+  "name": "input",
+  "type": "INSTANCE_SWAP",
+  "default": "InputGroup",
+  "variantPropagation": [
+    {
+      "fromAxis": "dataInvalid",     // parent axis name
+      "fromValue": "True",
+      "toComponent": "InputGroup",   // nested instance
+      "toAxis": "state",             // child axis name (may differ — see SP-11)
+      "toValue": "Invalid",
+      "$source": "Figma instance-override on cell 18692:40259 (verified via use_figma plugin walk required to confirm)"
+    }
+  ]
+}]
+```
+
+Renderer MUST apply the propagated variant when rendering the parent in the source state. Without `variantPropagation`, renderer treats nested instances as having their default variant regardless of parent state.
+
+Source-DS audit signal: if `variantPropagation` exists in spec but Figma instance overrides are absent or incomplete, bundle should flag for source-DS fix.
+
+**SP-11 (v0.4.0):** Parent axis names MAY differ from child axis names along a propagation chain. SP-10's `fromAxis`/`toAxis` capture this. Apollo Field uses `dataInvalid` (Boolean-ish) for what Input uses as `state` (enum including Invalid). Spec accommodates either flavor; consumers MUST trust the declared mapping.
+
+Specifically: `variantPropagation[].fromValue` is the LITERAL value on the parent axis; `variantPropagation[].toValue` is the LITERAL value on the child axis. Spec doesn't enforce semantic equivalence; renderer enforces.
+
+**SP-12 (v0.4.0):** Slots MAY be **sibling-sets** — containers for N instances of the same component with cross-sibling constraints. Apollo v2 Tabs's `items` slot is the first PoC instance: holds N `TabsTrigger` children with constraint "exactly one has `active=true`".
+
+Schema:
+
+```json
+"slots": [{
+  "name": "items",
+  "type": "INSTANCE_SET",
+  "instanceComponent": "TabsTrigger",
+  "minInstances": 2,
+  "maxInstances": null,
+  "constraint": {
+    "kind": "exactly-one" | "at-most-one" | "any" | "all",
+    "property": "active",
+    "value": true
+  }
+}]
+```
+
+Constraint `kind` values:
+- **`exactly-one`** — exactly one instance has `property=value`. (Radio-button-set semantics. Tabs uses this.)
+- **`at-most-one`** — zero or one. Optional-selection lists.
+- **`any`** — no constraint. Multi-select / general containers.
+- **`all`** — all instances must satisfy. Validation: e.g. all checkboxes in a group must be checked.
+
+Renderer responsibility: enforce constraint at runtime. Bundle preserves the SOURCE's default state (e.g. Tabs's source emits 3 TabsTrigger with the first `active=true`); consumer changes which is active via click handler.
+
+Different from SP-1's INSTANCE_SWAP (single replaceable instance). INSTANCE_SET is N instances with cross-sibling rules.
+
+**SP-13 (v0.4.0):** A component MAY default a slot to an instance from a DIFFERENT bundle. Apollo v2 Item's `actions` slot defaults to `Button.variant=Outline` from the Button bundle. Spec MUST capture cross-bundle references explicitly:
+
+```json
+"slots": [{
+  "name": "actions",
+  "type": "INSTANCE",
+  "default": {
+    "$crossBundle": "apollo-v2-button-bundle-poc",
+    "component": "Button",
+    "variantKey": "variant=Outline,state=Default,size=default",
+    "figmaKey": "37:1477"
+  }
+}]
+```
+
+`MANIFEST.json` MUST declare cross-bundle dependencies:
+
+```json
+"extensions": {
+  "crossBundleRefs": [{
+    "slot": "actions",
+    "bundle": "apollo-v2-button-bundle-poc",
+    "component": "Button",
+    "variant": "variant=Outline,state=Default,size=default",
+    "figmaKey": "37:1477"
+  }]
+}
+```
+
+Consumer loading strategy:
+1. Load primary bundle.
+2. Detect `crossBundleRefs[]`.
+3. Resolve each by loading the referenced bundle from a shared registry (a `MANIFEST.extensions.bundleRegistryUrl` or local-FS path).
+4. When rendering the slot, render the cross-bundle component's variant cell using ITS variants-samples + tokens, not the parent's.
+5. Token namespace: cross-bundle slot inherits the CHILD bundle's tokens.json for that slot's resolution scope.
+
+Open questions:
+- **Token name collision** between parent and child bundles. SP-13 doesn't resolve this yet; spec v0.5.0 may add namespace prefixes (`button:color.base.primary` vs `item:color.base.primary`).
+- **Version skew**: parent bundle may declare a specific child version; if registry has only a newer/older version, renderer SHOULD warn.
+
+For PoC scope, cross-bundle resolution is renderer-side: parent bundle declares the reference, consumer brings both bundles into scope, renderer resolves at render time. Future v0.5.0 may centralize this in a `bundle-graph.json` artifact.
+
+---
+
 ## 7. Assets
 
 ### 7.1 Icons — `data/icons/_index.json`
@@ -955,6 +1063,17 @@ Each phase has its own acceptance criteria in `v3-EXTRACTION-PLAN.md`.
 
 ## 17. Changelog
 
+### v0.4.0 — 2026-05-18 (post Apollo v2 Phase D molecule batch)
+
+Additive patches surfaced by 5 molecules: Field, Tabs, Sonner, Item, MenubarItem. Backward-compatible — atom bundles ignore the new fields; molecule bundles emit them when applicable.
+
+- **SP-10** (Field, MEDIUM) — `variantPropagation[]` on `slots[]`. Declare when a parent variant axis controls a nested instance's variant axis. Renderer applies propagation at render time. Real-world driver: Apollo v2 Field's `dataInvalid=True` propagates to nested `InputGroup.state=Invalid`.
+- **SP-11** (Field, LOW) — Parent and child axis NAMES may differ along the propagation chain. SP-10's schema captures via `fromAxis`/`toAxis`. Apollo uses `dataInvalid` (Boolean-ish) ↔ `state` (enum) remap.
+- **SP-12** (Tabs, HIGH) — `INSTANCE_SET` slot type for sibling-sets. Constraint kinds: `exactly-one` / `at-most-one` / `any` / `all`. Apollo Tabs's `items` slot uses `exactly-one active=true`. Renderer enforces at runtime; bundle preserves source's default state.
+- **SP-13** (Item, HIGH) — Cross-bundle composition. `slots[].default.$crossBundle` declares a reference to a component in a different bundle. `MANIFEST.extensions.crossBundleRefs[]` mirrors at bundle level. Consumer loads both bundles; child bundle's tokens.json scopes the cross-bundle slot's resolution. Open questions: token namespace collision, version skew — deferred to v0.5.0.
+
+Validation: 5 PoC molecule bundles emit these fields where applicable. Renderer-side validation (Step 8 smoke test in Claude Design) deferred — locks v0.4.0 when first molecule re-renders honor SP-10 propagation + SP-12 sibling-set + SP-13 cross-bundle correctly.
+
 ### v0.3.0 — 2026-05-15 (post Apollo v2 Button smoke tests #3 + #4)
 
 Additive patches surfaced by Skill-load + lookup-order test (smoke #3, 4 prompts, Hard Rule #1 enforced) and Tier-2 retest after GAP closures (smoke #4, 5 prompts, 5/5 full renders). Backward-compatible: a v0.2.0 consumer can read a v0.3.0 bundle if it treats new fields as optional.
@@ -982,4 +1101,4 @@ Initial draft. Schema contract for: tokens (W3C extended), component manifests, 
 
 ---
 
-**Status:** v0.3.0 **DRAFT** (2026-05-15) — additive patches from Apollo v2 Button smoke tests #3 + #4. v0.2.0 remains LOCKED for atom phase (4 smoke tests, 31 distinct render checks, 100% conformant). v0.3.0 patches (SP-4 extension + SP-9) lock when first re-test with a Loading-state animation cell confirms `motionReduce` is honored end-to-end. Bump to v1.0.0 only if molecule/organism batches surface non-additive schema changes.
+**Status:** v0.4.0 **DRAFT** (2026-05-18) — additive patches from Apollo v2 Phase D molecule batch (Field + Tabs + Sonner + Item + MenubarItem). v0.2.0 remains LOCKED for atom phase (4 smoke tests, 31 distinct render checks). v0.3.0 patches (SP-4 ext + SP-9) lock when re-test confirms `motionReduce` honored. v0.4.0 patches (SP-10 + SP-11 + SP-12 + SP-13) lock when re-test confirms `variantPropagation` + `INSTANCE_SET` + `crossBundle` resolution honored end-to-end on real molecule cells. Bump to v1.0.0 only if Phase E organism batch surfaces non-additive schema changes.
