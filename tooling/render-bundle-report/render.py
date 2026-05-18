@@ -96,6 +96,45 @@ class Bundle:
     tokens: dict[str, dict]
     variants: list[dict] = field(default_factory=list)
     variants_declared: int = 0
+    icons: dict[str, str] = field(default_factory=dict)  # lowercased semantic/name → SVG markup
+
+
+def load_icons(bundle_dir: Path) -> dict[str, str]:
+    """Build map: lowercased icon key → SVG markup inlined from assets/icons/."""
+    icons_index = bundle_dir / "data/icons/_index.json"
+    if not icons_index.exists():
+        return {}
+    try:
+        data = json.loads(icons_index.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return {}
+    out: dict[str, str] = {}
+    for entry in data.get("icons", []):
+        svg_rel = entry.get("svg")
+        if not svg_rel:
+            continue
+        svg_path = bundle_dir / svg_rel
+        if not svg_path.exists():
+            continue
+        try:
+            markup = svg_path.read_text(encoding="utf-8").strip()
+        except OSError:
+            continue
+        # Normalise: force fill/stroke to currentColor for monochrome icons; strip any embedded xml prolog.
+        if markup.startswith("<?xml"):
+            markup = markup.split("?>", 1)[-1].strip()
+        markup = re.sub(r"\sstyle=\"[^\"]*\"", "", markup)
+        # Keys: semantic (e.g. "check"), figma name fragment (e.g. "Lucide Icon / Check" → "check"), and bare name.
+        keys: set[str] = set()
+        for k in (entry.get("semantic"), entry.get("name"), (entry.get("figma") or {}).get("componentName")):
+            if k:
+                keys.add(k.lower())
+                # last token: "Lucide Icon / Check" → "check", "icon/check" → "check"
+                last = re.split(r"[\\/]", k)[-1].strip().lower()
+                keys.add(last)
+        for k in keys:
+            out[k] = markup
+    return out
 
 
 def load_bundle(bundle_dir: Path) -> Bundle | None:
@@ -135,6 +174,7 @@ def load_bundle(bundle_dir: Path) -> Bundle | None:
         tokens=tokens,
         variants=variants,
         variants_declared=variants_declared,
+        icons=load_icons(bundle_dir),
     )
 
 
@@ -311,7 +351,7 @@ def collect_text_styles(text_node: dict) -> tuple[str, str, dict]:
     return color or "inherit", font_family, font
 
 
-def render_node(node: dict, tokens: dict[str, dict], depth: int = 0, parent_layout: dict | None = None) -> str:
+def render_node(node: dict, tokens: dict[str, dict], depth: int = 0, parent_layout: dict | None = None, icons: dict[str, str] | None = None) -> str:
     """Recursively render a variant tree node into nested HTML elements."""
     if not isinstance(node, dict) or depth > 8:
         return ""
@@ -353,6 +393,22 @@ def render_node(node: dict, tokens: dict[str, dict], depth: int = 0, parent_layo
             f'<span aria-hidden="true" style="display:inline-block;width:{w};height:{h};'
             f'background:{esc(color)};border-radius:2px;flex:none"></span>'
         )
+
+    # INSTANCE — try to map to a known icon from bundle's icon index.
+    if ntype == "INSTANCE" and icons:
+        mc = node.get("mainComponent") or {}
+        name = mc.get("name") or node.get("name") or ""
+        candidates = [name.lower(), name.lower().split("/")[-1].strip(), re.split(r"[\\/]", name.lower())[-1].strip()]
+        svg = next((icons[k] for k in candidates if k and k in icons), None)
+        if svg:
+            geom = node.get("geometry") or {}
+            w = numeric_dim(geom.get("width")) or "16px"
+            h = numeric_dim(geom.get("height")) or "16px"
+            # Force fill/stroke to currentColor for monochrome inheritance.
+            svg_inline = re.sub(r"stroke=\"#?[a-fA-F0-9]{3,8}\"", 'stroke="currentColor"', svg)
+            svg_inline = re.sub(r"fill=\"#?[a-fA-F0-9]{3,8}\"", 'fill="currentColor"', svg_inline)
+            svg_inline = re.sub(r"<svg(\s[^>]*)?>", f'<svg width="{w[:-2]}" height="{h[:-2]}" style="display:block;flex:none;color:currentColor"', svg_inline, count=1)
+            return svg_inline
 
     # FRAME / COMPONENT / INSTANCE / GROUP / RECT / ELLIPSE
     geom = node.get("geometry") or {}
@@ -418,7 +474,7 @@ def render_node(node: dict, tokens: dict[str, dict], depth: int = 0, parent_layo
 
     children_html_parts = []
     for child in node.get("children") or []:
-        rendered = render_node(child, tokens, depth + 1, layout)
+        rendered = render_node(child, tokens, depth + 1, layout, icons)
         if rendered:
             children_html_parts.append(rendered)
 
@@ -428,9 +484,9 @@ def render_node(node: dict, tokens: dict[str, dict], depth: int = 0, parent_layo
     return f'<div class="{cls}" style="{esc(";".join(styles))}">{inner}</div>'
 
 
-def cell_visual_html(node: dict, tokens: dict[str, dict]) -> str:
+def cell_visual_html(node: dict, tokens: dict[str, dict], icons: dict[str, str] | None = None) -> str:
     """Reproduce the variant cell as nested HTML elements with inline CSS."""
-    return render_node(node, tokens, depth=0)
+    return render_node(node, tokens, depth=0, icons=icons or {})
 
 
 def format_variant_key(key: str) -> str:
@@ -571,7 +627,7 @@ def variant_cell_html(bundle: Bundle, variant: dict) -> str:
 
     parts.append('<div class="cell-panes">')
     parts.append('<div class="pane pane-visual"><div class="pane-label"><span>VISUAL</span><span class="mono" style="color:var(--ink-4)">1:1</span></div>')
-    parts.append(f'<div class="visual-stage">{cell_visual_html(node, bundle.tokens)}</div>')
+    parts.append(f'<div class="visual-stage">{cell_visual_html(node, bundle.tokens, bundle.icons)}</div>')
     geom = node.get("geometry") or {}
     parts.append(f'<div class="pane-foot"><span>state = default · clipsContent = {str(node.get("clipsContent", False)).lower()}</span><span>{geom.get("width", "—")} × {geom.get("height", "—")}</span></div>')
     parts.append("</div>")
