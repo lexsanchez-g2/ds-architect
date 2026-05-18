@@ -451,6 +451,7 @@ v3 extends the v2 audit skill with a **lossless serialization layer**. Where v2 
   - `verification/schema/checksum-verify.py` — MANIFEST checksum integrity (50/50 PoC files match)
   - `verification/schema/binding-resolver.py` — semantic check: every `{token.path}` resolves to an existing leaf
 - **GitHub Actions workflow** at [`verification/schema/ci-example.yml`](verification/schema/ci-example.yml) — drop into `.github/workflows/` to gate every push.
+- **HTML bundle report generator** at [`tooling/render-bundle-report/`](tooling/render-bundle-report/) — `python3 tooling/render-bundle-report/render.py` emits a single self-contained `report.html` with sidebar TOC (component → cell) and per-cell render (visual reconstruction, resolved CSS, property/token/value table, audit signals). Mirrors the print-style cell layout in `examples/poc-button/verification/round-2/`.
 
 ### How the bundle layout works
 
