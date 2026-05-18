@@ -424,7 +424,7 @@ Then in Claude Code, run `/reload-plugins` — the skill appears automatically i
 
 ## v3 — Lossless Extraction
 
-> Status (2026-05-18): Phases A/B/C/D **CLOSED**; Phase E **QUEUED** for Sep 1, 2026.
+> Status (2026-05-18): Phases A/B/C/D **CLOSED**; Phase E **QUEUED** for Sep 1, 2026. **Resume kit: [`RESUME-SEP-1.md`](RESUME-SEP-1.md)** — single entry point with Week 1 lock workflow, every tool's CLI, and a one-command repo sanity check.
 
 v3 extends the v2 audit skill with a **lossless serialization layer**. Where v2 produces a thin export (tokens, types, stories), v3 emits a **complete bundle** — every component spec, every variant cell as a full node tree, every token with W3C alias chains preserved, every icon/image/font, plus composition graph and verification artifacts — designed for **round-trip into Claude Design** with ≥99% semantic and ≥97% pixel fidelity.
 
