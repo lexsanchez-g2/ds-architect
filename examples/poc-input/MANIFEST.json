@@ -1,0 +1,109 @@
+{
+  "$schema": "../../BUNDLE_SPEC.md#section-3",
+  "bundleVersion": "0.3.0",
+  "bundleId": "apollo-v2-input-bundle-poc",
+  "bundleStatus": "proof-of-concept",
+  "bundleScope": "single-component (Input) — partial cell coverage",
+
+  "system": { "name": "Apollo v2 (SA)", "version": "2.1.0", "owner": "lsanchez-g2" },
+
+  "source": {
+    "type": "figma",
+    "fileKey": "3401ZFUHoboOwA6GGjAEsq",
+    "fileName": "Apollo v2 (SA) - Design System",
+    "fileUrl": "https://www.figma.com/design/3401ZFUHoboOwA6GGjAEsq/Apollo-v2--SA----Design-System",
+    "rootNodeId": "65:533",
+    "parentCanvas": "65:520",
+    "rootNodeName": "Input",
+    "extractedBy": "ds-architect@v3",
+    "extractedAt": "2026-05-18T00:30:00Z",
+    "extractionMethod": "Figma MCP — 7-cell sample walk + pattern extrapolation"
+  },
+
+  "spec": {
+    "name": "BUNDLE_SPEC.md",
+    "version": "0.3.0",
+    "status": "DRAFT (atom phase)",
+    "patches": [
+      "SP-1 exposedProps whenVariant/whenSize filters (exercised on slots[fileButton] + slots[filename])",
+      "SP-2 variantConstraints.disabledProps",
+      "SP-3 textDecoration captured independent of typography token (not used by Input)",
+      "SP-4 $bindingStatus per bindable property (hardcoded fires on container width 373px)",
+      "SP-4 extension (v0.3.0): $bindingStatus gains semantically-mismatched (not observed in Input)",
+      "SP-5 slots[].swapDefaults (not used by Input)",
+      "SP-6 codeConnect.quality.verificationFailures populated by F12 doc-URL fragment mismatch",
+      "SP-7 clipsContent always emitted + bindings.size all 7 fields mandatory",
+      "SP-8 nested-INSTANCE tokens (not applicable — Input has no nested INSTANCEs)",
+      "SP-9 (v0.3.0): motionReduce on animations — N/A for Input (no animation); spec correctly doesn't force"
+    ]
+  },
+
+  "counts": {
+    "components": 1,
+    "componentSets": 1,
+    "variantAxes": 2,
+    "variantCells": 15,
+    "variantCellsEmitted": 3,
+    "variantCellsCoverage": 0.2,
+    "tokens": 24,
+    "tokensSharedWithButton": 18,
+    "tokensSharedWithSwitch": 22,
+    "tokensUniqueToInput": 2,
+    "icons": 0,
+    "images": 0,
+    "interactions": 0,
+    "screenshots": 0,
+    "$comment": "Input is the highest cell-coverage atom in the PoC (20% vs Button 1.1% vs Switch 4.7%) because the matrix is smaller. No animations declared. No icons used."
+  },
+
+  "modes": ["light"],
+  "$modesNote": "Apollo v2 source page has Light + Dark preview frames adjacent to the component-set — first dark-mode extraction opportunity in the atom batch. Deferred.",
+
+  "target": { "platform": "web", "framework": "react", "styling": "tailwind + css-custom-properties", "componentBaseline": "shadcn-ui" },
+
+  "checksum": {
+    "algorithm": "sha256",
+    "files": {
+      "data/tokens.json":                                     { "sha256": "4ed3139f4e44a876cab971f056207c2a1ac2054769986044825c173eff696a7e", "bytes": 8241 },
+      "data/components/Input.component.json":                 { "sha256": "3d7c0f9fa34c4ae5cfe474929a259732ab4b4f6c2e5a7922ed3ab26dd451de6e", "bytes": 14324 },
+      "data/components/Input.variants-samples.json":          { "sha256": "1110c29dcfc7f913e32c25c00712e8e38bb02edd3400a19b4bf0067ad1dcccdd", "bytes": 9886 },
+      "data/icons/_index.json":                               { "sha256": "56c0202eb317d6e0a31762aad37b1997d2f0622dcd12fd8d8561fbe5ecda1e72", "bytes": 564 }
+    }
+  },
+
+  "validation": {
+    "smokeTests": [
+      {
+        "name": "Step 3 sample cell walks",
+        "tool": "Figma MCP",
+        "cellsWalked": 7,
+        "result": "Patterns confirmed across both axes. Filled state = text-color shift only (medium-weight guess corrected). Password variant visually identical to Default (semantic-only). File variant has 2 children with font-weight delta.",
+        "artifact": "$step2_known_gaps in Input.component.json"
+      },
+      {
+        "name": "Reverse-render at consumer (Claude Design)",
+        "status": "PENDING — Step 8."
+      }
+    ]
+  },
+
+  "auditFindings": {
+    "$comment": "Input adds 2 new findings to the atom-batch ledger. Carries the F8 + F11 pattern across atoms.",
+    "F8":  { "severity": "MEDIUM", "carry": "Disabled opacity-50 — consistent within atoms (Switch + Input), inconsistent with Button" },
+    "F11": { "severity": "MEDIUM-doc", "carry": "Invalid state shows destructive ring AT REST — pattern reconfirmed across Switch + Input" },
+    "F12": { "severity": "LOW", "summary": "13 of 15 Input cells have wrong '#with-label' documentationLink fragment. Should be '#input' (or base URL). Parallel to Button.Link F3 (#ghost → #link)." },
+    "F13": { "severity": "LOW", "summary": "Input Invalid container-fill emits as CSS linear-gradient with identical stops — Figma export oddity OR intentional placeholder for future visual treatment." }
+  },
+
+  "knownGaps": [
+    { "id": "GAP-cells-12", "description": "12 of 15 cells not yet emitted as full node trees", "resolution": "Step 3 full extraction" },
+    { "id": "GAP-dark-mode", "description": "Dark mode untouched; Apollo v2 page has dark preview frame", "resolution": "use_figma plugin call" },
+    { "id": "GAP-password-affordance", "description": "Password variant has no eye/show-toggle affordance", "resolution": "Source-DS audit candidate" }
+  ],
+
+  "extensions": {
+    "loadOrder": ["SKILL.md", "MANIFEST.json", "references/", "data/"],
+    "progressiveDisclosure": true,
+    "companionBundles": ["../poc-button", "../poc-switch"]
+  }
+}

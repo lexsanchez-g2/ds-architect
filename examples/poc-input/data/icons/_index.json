@@ -1,0 +1,10 @@
+{
+  "$schema": "../../../../BUNDLE_SPEC.md#section-7.1",
+  "$bundleSchemaVersion": "0.3.0",
+  "$metadata": {
+    "source": { "fileKey": "3401ZFUHoboOwA6GGjAEsq", "scope": "Input component-set (node 65:533)" },
+    "$comment": "Apollo v2 Input uses no icons across any of its 15 variant cells. File variant uses TEXT ('Choose file') as its pseudo-button affordance, NOT an icon. Empty index emitted for structural parity with Button/Switch bundles."
+  },
+  "icons": [],
+  "$coverage": { "iconsUsedByInput": 0, "iconsExtracted": 0, "extractionCompleteness": 1.0 }
+}

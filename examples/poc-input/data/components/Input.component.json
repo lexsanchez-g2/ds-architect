@@ -1,0 +1,292 @@
+{
+  "$schema": "../../../../BUNDLE_SPEC.md#section-6.2",
+  "$bundleSchemaVersion": "0.3.0",
+
+  "id": "input",
+  "name": "Input",
+  "level": "atom",
+  "figmaComponentSetId": "65:533",
+  "figmaParentCanvas": "65:520",
+  "figmaFileKey": "3401ZFUHoboOwA6GGjAEsq",
+  "description": "Bare text-field surface. Variant maps to HTML <input type='…'>. Apollo v2 wraps it in higher-level Field/Field Group molecules for label + helper + error composition; this PoC covers the atom only.",
+  "documentationLinks": ["https://ui.shadcn.com/docs/components/input"],
+
+  "variantProperties": {
+    "variant": { "type": "VARIANT", "values": ["Default", "Password", "File"] },
+    "state":   { "type": "VARIANT", "values": ["Default", "Focus", "Disabled", "Filled", "Invalid"] }
+  },
+  "variantConstraints": [],
+  "totalVariantCells": 15,
+
+  "$matrixNote": "Smallest atom-batch matrix so far: 15 cells (Button 264 → Switch 64 → Input 15). All cells uniform 373w × 44h. No size/type/placement axes. WCAG 2.5.5 compliant baseline.",
+
+  "$missingStates": {
+    "absent": ["Hover", "Pressed", "Loading"],
+    "$comment": "Same Hover-absence pattern as Switch (F5). Pressed not semantically applicable to inputs. Loading not applicable (Inputs don't have async-load states; Field molecule could)."
+  },
+
+  "$newStateValue": {
+    "name": "Filled",
+    "$comment": "NEW state value not seen in Button or Switch matrices. Represents 'user has entered text'. Implementation: text-color shifts placeholder muted-foreground → base/foreground; typography stays Regular weight (no font-weight change). Distinguishes empty placeholder rendering from typed-content rendering at the component level."
+  },
+
+  "defaultVariant": { "variant": "Default", "state": "Default" },
+
+  "exposedProps": [
+    { "name": "placeholderText", "type": "TEXT", "default": "Placeholder", "description": "Placeholder text shown when input is empty (or typed-text on Filled state)." }
+  ],
+
+  "slots": [
+    {
+      "name": "placeholder",
+      "type": "TEXT",
+      "$role": "The placeholder OR the typed text. Apollo v2 source DS doesn't distinguish — Filled state changes the styling but the slot is the same TEXT node. Renderer maps to either <input placeholder> or <input value> as appropriate.",
+      "typography": "{typography.text-sm-leading-normal-normal}",
+      "$typographyNote": "Regular weight across ALL states including Filled. Step-1 inferred medium-weight on Filled was wrong; confirmed via cell walk.",
+      "fill": {
+        "Default":  "{color.base.muted-foreground}",
+        "Focus":    "{color.base.muted-foreground}",
+        "Disabled": "{color.base.muted-foreground}",
+        "Filled":   "{color.base.foreground}",
+        "Invalid":  "{color.base.muted-foreground}",
+        "$filledNote": "Filled state shifts placeholder text-color from muted-foreground → foreground. THE distinguishing visual change for typed content.",
+        "$confirmed": "Walked Default, Focus, Disabled, Filled, Invalid cells."
+      },
+      "textOverflow": "ellipsis",
+      "whiteSpace": "nowrap"
+    },
+    {
+      "name": "fileButton",
+      "type": "TEXT",
+      "$role": "ONLY present on variant=File. Pseudo-button 'Choose file' affordance.",
+      "$exposedWhen": "variant=File",
+      "typography": "{typography.text-sm-leading-normal-medium}",
+      "$typographyNote": "File button uses MEDIUM weight (distinguishes from filename text below which is normal weight).",
+      "fill": "{color.base.foreground}",
+      "$confirmed": "Walked cell 73:43 (File/Default). Same slot reappears across all 5 File-variant state cells."
+    },
+    {
+      "name": "filename",
+      "type": "TEXT",
+      "$role": "ONLY present on variant=File. Shows 'No file chosen' or selected filename. Takes remaining horizontal space (flex-1).",
+      "$exposedWhen": "variant=File",
+      "typography": "{typography.text-sm-leading-normal-normal}",
+      "fill": "{color.base.foreground}",
+      "$confirmed": "Walked cell 73:43. Apollo v2 emits 'No file chosen' as the default text — same as native browser file inputs."
+    }
+  ],
+
+  "layout": {
+    "container": {
+      "mode": "HORIZONTAL",
+      "gap": {
+        "Default":  "{spacing.1}",
+        "Password": "{spacing.1}",
+        "File":     "{spacing.1}",
+        "$comment": "gap=spacing/1 (4px) across all variants. Only File variant has 2 visible children (button + filename) so gap is actually visible; Default/Password have single child."
+      },
+      "paddingTop": "{spacing.1}",
+      "paddingRight": "{spacing.2-5}",
+      "paddingBottom": "{spacing.1}",
+      "paddingLeft": "{spacing.2-5}",
+      "$paddingNote": "Asymmetric padding: 4 vertical + 10 horizontal. Captured per SP-7 per-side.",
+      "primaryAxisAlignItems": "MIN",
+      "counterAxisAlignItems": "CENTER",
+      "primaryAxisSizingMode": "FIXED",
+      "$widthNote": "Container width 373px hardcoded across all 15 cells. Same audit class as Button/Switch container widths.",
+      "$widthBindingStatus": "hardcoded"
+    }
+  },
+
+  "bindings": {
+    "height": {
+      "$all": "{height.h-11}",
+      "$comment": "44px across all 15 cells. WCAG 2.5.5 compliant baseline."
+    },
+
+    "radius": {
+      "$all": "{border-radius.rounded-lg}",
+      "$comment": "10px across all cells. Inputs are rounded-rectangles, NOT pills. Different identity from Button (pill 9999) and Switch.track (pill 9999)."
+    },
+
+    "container-fill": {
+      "$axisDependency": "state",
+      "Default":  "{color.custom.background-dark-input-30}",
+      "Focus":    "{color.custom.background-dark-input-30}",
+      "Disabled": "{color.custom.input-50-dark-input-80}",
+      "Filled":   "{color.custom.background-dark-input-30}",
+      "Invalid":  "linear-gradient(to right, #fafafa, #fafafa)",
+      "$invalidFillNote": "F13 (NEW, LOW): Invalid bg emits as CSS linear-gradient with identical stops (both #fafafa). Effectively a solid fill. Likely Figma export oddity OR placeholder for future visual treatment (e.g. subtle red tint). Source-DS audit candidate.",
+      "$disabledNote": "Disabled state uses input-50-dark-input-80 (the @50% alpha input border color, hex #e5e5e580) AS THE BG. Combined with opacity-50 on the outer container, the visual effect is a doubly-muted background.",
+      "$confirmed": "Walked all 5 Default-variant state cells."
+    },
+
+    "container-border": {
+      "$axisDependency": "state",
+      "width": "{border-width.border}",
+      "style": "solid",
+      "color": {
+        "Default":  "{color.base.input}",
+        "Focus":    "{color.base.ring}",
+        "Disabled": "{color.base.input}",
+        "Filled":   "{color.base.input}",
+        "Invalid":  "{color.base.destructive}",
+        "$focusNote": "Focus swaps the border from input gray (#a3a3a3) → ring violet (#5a35c0).",
+        "$invalidNote": "Invalid swaps to destructive red.",
+        "$confirmed": "Walked all 5 Default-variant state cells. Disabled border STAYS at base/input (not muted-foreground); the diminished look comes from the opacity-50 container."
+      }
+    },
+
+    "container-shadow": {
+      "$axisDependency": "state",
+      "Default":  null,
+      "Focus":    "{effect.focus-default}",
+      "Disabled": null,
+      "Filled":   null,
+      "Invalid":  "{effect.focus-destructive}",
+      "$invalidNote": "Same pattern as Switch F11 — Invalid state shows destructive ring AT REST, not only on Focus. Apollo v2 intentional emphasis pattern across atoms.",
+      "$confirmed": "Walked all 5 Default-variant state cells."
+    },
+
+    "container-overflow": {
+      "Default":  "visible",
+      "Focus":    "clip",
+      "Disabled": "visible",
+      "Filled":   "visible",
+      "Invalid":  "clip",
+      "$comment": "Focus + Invalid emit overflow-clip; others have no overflow set (visible default). Same pattern as Switch.",
+      "$confirmed": "Walked all 5 cells."
+    },
+
+    "opacity": {
+      "$axisDependency": "state",
+      "$appliedAt": "outer container",
+      "Default":  "1",
+      "Focus":    "1",
+      "Disabled": "{opacity.opacity-50}",
+      "Filled":   "1",
+      "Invalid":  "1",
+      "$disabledNote": "F8 reconfirmed: Input uses opacity-50 for Disabled — same as Switch. CONSISTENT WITHIN ATOMS (Switch + Input both use opacity-50), but still inconsistent with Button (which uses tinted color, no alpha)."
+    },
+
+    "variant-axis": {
+      "Default": {
+        "$role": "Bare text input. Renderer: <input type='text|email|number|search'>.",
+        "slots": ["placeholder"],
+        "$visualIdentity": "Single placeholder line. State drives all visual changes."
+      },
+      "Password": {
+        "$role": "Masked text input. Renderer: <input type='password'>.",
+        "slots": ["placeholder"],
+        "$visualIdentity": "IDENTICAL to Default at the Figma level. Apollo v2 doesn't show masked dots in source — that's a browser/renderer concern. The variant axis exists purely for codeConnect/HTML-type mapping.",
+        "$auditNote": "Could surface Apollo v2 question: should Password show a 'show/hide eye toggle' affordance? Currently no.",
+        "$confirmed": "Walked cell 18707:206474 — visually identical to 65:531."
+      },
+      "File": {
+        "$role": "File-upload input. Renderer: <input type='file'>.",
+        "slots": ["fileButton", "filename"],
+        "$visualIdentity": "Two children: 'Choose file' pseudo-button (font-medium) + filename slot (font-normal, flex-1).",
+        "$confirmed": "Walked cell 73:43."
+      }
+    }
+  },
+
+  "composition": { "uses": [] },
+
+  "a11y": {
+    "role": "textbox (default), inferred from variant",
+    "preferredElement": "<input type='text|password|file|email|number|search'>",
+    "ariaInvalid": { "Invalid": "true" },
+    "ariaDisabled": { "Disabled": "true" },
+    "focusRing": "{effect.focus-default} (or {effect.focus-destructive} on Invalid)",
+    "$focusSelectorNote": "Use :focus-visible, not :focus.",
+    "minTouchTarget": { "width": 44, "height": 44 },
+    "touchTargetCompliance": {
+      "allCompliant": true,
+      "$comment": "First atom in PoC with 100% touch-target compliance. All 15 cells = 44h."
+    }
+  },
+
+  "codeConnect": {
+    "candidates": [
+      {
+        "framework": "react",
+        "library": "shadcn/ui",
+        "url": "https://ui.shadcn.com/docs/components/input",
+        "perVariantUrls": {
+          "Default":  "https://ui.shadcn.com/docs/components/input",
+          "Password": "https://ui.shadcn.com/docs/components/input",
+          "File":     "https://ui.shadcn.com/docs/components/input#file"
+        }
+      }
+    ],
+    "quality": {
+      "perVariantUrlVerified": false,
+      "verificationFailures": [
+        {
+          "scope": "13 of 15 cells (all Default/Filled/Focus/Invalid + Password×5)",
+          "figmaDocLink": "https://ui.shadcn.com/docs/components/input#with-label",
+          "expectedDocLink": "https://ui.shadcn.com/docs/components/input",
+          "severity": "low",
+          "auditFinding": "F12 (NEW): Apollo v2 Input cells default their Figma documentationLink to '#with-label' fragment, but the bare Input atom doesn't render a label — that's the Field molecule. Only Disabled (#disabled) and File (#file) variants have correct fragments. Same audit class as Button.Link's #ghost → #link typo (F3)."
+        }
+      ]
+    }
+  },
+
+  "$step1_token_findings": [
+    "24 tokens used. Smallest delta of atom batch: 22 shared with Button+Switch, only 2 NEW.",
+    "NEW: base/input (#a3a3a3) — first atom to elevate the input border color to a top-level semantic token.",
+    "NEW: custom/input-50-dark-input-80 (#e5e5e580) — used as the Disabled state BG fill. Combines with opacity-50 outer-container for a doubly-muted look."
+  ],
+
+  "$step2_known_gaps": [
+    {
+      "id": "GAP-I1",
+      "field": "Password variant has no eye/show-toggle affordance",
+      "resolution": "Confirmed as DS design choice — Password is semantically distinct from Default but visually identical. Source-DS audit: consider adding show/hide toggle in v2.next."
+    },
+    {
+      "id": "GAP-I2",
+      "field": "File variant filename text '#No file chosen' is hardcoded text (not exposedProp)",
+      "resolution": "OPEN — could become a TEXT exposedProp on File variant only (via SP-1 whenVariant filter). Currently not exposed."
+    },
+    {
+      "id": "GAP-I3",
+      "field": "Invalid bg gradient with identical stops",
+      "resolution": "DOCUMENTED — F13 (NEW, LOW). Figma export oddity OR intentional placeholder. Source-DS audit candidate."
+    },
+    {
+      "id": "GAP-I4",
+      "field": "Container width 373px hardcoded raw, not bound",
+      "resolution": "Confirmed hardcoded across all walked cells. Same class as Button/Switch container widths."
+    },
+    {
+      "id": "GAP-I5",
+      "field": "documentationLink fragment '#with-label' wrong on 13/15 cells",
+      "resolution": "F12 logged. Source-DS audit candidate."
+    }
+  ],
+
+  "$new_audit_findings_from_step3": {
+    "F12": "NEW (LOW). Input cells default Figma documentationLink to '#with-label' fragment. Should be base URL (no fragment) or component-specific. Affects 13/15 cells. Same class as Button.Link F3 (#ghost → #link).",
+    "F13": "NEW (LOW). Input Invalid state emits container-fill as CSS linear-gradient from-#fafafa to-#fafafa (identical stops). Figma export oddity or intentional placeholder."
+  },
+
+  "$spec_patches_validated": {
+    "v0.2.0": [
+      "SP-1 — whenVariant filters exercised on slots[fileButton] and slots[filename] (only present on variant=File)",
+      "SP-2 — variantConstraints empty (no axis combinations forbidden)",
+      "SP-3 — n/a (no textDecoration usage in Input)",
+      "SP-4 — $bindingStatus: hardcoded fires on container width (373px)",
+      "SP-5 — n/a (no slot swaps on state transitions)",
+      "SP-6 — codeConnect.quality.verificationFailures populated by F12",
+      "SP-7 — Per-side asymmetric padding (4px vertical, 10px horizontal) captured. clipsContent emitted per cell.",
+      "SP-8 — n/a (no nested INSTANCEs in Input atom — Field molecule will exercise this)"
+    ],
+    "v0.3.0": [
+      "SP-4 extension — semantically-mismatched: NOT observed in Input (no cross-axis token usage)",
+      "SP-9 — Not applicable. Input has no animation. Confirms spec doesn't force animation declarations where none exist."
+    ]
+  }
+}

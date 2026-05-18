@@ -1,0 +1,232 @@
+{
+  "$schema": "../../../../BUNDLE_SPEC.md#section-6.3",
+  "$bundleSchemaVersion": "0.3.0",
+  "componentId": "input",
+  "variantCount": 15,
+  "$samplesOnly": true,
+  "$samplesNote": "3 of 15 cells. Demonstrates v0.3.0 node-tree schema on a non-Button, non-Switch atom. Cells chosen to exercise: Default/Default baseline, Default/Invalid (F11/F13 ring-at-rest + gradient-as-solid pattern), File/Default (multi-slot variant with conditional slots).",
+  "$cellsIncluded": [
+    "variant=Default,state=Default",
+    "variant=Default,state=Invalid",
+    "variant=File,state=Default"
+  ],
+
+  "variants": [
+
+    {
+      "key": "variant=Default,state=Default",
+      "figmaNodeId": "65:531",
+      "node": {
+        "type": "COMPONENT",
+        "name": "Variant=Default, State=Default",
+        "figmaNodeId": "65:531",
+        "elementHint": "<input type='text'>",
+        "geometry": {
+          "width": 373, "height": 44,
+          "$widthBindingStatus": "hardcoded"
+        },
+        "layout": {
+          "mode": "HORIZONTAL",
+          "paddingTop": 4, "paddingRight": 10, "paddingBottom": 4, "paddingLeft": 10,
+          "itemSpacing": 4,
+          "primaryAxisAlignItems": "MIN",
+          "counterAxisAlignItems": "CENTER",
+          "bindings": {
+            "paddingTop":    "{spacing.1}",
+            "paddingRight":  "{spacing.2-5}",
+            "paddingBottom": "{spacing.1}",
+            "paddingLeft":   "{spacing.2-5}",
+            "itemSpacing":   "{spacing.1}",
+            "height":        "{height.h-11}"
+          },
+          "$bindingStatus": "fully-bound"
+        },
+        "fills": [{ "type": "SOLID", "color": "#fafafa", "boundVariable": "{color.custom.background-dark-input-30}" }],
+        "$fillsBindingStatus": "fully-bound",
+        "strokes": [{ "type": "SOLID", "color": "#a3a3a3", "boundVariable": "{color.base.input}" }],
+        "strokeWeight": 1,
+        "strokeAlign": "INSIDE",
+        "cornerRadius": { "topLeft": 10, "topRight": 10, "bottomLeft": 10, "bottomRight": 10, "boundVariable": { "topLeft": "{border-radius.rounded-lg}" } },
+        "effects": [],
+        "clipsContent": false,
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "Placeholder",
+            "figmaNodeId": "65:522",
+            "$role": "placeholder",
+            "characters": "Placeholder",
+            "font": { "family": "Open Sans", "style": "Regular", "weight": 400, "size": 14 },
+            "lineHeight": { "unit": "PIXELS", "value": 20 },
+            "textDecoration": "NONE",
+            "fills": [{ "type": "SOLID", "color": "#737373", "boundVariable": "{color.base.muted-foreground}" }],
+            "$fillsBindingStatus": "fully-bound",
+            "boundTextStyle": "{typography.text-sm-leading-normal-normal}",
+            "textOverflow": "ellipsis"
+          }
+        ]
+      }
+    },
+
+    {
+      "key": "variant=Default,state=Invalid",
+      "figmaNodeId": "17428:7308",
+      "$cellNotes": "Invalid state. Exercises: destructive border + focus-destructive ring AT REST (F11 pattern from Switch generalized to Input). Container fill emitted as CSS gradient with identical stops (F13 — Figma export oddity).",
+      "node": {
+        "type": "COMPONENT",
+        "name": "Variant=Default, State=Invalid",
+        "figmaNodeId": "17428:7308",
+        "elementHint": "<input type='text' aria-invalid='true'>",
+        "geometry": { "width": 373, "height": 44, "$widthBindingStatus": "hardcoded" },
+        "layout": {
+          "mode": "HORIZONTAL",
+          "paddingTop": 4, "paddingRight": 10, "paddingBottom": 4, "paddingLeft": 10,
+          "itemSpacing": 4,
+          "bindings": { "paddingTop": "{spacing.1}", "paddingRight": "{spacing.2-5}", "paddingBottom": "{spacing.1}", "paddingLeft": "{spacing.2-5}", "itemSpacing": "{spacing.1}", "height": "{height.h-11}" }
+        },
+        "fills": [
+          {
+            "type": "GRADIENT_LINEAR",
+            "direction": "to right",
+            "stops": [
+              { "position": 0, "color": "#fafafa" },
+              { "position": 1, "color": "#fafafa" }
+            ],
+            "$bindingStatus": "hardcoded",
+            "$auditFinding": "F13 (NEW, LOW): Gradient with identical stops (effectively solid #fafafa). Figma export oddity OR intentional placeholder for future visual treatment."
+          }
+        ],
+        "$fillsBindingStatus": "hardcoded",
+        "strokes": [{ "type": "SOLID", "color": "#dc2626", "boundVariable": "{color.base.destructive}" }],
+        "strokeWeight": 1,
+        "strokeAlign": "INSIDE",
+        "cornerRadius": { "topLeft": 10, "boundVariable": { "topLeft": "{border-radius.rounded-lg}" } },
+        "effects": [
+          {
+            "type": "DROP_SHADOW",
+            "offset": { "x": 0, "y": 0 }, "radius": 0, "spread": 3,
+            "color": "#dc262633",
+            "visible": true,
+            "boundVariable": "{effect.focus-destructive}",
+            "$comment": "F11 pattern: Invalid shows destructive focus ring AT REST, not only on Focus state."
+          }
+        ],
+        "$effectsBindingStatus": "fully-bound",
+        "clipsContent": true,
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "Placeholder",
+            "figmaNodeId": "17428:7313",
+            "$role": "placeholder",
+            "characters": "Placeholder",
+            "font": { "family": "Open Sans", "style": "Regular", "weight": 400, "size": 14 },
+            "lineHeight": { "unit": "PIXELS", "value": 20 },
+            "fills": [{ "type": "SOLID", "color": "#737373", "boundVariable": "{color.base.muted-foreground}" }],
+            "boundTextStyle": "{typography.text-sm-leading-normal-normal}"
+          }
+        ],
+        "a11y": { "ariaInvalid": "true" }
+      }
+    },
+
+    {
+      "key": "variant=File,state=Default",
+      "figmaNodeId": "73:43",
+      "$cellNotes": "File variant baseline. Exercises multi-slot composition with whenVariant filter (fileButton + filename only on variant=File).",
+      "node": {
+        "type": "COMPONENT",
+        "name": "Variant=File, State=Default",
+        "figmaNodeId": "73:43",
+        "elementHint": "<input type='file'>",
+        "geometry": { "width": 373, "height": 44, "$widthBindingStatus": "hardcoded" },
+        "layout": {
+          "mode": "HORIZONTAL",
+          "paddingTop": 4, "paddingRight": 10, "paddingBottom": 4, "paddingLeft": 10,
+          "itemSpacing": 4,
+          "bindings": { "itemSpacing": "{spacing.1}", "height": "{height.h-11}" }
+        },
+        "fills": [{ "type": "SOLID", "color": "#fafafa", "boundVariable": "{color.custom.background-dark-input-30}" }],
+        "strokes": [{ "type": "SOLID", "color": "#a3a3a3", "boundVariable": "{color.base.input}" }],
+        "strokeWeight": 1,
+        "cornerRadius": { "topLeft": 10, "boundVariable": { "topLeft": "{border-radius.rounded-lg}" } },
+        "children": [
+          {
+            "type": "FRAME",
+            "name": "Button (Choose file pseudo-button)",
+            "figmaNodeId": "73:76",
+            "$role": "fileButton",
+            "layout": {
+              "mode": "HORIZONTAL",
+              "primaryAxisAlignItems": "CENTER",
+              "counterAxisAlignItems": "CENTER",
+              "paddingTop": 1, "paddingBottom": 1,
+              "$paddingNote": "py-px = 1px top/bottom raw"
+            },
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "Choose file",
+                "figmaNodeId": "73:75",
+                "characters": "Choose file",
+                "font": { "family": "Open Sans", "style": "Regular", "weight": 500, "size": 14 },
+                "$fontWeightNote": "MEDIUM weight (500) — distinguishes the pseudo-button text from the filename text below (Regular 400).",
+                "lineHeight": { "unit": "PIXELS", "value": 20 },
+                "fills": [{ "type": "SOLID", "color": "#0a0a0a", "boundVariable": "{color.base.foreground}" }],
+                "boundTextStyle": "{typography.text-sm-leading-normal-medium}"
+              }
+            ]
+          },
+          {
+            "type": "TEXT",
+            "name": "Filename",
+            "figmaNodeId": "74:85",
+            "$role": "filename",
+            "characters": "No file chosen",
+            "font": { "family": "Open Sans", "style": "Regular", "weight": 400, "size": 14 },
+            "lineHeight": { "unit": "PIXELS", "value": 20 },
+            "fills": [{ "type": "SOLID", "color": "#0a0a0a", "boundVariable": "{color.base.foreground}" }],
+            "boundTextStyle": "{typography.text-sm-leading-normal-normal}",
+            "$layoutNote": "Takes remaining horizontal space (flex-1). Truncates with ellipsis if filename overflows.",
+            "textOverflow": "ellipsis"
+          }
+        ]
+      }
+    }
+
+  ],
+
+  "$verificationCandidate": {
+    "expectations": [
+      {
+        "cell": "variant=Default,state=Default",
+        "expectCSS": [
+          "background-color: #fafafa",
+          "border: 1px solid #a3a3a3 (base/input)",
+          "border-radius: 10px",
+          "height: 44px",
+          "padding: 4px 10px",
+          "color: #737373 (placeholder muted)"
+        ]
+      },
+      {
+        "cell": "variant=Default,state=Invalid",
+        "expectCSS": [
+          "background: linear-gradient(to right, #fafafa, #fafafa) — OR consumer normalizes to solid #fafafa",
+          "border: 1px solid #dc2626 (destructive)",
+          "box-shadow: 0 0 0 3px rgba(220,38,38,0.2) (focus-destructive AT REST)",
+          "overflow: hidden",
+          "aria-invalid: true"
+        ]
+      },
+      {
+        "cell": "variant=File,state=Default",
+        "expectCSS": [
+          "container: same as Default",
+          "two children: 'Choose file' (font-weight: 500) + 'No file chosen' (font-weight: 400, flex-1)",
+          "element: <input type='file'>"
+        ]
+      }
+    ]
+  }
+}
