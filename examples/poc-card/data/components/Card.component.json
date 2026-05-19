@@ -1,0 +1,25 @@
+{
+  "$schema": "../../../verification/schema/component.schema.json",
+  "id": "card",
+  "name": "Card",
+  "level": "molecule",
+  "figmaComponentSetId": "21123:292666",
+  "description": "A design system using Inter, Open Sans, Geist Mono, Manrope with 15 unique colors extracted directly from Figma.",
+  "variantProperties": {
+    "size": {
+      "type": "VARIANT",
+      "values": [
+        "default",
+        "sm"
+      ]
+    }
+  },
+  "exposedProps": [],
+  "variantConstraints": [],
+  "bindings": {},
+  "slots": [],
+  "a11y": {
+    "role": "card",
+    "statesRequired": []
+  }
+}

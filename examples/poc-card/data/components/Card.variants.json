@@ -1,0 +1,472 @@
+{
+  "$schema": "../../../verification/schema/variants.schema.json",
+  "componentId": "card",
+  "variantCount": 2,
+  "variantsEmittedCount": 2,
+  "variants": [
+    {
+      "key": "size=default",
+      "figmaNodeId": "17374:183180",
+      "node": {
+        "type": "COMPONENT",
+        "name": "Size=default",
+        "figmaNodeId": "17374:183180",
+        "geometry": {
+          "width": 420,
+          "height": 248
+        },
+        "fills": [
+          {
+            "type": "SOLID",
+            "color": "#ffffff",
+            "boundVariable": "{color.base.card}"
+          }
+        ],
+        "strokes": [
+          {
+            "type": "SOLID",
+            "color": "#e5e5e5",
+            "boundVariable": "{color.base.border}"
+          }
+        ],
+        "strokeWeight": 1,
+        "strokeAlign": "INSIDE",
+        "effects": [
+          {
+            "type": "DROP_SHADOW",
+            "radius": 2,
+            "offset": {
+              "x": 0,
+              "y": 1
+            },
+            "color": "#0000000d",
+            "spread": 0,
+            "visible": true,
+            "blendMode": "NORMAL",
+            "boundVariable": "{shadow.xs.color}"
+          }
+        ],
+        "cornerRadius": {
+          "topLeft": 14,
+          "topRight": 14,
+          "bottomLeft": 14,
+          "bottomRight": 14,
+          "boundVariable": {
+            "topLeft": "{border-radius.rounded-xl}",
+            "topRight": "{border-radius.rounded-xl}",
+            "bottomLeft": "{border-radius.rounded-xl}",
+            "bottomRight": "{border-radius.rounded-xl}"
+          }
+        },
+        "layout": {
+          "mode": "VERTICAL",
+          "paddingTop": 0,
+          "paddingRight": 0,
+          "paddingBottom": 0,
+          "paddingLeft": 0,
+          "itemSpacing": 0,
+          "primaryAxisAlignItems": "MIN",
+          "counterAxisAlignItems": "MIN"
+        },
+        "clipsContent": true,
+        "children": [
+          {
+            "type": "INSTANCE",
+            "name": "Aspect Ratio",
+            "figmaNodeId": "21123:306326",
+            "geometry": {
+              "width": 420,
+              "height": 262.5
+            },
+            "fills": [
+              {
+                "type": "IMAGE"
+              }
+            ],
+            "clipsContent": true,
+            "mainComponent": {
+              "name": "Ratio=16 / 10"
+            },
+            "$note": "INSTANCE trimmed"
+          },
+          {
+            "type": "FRAME",
+            "name": "Card Header",
+            "figmaNodeId": "17374:183177",
+            "geometry": {
+              "width": 420,
+              "height": 80
+            },
+            "layout": {
+              "mode": "HORIZONTAL",
+              "paddingTop": 16,
+              "paddingRight": 16,
+              "paddingBottom": 16,
+              "paddingLeft": 16,
+              "itemSpacing": 8,
+              "primaryAxisAlignItems": "MIN",
+              "counterAxisAlignItems": "MIN",
+              "bindings": {
+                "paddingTop": "{spacing.4}",
+                "paddingRight": "{spacing.4}",
+                "paddingBottom": "{spacing.4}",
+                "paddingLeft": "{spacing.4}",
+                "itemSpacing": "{spacing.2}"
+              }
+            },
+            "clipsContent": false,
+            "children": [
+              {
+                "type": "FRAME",
+                "name": "Text",
+                "figmaNodeId": "17374:183396",
+                "layout": {
+                  "mode": "VERTICAL",
+                  "paddingTop": 0,
+                  "paddingRight": 0,
+                  "paddingBottom": 0,
+                  "paddingLeft": 0,
+                  "itemSpacing": 4,
+                  "primaryAxisAlignItems": "MIN",
+                  "counterAxisAlignItems": "MIN",
+                  "bindings": {
+                    "itemSpacing": "{spacing.1}"
+                  }
+                },
+                "clipsContent": false,
+                "children": [
+                  {
+                    "type": "TEXT",
+                    "name": "Title Text",
+                    "figmaNodeId": "17374:183178",
+                    "fills": [
+                      {
+                        "type": "SOLID",
+                        "color": "#171717",
+                        "boundVariable": "{color.base.card-foreground}"
+                      }
+                    ],
+                    "characters": "Title Text",
+                    "font": {
+                      "family": "Open Sans",
+                      "weight": 500,
+                      "size": 16
+                    },
+                    "lineHeight": {
+                      "unit": "PIXELS",
+                      "value": 24
+                    },
+                    "textAlignHorizontal": "LEFT",
+                    "textDecoration": "NONE"
+                  },
+                  {
+                    "type": "TEXT",
+                    "name": "Card description",
+                    "figmaNodeId": "17374:183179",
+                    "fills": [
+                      {
+                        "type": "SOLID",
+                        "color": "#737373",
+                        "boundVariable": "{color.base.muted-foreground}"
+                      }
+                    ],
+                    "characters": "This is a card description.",
+                    "font": {
+                      "family": "Open Sans",
+                      "weight": 400,
+                      "size": 14
+                    },
+                    "lineHeight": {
+                      "unit": "PIXELS",
+                      "value": 20
+                    },
+                    "textAlignHorizontal": "LEFT",
+                    "textDecoration": "NONE"
+                  }
+                ]
+              },
+              {
+                "type": "INSTANCE",
+                "name": "Button",
+                "figmaNodeId": "21123:292697",
+                "geometry": {
+                  "width": 64,
+                  "height": 32
+                },
+                "mainComponent": {
+                  "name": "Variant=Link, State=Default, Size=default"
+                },
+                "$note": "INSTANCE trimmed"
+              }
+            ]
+          },
+          {
+            "type": "FRAME",
+            "name": "Card Content",
+            "figmaNodeId": "17374:183173",
+            "layout": {
+              "mode": "VERTICAL",
+              "paddingTop": 0,
+              "paddingRight": 16,
+              "paddingBottom": 16,
+              "paddingLeft": 16,
+              "itemSpacing": 8,
+              "primaryAxisAlignItems": "MIN",
+              "counterAxisAlignItems": "MIN",
+              "bindings": {
+                "paddingRight": "{spacing.4}",
+                "paddingBottom": "{spacing.4}",
+                "paddingLeft": "{spacing.4}"
+              }
+            },
+            "clipsContent": false,
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "Content placeholder",
+                "figmaNodeId": "21349:28073",
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": "#737373",
+                    "boundVariable": "{color.base.muted-foreground}"
+                  }
+                ],
+                "characters": "Remove this frame and add your content",
+                "font": {
+                  "family": "Open Sans",
+                  "weight": 400,
+                  "size": 14
+                },
+                "lineHeight": {
+                  "unit": "PIXELS",
+                  "value": 20
+                },
+                "textAlignHorizontal": "CENTER",
+                "textDecoration": "NONE"
+              }
+            ]
+          },
+          {
+            "type": "FRAME",
+            "name": "Card Footer",
+            "figmaNodeId": "17374:183174",
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": "#f5f5f5",
+                "boundVariable": "{color.base.muted}"
+              }
+            ],
+            "strokes": [
+              {
+                "type": "SOLID",
+                "color": "#e5e5e5",
+                "boundVariable": "{color.base.border}"
+              }
+            ],
+            "layout": {
+              "mode": "VERTICAL",
+              "paddingTop": 16,
+              "paddingRight": 16,
+              "paddingBottom": 16,
+              "paddingLeft": 16,
+              "itemSpacing": 8,
+              "primaryAxisAlignItems": "MIN",
+              "counterAxisAlignItems": "MIN",
+              "bindings": {
+                "paddingTop": "{spacing.4}",
+                "paddingRight": "{spacing.4}",
+                "paddingBottom": "{spacing.4}",
+                "paddingLeft": "{spacing.4}"
+              }
+            },
+            "clipsContent": false
+          }
+        ]
+      }
+    },
+    {
+      "key": "size=sm",
+      "figmaNodeId": "21123:292667",
+      "node": {
+        "type": "COMPONENT",
+        "name": "Size=sm",
+        "figmaNodeId": "21123:292667",
+        "geometry": {
+          "width": 420,
+          "height": 224
+        },
+        "fills": [
+          {
+            "type": "SOLID",
+            "color": "#ffffff",
+            "boundVariable": "{color.base.card}"
+          }
+        ],
+        "strokes": [
+          {
+            "type": "SOLID",
+            "color": "#e5e5e5",
+            "boundVariable": "{color.base.border}"
+          }
+        ],
+        "strokeWeight": 1,
+        "strokeAlign": "INSIDE",
+        "effects": [
+          {
+            "type": "DROP_SHADOW",
+            "radius": 2,
+            "offset": {
+              "x": 0,
+              "y": 1
+            },
+            "color": "#0000000d",
+            "spread": 0,
+            "visible": true,
+            "blendMode": "NORMAL",
+            "boundVariable": "{shadow.xs.color}"
+          }
+        ],
+        "cornerRadius": {
+          "topLeft": 14,
+          "topRight": 14,
+          "bottomLeft": 14,
+          "bottomRight": 14,
+          "boundVariable": {
+            "topLeft": "{border-radius.rounded-xl}",
+            "topRight": "{border-radius.rounded-xl}",
+            "bottomLeft": "{border-radius.rounded-xl}",
+            "bottomRight": "{border-radius.rounded-xl}"
+          }
+        },
+        "layout": {
+          "mode": "VERTICAL",
+          "paddingTop": 0,
+          "paddingRight": 0,
+          "paddingBottom": 0,
+          "paddingLeft": 0,
+          "itemSpacing": 0,
+          "primaryAxisAlignItems": "MIN",
+          "counterAxisAlignItems": "MIN"
+        },
+        "clipsContent": true,
+        "children": [
+          {
+            "type": "FRAME",
+            "name": "Card Header",
+            "figmaNodeId": "21123:292668",
+            "geometry": {
+              "width": 420,
+              "height": 68
+            },
+            "layout": {
+              "mode": "HORIZONTAL",
+              "paddingTop": 12,
+              "paddingRight": 12,
+              "paddingBottom": 12,
+              "paddingLeft": 12,
+              "itemSpacing": 8,
+              "primaryAxisAlignItems": "MIN",
+              "counterAxisAlignItems": "MIN",
+              "bindings": {
+                "paddingTop": "{spacing.3}",
+                "paddingRight": "{spacing.3}",
+                "paddingBottom": "{spacing.3}",
+                "paddingLeft": "{spacing.3}",
+                "itemSpacing": "{spacing.2}"
+              }
+            },
+            "clipsContent": false,
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "Title Text",
+                "figmaNodeId": "21123:292670",
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": "#171717",
+                    "boundVariable": "{color.base.card-foreground}"
+                  }
+                ],
+                "characters": "Title Text",
+                "font": {
+                  "family": "Open Sans",
+                  "weight": 500,
+                  "size": 14
+                },
+                "lineHeight": {
+                  "unit": "PIXELS",
+                  "value": 20
+                },
+                "textAlignHorizontal": "LEFT",
+                "textDecoration": "NONE"
+              },
+              {
+                "type": "TEXT",
+                "name": "Card description",
+                "figmaNodeId": "21123:292671",
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": "#737373",
+                    "boundVariable": "{color.base.muted-foreground}"
+                  }
+                ],
+                "characters": "This is a card description.",
+                "font": {
+                  "family": "Open Sans",
+                  "weight": 400,
+                  "size": 14
+                },
+                "lineHeight": {
+                  "unit": "PIXELS",
+                  "value": 20
+                },
+                "textAlignHorizontal": "LEFT",
+                "textDecoration": "NONE"
+              }
+            ]
+          },
+          {
+            "type": "FRAME",
+            "name": "Card Footer",
+            "figmaNodeId": "21123:292674",
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": "#f5f5f5",
+                "boundVariable": "{color.base.muted}"
+              }
+            ],
+            "strokes": [
+              {
+                "type": "SOLID",
+                "color": "#e5e5e5",
+                "boundVariable": "{color.base.border}"
+              }
+            ],
+            "layout": {
+              "mode": "VERTICAL",
+              "paddingTop": 12,
+              "paddingRight": 12,
+              "paddingBottom": 12,
+              "paddingLeft": 12,
+              "itemSpacing": 8,
+              "primaryAxisAlignItems": "MIN",
+              "counterAxisAlignItems": "MIN",
+              "bindings": {
+                "paddingTop": "{spacing.3}",
+                "paddingRight": "{spacing.3}",
+                "paddingBottom": "{spacing.3}",
+                "paddingLeft": "{spacing.3}"
+              }
+            },
+            "clipsContent": false
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "$schema": "../../verification/schema/manifest.schema.json",
+  "bundleVersion": "0.4.0",
+  "bundleId": "apollo-v2-card-bundle",
+  "bundleStatus": "proof-of-concept",
+  "spec": {
+    "name": "BUNDLE_SPEC.md",
+    "version": "0.4.0",
+    "status": "DRAFT (seeded from data-apollo-md)"
+  },
+  "system": {
+    "name": "Apollo v2 (SA)",
+    "version": "2.1.0",
+    "description": "A design system using Inter, Open Sans, Geist Mono, Manrope with 15 unique colors extracted directly from Figma.",
+    "owner": "lsanchez-g2"
+  },
+  "source": {
+    "type": "figma",
+    "fileKey": "3401ZFUHoboOwA6GGjAEsq",
+    "rootNodeId": "21123:292666",
+    "fileUrl": "https://figma.com/design/3401ZFUHoboOwA6GGjAEsq/Apollo-v2",
+    "extractedBy": "tooling/md-to-bundle/seed.py",
+    "extractedAt": ""
+  },
+  "counts": {
+    "components": 1,
+    "componentClass": "molecule",
+    "variantCells": 2,
+    "variantCellsEmitted": 2,
+    "tokens": 17
+  },
+  "modes": [
+    "light"
+  ],
+  "target": {
+    "platform": "web",
+    "framework": "react",
+    "styling": "tailwind+css-vars",
+    "componentBaseline": "shadcn-ui"
+  },
+  "checksum": {
+    "algorithm": "sha256",
+    "files": {
+      "data/tokens.json": {
+        "sha256": "939d3756bc926e57b4a4aa07b51b7b29e1161812ecfddef04d07d8c0d5e5b7dc",
+        "bytes": 3581
+      },
+      "data/components/Card.component.json": {
+        "sha256": "36a426eb8d65234dfccb65f5798d03d9f72c2e3eef1e3efd36e5e4206f19ccc8",
+        "bytes": 579
+      },
+      "data/components/Card.variants.json": {
+        "sha256": "a9eceda4b8d6bcc9a840f5d544524ad69284508d679de963797c90834fe3cb15",
+        "bytes": 14313
+      }
+    }
+  },
+  "extensions": {
+    "loadOrder": [
+      "SKILL.md",
+      "MANIFEST.json",
+      "data/",
+      "assets/"
+    ],
+    "seededFrom": "data-apollo-md"
+  }
+}
