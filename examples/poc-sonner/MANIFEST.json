@@ -3,39 +3,83 @@
   "bundleVersion": "0.3.0",
   "bundleId": "apollo-v2-sonner-bundle-poc",
   "bundleStatus": "proof-of-concept",
-  "system": { "name": "Apollo v2 (SA)", "owner": "lsanchez-g2" },
-  "source": { "type": "figma", "fileKey": "3401ZFUHoboOwA6GGjAEsq", "rootNodeId": "18482:48401", "extractedBy": "ds-architect@v3", "extractedAt": "2026-05-18T13:00:00Z" },
-  "spec": { "name": "BUNDLE_SPEC.md", "version": "0.3.0", "status": "DRAFT" },
-
-  "counts": {
-    "components": 1, "componentClass": "molecule",
-    "variantAxes": 1, "variantCells": 2, "variantCellsEmitted": 1, "variantCellsCoverage": 0.5,
-    "tokens": 12, "tokensNew": 2,
-    "icons": 0, "images": 0
+  "system": {
+    "name": "Apollo v2 (SA)",
+    "owner": "lsanchez-g2"
   },
-
-  "modes": ["light"],
-
+  "source": {
+    "type": "figma",
+    "fileKey": "3401ZFUHoboOwA6GGjAEsq",
+    "rootNodeId": "18482:48401",
+    "extractedBy": "ds-architect@v3",
+    "extractedAt": "2026-05-18T13:00:00Z"
+  },
+  "spec": {
+    "name": "BUNDLE_SPEC.md",
+    "version": "0.3.0",
+    "status": "DRAFT"
+  },
+  "counts": {
+    "components": 1,
+    "componentClass": "molecule",
+    "variantAxes": 1,
+    "variantCells": 2,
+    "variantCellsEmitted": 2,
+    "variantCellsCoverage": 0.5,
+    "tokens": 14,
+    "tokensNew": 5,
+    "icons": 0,
+    "images": 0
+  },
+  "modes": [
+    "light"
+  ],
   "checksum": {
     "algorithm": "sha256",
     "files": {
-      "data/tokens.json":                      { "sha256": "74b852b0395b2c38354fabf04a0743ae3e860a4d6e146e66e2e94f5034db8fcb", "bytes": 2761 },
-      "data/components/Sonner.component.json": { "sha256": "99618b5721bd98d9785210ac46a07fcfe607a9848103a1cbf22e0ee0bc784ca6", "bytes": 3239 }
+      "data/tokens.json": {
+        "sha256": "a97d0391023d53d34398df1fd7d9155ca6737dd338090d6ccafbf6ede5fb3d89",
+        "bytes": 4194
+      },
+      "data/components/Sonner.component.json": {
+        "sha256": "99618b5721bd98d9785210ac46a07fcfe607a9848103a1cbf22e0ee0bc784ca6",
+        "bytes": 3239
+      },
+      "data/components/Sonner.variants.json": {
+        "sha256": "d8a0c0cf9d7825d08ee477d8e2c45a4e8b6ddd416bb18cff1e94c69fc2c94ac4",
+        "bytes": 17457
+      }
     }
   },
-
   "auditFindings": {
-    "F26": { "severity": "MEDIUM", "summary": "Sonner container shadow is inline rgba CSS, not bound to a shadow token (Tabs uses `{shadow.sm}` correctly)." },
-    "F27": { "severity": "LOW", "summary": "Action button references shadow/xs primitives not in parent subtree's get_variable_defs — nested-token leak." }
+    "F26": {
+      "severity": "MEDIUM",
+      "summary": "Sonner container shadow is inline rgba CSS, not bound to a shadow token (Tabs uses `{shadow.sm}` correctly)."
+    },
+    "F27": {
+      "severity": "LOW",
+      "summary": "Action button references shadow/xs primitives not in parent subtree's get_variable_defs \u2014 nested-token leak."
+    }
   },
-
   "knownGaps": [
-    { "id": "GAP-Son1", "description": "Focus state cell not walked" },
-    { "id": "GAP-Son2", "description": "shadow/xs token decomposition (referenced via Action slot but not extracted)" }
+    {
+      "id": "GAP-Son1",
+      "description": "Focus state cell not walked"
+    },
+    {
+      "id": "GAP-Son2",
+      "description": "shadow/xs token decomposition (referenced via Action slot but not extracted)"
+    }
   ],
-
   "extensions": {
-    "loadOrder": ["SKILL.md", "MANIFEST.json", "data/"],
-    "companionBundles": ["../poc-button (Action slot is a Button)", "../poc-tabs (shadow/sm sibling decomposition)"]
+    "loadOrder": [
+      "SKILL.md",
+      "MANIFEST.json",
+      "data/"
+    ],
+    "companionBundles": [
+      "../poc-button (Action slot is a Button)",
+      "../poc-tabs (shadow/sm sibling decomposition)"
+    ]
   }
 }

@@ -1,0 +1,593 @@
+{
+  "$schema": "../../../verification/schema/variants.schema.json",
+  "componentId": "sonner",
+  "variantCount": 2,
+  "variantsEmittedCount": 2,
+  "variants": [
+    {
+      "key": "state=Default",
+      "figmaNodeId": "193:1386",
+      "node": {
+        "type": "COMPONENT",
+        "name": "State=Default",
+        "figmaNodeId": "193:1386",
+        "geometry": {
+          "width": 336,
+          "height": 52
+        },
+        "fills": [
+          {
+            "type": "SOLID",
+            "color": "#ffffff",
+            "boundVariable": "{color.base.popover}"
+          }
+        ],
+        "strokes": [
+          {
+            "type": "SOLID",
+            "color": "#e5e5e5",
+            "boundVariable": "{color.base.border}"
+          }
+        ],
+        "strokeWeight": 1,
+        "strokeAlign": "INSIDE",
+        "effects": [
+          {
+            "type": "DROP_SHADOW",
+            "radius": 12,
+            "offset": {
+              "x": 0,
+              "y": 4
+            },
+            "color": "#0000001a",
+            "spread": -1,
+            "visible": true,
+            "blendMode": "NORMAL"
+          }
+        ],
+        "cornerRadius": {
+          "topLeft": 8,
+          "topRight": 8,
+          "bottomLeft": 8,
+          "bottomRight": 8,
+          "boundVariable": {
+            "topLeft": "{border-radius.rounded-md}",
+            "topRight": "{border-radius.rounded-md}",
+            "bottomLeft": "{border-radius.rounded-md}",
+            "bottomRight": "{border-radius.rounded-md}"
+          }
+        },
+        "layout": {
+          "mode": "HORIZONTAL",
+          "paddingTop": 16,
+          "paddingRight": 16,
+          "paddingBottom": 16,
+          "paddingLeft": 16,
+          "itemSpacing": 8,
+          "primaryAxisAlignItems": "MIN",
+          "counterAxisAlignItems": "CENTER",
+          "bindings": {
+            "paddingTop": "{spacing.4}",
+            "paddingRight": "{spacing.4}",
+            "paddingBottom": "{spacing.4}",
+            "paddingLeft": "{spacing.4}",
+            "itemSpacing": "{spacing.2}"
+          }
+        },
+        "clipsContent": true,
+        "children": [
+          {
+            "type": "INSTANCE",
+            "name": "Sonner / Icon",
+            "figmaNodeId": "17375:198097",
+            "geometry": {
+              "width": 20,
+              "height": 20
+            },
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": "#ffffff"
+              }
+            ],
+            "clipsContent": true,
+            "mainComponent": {
+              "name": "Type=Success",
+              "figmaKey": "0844e6e6c7f848e53b16659ed233704558a37791"
+            },
+            "children": [
+              {
+                "type": "VECTOR",
+                "name": "Vector",
+                "figmaNodeId": "I17375:198097;17375:197981",
+                "geometry": {
+                  "width": 16,
+                  "height": 16
+                },
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": "#0a0a0a",
+                    "boundVariable": "{color.base.foreground}"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "FRAME",
+            "name": "_ToastText",
+            "figmaNodeId": "17375:197913",
+            "geometry": {
+              "width": 304,
+              "height": 20
+            },
+            "layout": {
+              "mode": "VERTICAL",
+              "paddingTop": 0,
+              "paddingRight": 0,
+              "paddingBottom": 0,
+              "paddingLeft": 0,
+              "itemSpacing": 2,
+              "primaryAxisAlignItems": "MIN",
+              "counterAxisAlignItems": "MIN"
+            },
+            "clipsContent": false,
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "Title Text",
+                "figmaNodeId": "17375:197914",
+                "geometry": {
+                  "width": 304,
+                  "height": 20
+                },
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": "#171717",
+                    "boundVariable": "{color.base.popover-foreground}"
+                  }
+                ],
+                "characters": "Title Text",
+                "font": {
+                  "family": "Open Sans",
+                  "style": "Regular",
+                  "weight": 500,
+                  "size": 14
+                },
+                "lineHeight": {
+                  "unit": "PIXELS",
+                  "value": 20
+                },
+                "letterSpacing": {
+                  "unit": "PERCENT",
+                  "value": 0
+                },
+                "textAlignHorizontal": "LEFT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              },
+              {
+                "type": "TEXT",
+                "name": "This is a toast description.",
+                "figmaNodeId": "17375:197915",
+                "geometry": {
+                  "width": 324,
+                  "height": 20
+                },
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": "#737373",
+                    "boundVariable": "{color.base.muted-foreground}"
+                  }
+                ],
+                "characters": "This is a toast description.",
+                "font": {
+                  "family": "Open Sans",
+                  "style": "Regular",
+                  "weight": 400,
+                  "size": 14
+                },
+                "lineHeight": {
+                  "unit": "PIXELS",
+                  "value": 20
+                },
+                "letterSpacing": {
+                  "unit": "PERCENT",
+                  "value": 0
+                },
+                "textAlignHorizontal": "LEFT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              }
+            ]
+          },
+          {
+            "type": "INSTANCE",
+            "name": "Sonner / Action",
+            "figmaNodeId": "17375:198056",
+            "geometry": {
+              "width": 46,
+              "height": 24
+            },
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": "#5a35c0",
+                "boundVariable": "{color.base.primary}"
+              }
+            ],
+            "effects": [
+              {
+                "type": "DROP_SHADOW",
+                "radius": 2,
+                "offset": {
+                  "x": 0,
+                  "y": 1
+                },
+                "color": "#0000000d",
+                "spread": 0,
+                "visible": true,
+                "blendMode": "NORMAL",
+                "boundVariable": "{color.shadow.xs.color}"
+              }
+            ],
+            "cornerRadius": {
+              "topLeft": 4,
+              "topRight": 4,
+              "bottomLeft": 4,
+              "bottomRight": 4
+            },
+            "layout": {
+              "mode": "HORIZONTAL",
+              "paddingTop": 0,
+              "paddingRight": 8,
+              "paddingBottom": 0,
+              "paddingLeft": 8,
+              "itemSpacing": 0,
+              "primaryAxisAlignItems": "CENTER",
+              "counterAxisAlignItems": "CENTER"
+            },
+            "clipsContent": false,
+            "mainComponent": {
+              "name": "Type=Default",
+              "figmaKey": "cbf21fcdc1e3bdfc01591bf8a52a548371a88d97"
+            },
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "Undo",
+                "figmaNodeId": "I17375:198056;17375:198039",
+                "geometry": {
+                  "width": 32,
+                  "height": 16
+                },
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": "#ffffff",
+                    "boundVariable": "{color.base.primary-foreground}"
+                  }
+                ],
+                "characters": "Undo",
+                "font": {
+                  "family": "Open Sans",
+                  "style": "Regular",
+                  "weight": 500,
+                  "size": 12
+                },
+                "lineHeight": {
+                  "unit": "PIXELS",
+                  "value": 16
+                },
+                "letterSpacing": {
+                  "unit": "PERCENT",
+                  "value": 0
+                },
+                "textAlignHorizontal": "LEFT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "key": "state=Focus",
+      "figmaNodeId": "18482:48402",
+      "node": {
+        "type": "COMPONENT",
+        "name": "State=Focus",
+        "figmaNodeId": "18482:48402",
+        "geometry": {
+          "width": 336,
+          "height": 52
+        },
+        "fills": [
+          {
+            "type": "SOLID",
+            "color": "#ffffff",
+            "boundVariable": "{color.base.popover}"
+          }
+        ],
+        "effects": [
+          {
+            "type": "DROP_SHADOW",
+            "radius": 12,
+            "offset": {
+              "x": 0,
+              "y": 4
+            },
+            "color": "#0000001a",
+            "spread": 0,
+            "visible": true,
+            "blendMode": "NORMAL"
+          },
+          {
+            "type": "DROP_SHADOW",
+            "radius": 0,
+            "offset": {
+              "x": 0,
+              "y": 0
+            },
+            "color": "#00000033",
+            "spread": 2,
+            "visible": true,
+            "blendMode": "NORMAL"
+          }
+        ],
+        "cornerRadius": {
+          "topLeft": 8,
+          "topRight": 8,
+          "bottomLeft": 8,
+          "bottomRight": 8,
+          "boundVariable": {
+            "topLeft": "{border-radius.rounded-md}",
+            "topRight": "{border-radius.rounded-md}",
+            "bottomLeft": "{border-radius.rounded-md}",
+            "bottomRight": "{border-radius.rounded-md}"
+          }
+        },
+        "layout": {
+          "mode": "HORIZONTAL",
+          "paddingTop": 16,
+          "paddingRight": 16,
+          "paddingBottom": 16,
+          "paddingLeft": 16,
+          "itemSpacing": 8,
+          "primaryAxisAlignItems": "MIN",
+          "counterAxisAlignItems": "CENTER",
+          "bindings": {
+            "paddingTop": "{spacing.4}",
+            "paddingRight": "{spacing.4}",
+            "paddingBottom": "{spacing.4}",
+            "paddingLeft": "{spacing.4}",
+            "itemSpacing": "{spacing.2}"
+          }
+        },
+        "clipsContent": true,
+        "children": [
+          {
+            "type": "INSTANCE",
+            "name": "Sonner / Icon",
+            "figmaNodeId": "18482:48403",
+            "geometry": {
+              "width": 20,
+              "height": 20
+            },
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": "#ffffff"
+              }
+            ],
+            "clipsContent": true,
+            "mainComponent": {
+              "name": "Type=Success",
+              "figmaKey": "0844e6e6c7f848e53b16659ed233704558a37791"
+            },
+            "children": [
+              {
+                "type": "VECTOR",
+                "name": "Vector",
+                "figmaNodeId": "I18482:48403;17375:197981",
+                "geometry": {
+                  "width": 16,
+                  "height": 16
+                },
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": "#0a0a0a",
+                    "boundVariable": "{color.base.foreground}"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "FRAME",
+            "name": "_ToastText",
+            "figmaNodeId": "18482:48404",
+            "geometry": {
+              "width": 304,
+              "height": 20
+            },
+            "layout": {
+              "mode": "VERTICAL",
+              "paddingTop": 0,
+              "paddingRight": 0,
+              "paddingBottom": 0,
+              "paddingLeft": 0,
+              "itemSpacing": 2,
+              "primaryAxisAlignItems": "MIN",
+              "counterAxisAlignItems": "MIN"
+            },
+            "clipsContent": false,
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "Title Text",
+                "figmaNodeId": "18482:48405",
+                "geometry": {
+                  "width": 304,
+                  "height": 20
+                },
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": "#171717",
+                    "boundVariable": "{color.base.popover-foreground}"
+                  }
+                ],
+                "characters": "Title Text",
+                "font": {
+                  "family": "Open Sans",
+                  "style": "Regular",
+                  "weight": 500,
+                  "size": 14
+                },
+                "lineHeight": {
+                  "unit": "PIXELS",
+                  "value": 20
+                },
+                "letterSpacing": {
+                  "unit": "PERCENT",
+                  "value": 0
+                },
+                "textAlignHorizontal": "LEFT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              },
+              {
+                "type": "TEXT",
+                "name": "This is a toast description.",
+                "figmaNodeId": "18482:48406",
+                "geometry": {
+                  "width": 324,
+                  "height": 20
+                },
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": "#737373",
+                    "boundVariable": "{color.base.muted-foreground}"
+                  }
+                ],
+                "characters": "This is a toast description.",
+                "font": {
+                  "family": "Open Sans",
+                  "style": "Regular",
+                  "weight": 400,
+                  "size": 14
+                },
+                "lineHeight": {
+                  "unit": "PIXELS",
+                  "value": 20
+                },
+                "letterSpacing": {
+                  "unit": "PERCENT",
+                  "value": 0
+                },
+                "textAlignHorizontal": "LEFT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              }
+            ]
+          },
+          {
+            "type": "INSTANCE",
+            "name": "Sonner / Action",
+            "figmaNodeId": "18482:48407",
+            "geometry": {
+              "width": 46,
+              "height": 24
+            },
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": "#5a35c0",
+                "boundVariable": "{color.base.primary}"
+              }
+            ],
+            "effects": [
+              {
+                "type": "DROP_SHADOW",
+                "radius": 2,
+                "offset": {
+                  "x": 0,
+                  "y": 1
+                },
+                "color": "#0000000d",
+                "spread": 0,
+                "visible": true,
+                "blendMode": "NORMAL",
+                "boundVariable": "{color.shadow.xs.color}"
+              }
+            ],
+            "cornerRadius": {
+              "topLeft": 4,
+              "topRight": 4,
+              "bottomLeft": 4,
+              "bottomRight": 4
+            },
+            "layout": {
+              "mode": "HORIZONTAL",
+              "paddingTop": 0,
+              "paddingRight": 8,
+              "paddingBottom": 0,
+              "paddingLeft": 8,
+              "itemSpacing": 0,
+              "primaryAxisAlignItems": "CENTER",
+              "counterAxisAlignItems": "CENTER"
+            },
+            "clipsContent": false,
+            "mainComponent": {
+              "name": "Type=Default",
+              "figmaKey": "cbf21fcdc1e3bdfc01591bf8a52a548371a88d97"
+            },
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "Undo",
+                "figmaNodeId": "I18482:48407;17375:198039",
+                "geometry": {
+                  "width": 32,
+                  "height": 16
+                },
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": "#ffffff",
+                    "boundVariable": "{color.base.primary-foreground}"
+                  }
+                ],
+                "characters": "Undo",
+                "font": {
+                  "family": "Open Sans",
+                  "style": "Regular",
+                  "weight": 500,
+                  "size": 12
+                },
+                "lineHeight": {
+                  "unit": "PIXELS",
+                  "value": 16
+                },
+                "letterSpacing": {
+                  "unit": "PERCENT",
+                  "value": 0
+                },
+                "textAlignHorizontal": "LEFT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
