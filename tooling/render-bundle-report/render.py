@@ -684,8 +684,37 @@ def bundle_section_html(bundle: Bundle) -> str:
 
     if not bundle.variants:
         parts.append('<div class="cell cell-stub">No variant cells emitted yet. See bundle MANIFEST for declared matrix.</div>')
-    for variant in bundle.variants:
-        parts.append(variant_cell_html(bundle, variant))
+    else:
+        parts.append(f'<div class="chip-row" role="tablist" data-bundle="{esc(bundle.bundle_id)}">')
+        for i, variant in enumerate(bundle.variants):
+            key = variant.get("key", "")
+            short_pairs = []
+            for pair in key.split(","):
+                if "=" in pair:
+                    _, v = pair.split("=", 1)
+                    short_pairs.append(v.strip())
+                else:
+                    short_pairs.append(pair)
+            short = " · ".join(short_pairs)
+            cell_id = f"{bundle.bundle_id}--{key}"
+            active = " is-active" if i == 0 else ""
+            parts.append(
+                f'<button type="button" class="chip{active}" role="tab" '
+                f'data-target="{esc(cell_id)}" '
+                f'aria-selected="{ "true" if i==0 else "false" }">'
+                f'<span class="chip-index">{i+1}</span>'
+                f'<span class="chip-label">{esc(short)}</span>'
+                f'</button>'
+            )
+        parts.append('</div>')
+
+        parts.append('<div class="cell-stack">')
+        for i, variant in enumerate(bundle.variants):
+            cell_html = variant_cell_html(bundle, variant)
+            active = " is-active" if i == 0 else ""
+            wrapped = cell_html.replace('<section class="cell"', f'<section class="cell{active}" data-cell-active', 1)
+            parts.append(wrapped)
+        parts.append('</div>')
 
     parts.append("</section>")
     return "\n".join(parts)
@@ -830,6 +859,49 @@ ul.toc, ul.toc-section-list { list-style: none; padding: 0; margin: 0; }
 .bundle-stat .label { font-size: 10px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-4); }
 .bundle-stat .value { font-family: var(--font-mono); font-size: 14px; color: var(--ink); font-variant-numeric: tabular-nums; }
 
+/* ===== Chip row ===== */
+.chip-row {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  margin: 0 0 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border-2);
+}
+.chip {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 7px 14px 7px 10px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink-2);
+  font-family: var(--font-ui);
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background .12s ease, color .12s ease, border-color .12s ease, box-shadow .12s ease;
+  user-select: none;
+}
+.chip:hover { background: var(--surface-2); color: var(--ink); border-color: var(--ink-4); }
+.chip:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(90, 53, 192, .25); }
+.chip.is-active {
+  background: var(--ink); color: #fafafa; border-color: var(--ink);
+}
+.chip.is-active .chip-index { background: rgba(255,255,255,.18); color: #fafafa; }
+.chip-index {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 18px; height: 18px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--ink-3);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+}
+.chip-label { font-family: var(--font-mono); font-size: 11.5px; }
+
+.cell-stack { position: relative; }
+.cell-stack > .cell { display: none; }
+.cell-stack > .cell.is-active { display: block; }
+
 /* ===== Cell card ===== */
 .cell {
   background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
@@ -957,6 +1029,37 @@ function syncToc() {
 }
 document.addEventListener('scroll', syncToc, { passive: true });
 syncToc();
+
+// Chip selector: clicking a chip activates its target variant within the bundle section.
+document.querySelectorAll('.chip-row').forEach(row => {
+  const chips = row.querySelectorAll('.chip');
+  const bundleId = row.getAttribute('data-bundle');
+  const section = document.getElementById(bundleId);
+  if (!section) return;
+  const cells = section.querySelectorAll('.cell-stack > .cell');
+  chips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      const target = chip.getAttribute('data-target');
+      chips.forEach(c => {
+        const active = c === chip;
+        c.classList.toggle('is-active', active);
+        c.setAttribute('aria-selected', active ? 'true' : 'false');
+      });
+      cells.forEach(cell => cell.classList.toggle('is-active', cell.id === target));
+    });
+  });
+});
+
+// TOC click: clicking a sidebar component activates its first chip + scrolls to it.
+document.querySelectorAll('.toc-bundle a').forEach(link => {
+  link.addEventListener('click', () => {
+    const id = link.getAttribute('href').replace(/^#/, '');
+    const section = document.getElementById(id);
+    if (!section) return;
+    const firstChip = section.querySelector('.chip-row .chip');
+    if (firstChip) firstChip.click();
+  });
+});
 """
 
 
