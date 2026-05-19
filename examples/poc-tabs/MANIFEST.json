@@ -3,50 +3,120 @@
   "bundleVersion": "0.3.0",
   "bundleId": "apollo-v2-tabs-bundle-poc",
   "bundleStatus": "proof-of-concept",
-  "system": { "name": "Apollo v2 (SA)", "owner": "lsanchez-g2" },
-
-  "source": { "type": "figma", "fileKey": "3401ZFUHoboOwA6GGjAEsq", "rootNodeId": "21133:27311", "extractedBy": "ds-architect@v3", "extractedAt": "2026-05-18T12:30:00Z" },
-
-  "spec": { "name": "BUNDLE_SPEC.md", "version": "0.3.0", "status": "DRAFT — surfaces v0.4.0 SP-12 candidate", "patches": ["SP-1", "SP-2", "SP-4", "SP-7", "SP-8 (transitive icon + decomposed shadow tokens)"] },
-
+  "system": {
+    "name": "Apollo v2 (SA)",
+    "owner": "lsanchez-g2"
+  },
+  "source": {
+    "type": "figma",
+    "fileKey": "3401ZFUHoboOwA6GGjAEsq",
+    "rootNodeId": "21133:27311",
+    "extractedBy": "ds-architect@v3",
+    "extractedAt": "2026-05-18T12:30:00Z"
+  },
+  "spec": {
+    "name": "BUNDLE_SPEC.md",
+    "version": "0.3.0",
+    "status": "DRAFT \u2014 surfaces v0.4.0 SP-12 candidate",
+    "patches": [
+      "SP-1",
+      "SP-2",
+      "SP-4",
+      "SP-7",
+      "SP-8 (transitive icon + decomposed shadow tokens)"
+    ]
+  },
   "counts": {
-    "components": 1, "componentClass": "molecule",
-    "variantAxes": 2, "variantCells": 3, "variantCellsEmitted": 1, "variantCellsCoverage": 0.33,
-    "tokens": 30, "tokensNew": 13, "shadowPrimitives": 10, "shadowComposites": 1,
-    "icons": 1, "images": 0, "interactions": 0,
+    "components": 1,
+    "componentClass": "molecule",
+    "variantAxes": 2,
+    "variantCells": 3,
+    "variantCellsEmitted": 3,
+    "variantCellsCoverage": 0.33,
+    "tokens": 30,
+    "tokensNew": 13,
+    "shadowPrimitives": 10,
+    "shadowComposites": 1,
+    "icons": 1,
+    "images": 0,
+    "interactions": 0,
     "compositionDepth": 3,
     "$comment": "First decomposed shadow tokens in any bundle. First SIBLING-SET slot pattern."
   },
-
-  "modes": ["light"],
-
+  "modes": [
+    "light"
+  ],
   "checksum": {
     "algorithm": "sha256",
     "files": {
-      "data/tokens.json":                                       { "sha256": "3c22155feaebab4cd244c743bf200e80f4489faa43a5e90399260ccb5092de31", "bytes": 7949 },
-      "data/components/Tabs.component.json":                    { "sha256": "221e222823c9cc922afac240b02e001463859d043712bac36056ec504116a866", "bytes": 6547 },
-      "data/components/Tabs.variants-samples.json":             { "sha256": "44bca45c7274d7cc253d617b443395737a7ae14f8e9eb4af9ddad4838cc5eea5", "bytes": 5354 },
-      "data/icons/_index.json":                                 { "sha256": "8791288e88aec8ae263ff09b6afe3ee7a147ce865b8eeca833c3d8f6f7915c19", "bytes": 818 },
-      "assets/icons/circle.svg":                                { "sha256": "e89a25b9af7fb7ab659d9fa8ca21044fbcfaca1398f8b3a280c98b705fd452fd", "bytes": 321 }
+      "data/tokens.json": {
+        "sha256": "3c22155feaebab4cd244c743bf200e80f4489faa43a5e90399260ccb5092de31",
+        "bytes": 7949
+      },
+      "data/components/Tabs.component.json": {
+        "sha256": "221e222823c9cc922afac240b02e001463859d043712bac36056ec504116a866",
+        "bytes": 6547
+      },
+      "data/icons/_index.json": {
+        "sha256": "8791288e88aec8ae263ff09b6afe3ee7a147ce865b8eeca833c3d8f6f7915c19",
+        "bytes": 818
+      },
+      "assets/icons/circle.svg": {
+        "sha256": "e89a25b9af7fb7ab659d9fa8ca21044fbcfaca1398f8b3a280c98b705fd452fd",
+        "bytes": 321
+      },
+      "data/components/Tabs.variants.json": {
+        "sha256": "8ef77afc486a79308ab38f6cf357378d8881ec7eb57542c78039a945767ee9c5",
+        "bytes": 61950
+      }
     }
   },
-
   "auditFindings": {
-    "F23": { "severity": "MEDIUM", "summary": "TabsTrigger active state is child-managed; parent Tabs doesn't propagate." },
-    "F24": { "severity": "LOW", "summary": "Line variant lacks Vertical orientation." },
-    "F25": { "severity": "LOW", "summary": "TabsTrigger Hover/Focus/Disabled states unwalked." }
+    "F23": {
+      "severity": "MEDIUM",
+      "summary": "TabsTrigger active state is child-managed; parent Tabs doesn't propagate."
+    },
+    "F24": {
+      "severity": "LOW",
+      "summary": "Line variant lacks Vertical orientation."
+    },
+    "F25": {
+      "severity": "LOW",
+      "summary": "TabsTrigger Hover/Focus/Disabled states unwalked."
+    }
   },
-
-  "v0_4_0_candidates": { "SP-12": "Sibling-set slot type (HIGH) — INSTANCE_SET with cross-sibling constraint." },
-
+  "v0_4_0_candidates": {
+    "SP-12": "Sibling-set slot type (HIGH) \u2014 INSTANCE_SET with cross-sibling constraint."
+  },
   "knownGaps": [
-    { "id": "GAP-T1", "description": "Line variant not walked" },
-    { "id": "GAP-T2", "description": "Vertical orientation not walked" },
-    { "id": "GAP-T3", "description": "TabsTrigger states beyond Default" }
+    {
+      "id": "GAP-T1",
+      "description": "Line variant not walked"
+    },
+    {
+      "id": "GAP-T2",
+      "description": "Vertical orientation not walked"
+    },
+    {
+      "id": "GAP-T3",
+      "description": "TabsTrigger states beyond Default"
+    }
   ],
-
   "extensions": {
-    "loadOrder": ["SKILL.md", "MANIFEST.json", "references/", "data/", "assets/"],
-    "companionBundles": ["../poc-button", "../poc-switch", "../poc-input", "../poc-checkbox", "../poc-avatar", "../poc-field"]
+    "loadOrder": [
+      "SKILL.md",
+      "MANIFEST.json",
+      "references/",
+      "data/",
+      "assets/"
+    ],
+    "companionBundles": [
+      "../poc-button",
+      "../poc-switch",
+      "../poc-input",
+      "../poc-checkbox",
+      "../poc-avatar",
+      "../poc-field"
+    ]
   }
 }

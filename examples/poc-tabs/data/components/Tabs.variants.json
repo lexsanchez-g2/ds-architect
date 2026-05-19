@@ -1,0 +1,1659 @@
+{
+  "$schema": "../../../verification/schema/variants.schema.json",
+  "componentId": "tabs",
+  "variantCount": 4,
+  "variantsEmittedCount": 3,
+  "variants": [
+    {
+      "key": "variant=Default,orientation=Default",
+      "figmaNodeId": "183:539",
+      "node": {
+        "type": "COMPONENT",
+        "name": "Variant=Default, Orientation=Default",
+        "figmaNodeId": "183:539",
+        "geometry": {
+          "width": 234,
+          "height": 32
+        },
+        "fills": [
+          {
+            "type": "SOLID",
+            "color": "#f5f5f5",
+            "boundVariable": "{color.base.muted}"
+          }
+        ],
+        "cornerRadius": {
+          "topLeft": 10,
+          "topRight": 10,
+          "bottomLeft": 10,
+          "bottomRight": 10,
+          "boundVariable": {
+            "topLeft": "{border-radius.rounded-lg}",
+            "topRight": "{border-radius.rounded-lg}",
+            "bottomLeft": "{border-radius.rounded-lg}",
+            "bottomRight": "{border-radius.rounded-lg}"
+          }
+        },
+        "layout": {
+          "mode": "HORIZONTAL",
+          "paddingTop": 3,
+          "paddingRight": 3,
+          "paddingBottom": 3,
+          "paddingLeft": 3,
+          "itemSpacing": 0,
+          "primaryAxisAlignItems": "MIN",
+          "counterAxisAlignItems": "CENTER"
+        },
+        "clipsContent": false,
+        "children": [
+          {
+            "type": "FRAME",
+            "name": "Items",
+            "figmaNodeId": "21408:99812",
+            "geometry": {
+              "width": 228,
+              "height": 26
+            },
+            "layout": {
+              "mode": "HORIZONTAL",
+              "paddingTop": 0,
+              "paddingRight": 0,
+              "paddingBottom": 0,
+              "paddingLeft": 0,
+              "itemSpacing": 0,
+              "primaryAxisAlignItems": "MIN",
+              "counterAxisAlignItems": "CENTER"
+            },
+            "clipsContent": false,
+            "children": [
+              {
+                "type": "INSTANCE",
+                "name": "Tabs / Trigger",
+                "figmaNodeId": "183:533",
+                "geometry": {
+                  "width": 76,
+                  "height": 26
+                },
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": "#fafafa",
+                    "boundVariable": "{color.custom.background-dark-input-30}"
+                  }
+                ],
+                "strokes": [
+                  {
+                    "type": "SOLID",
+                    "color": "#ffffff",
+                    "opacity": 0,
+                    "boundVariable": "{color.custom.dark-input}"
+                  }
+                ],
+                "strokeWeight": 1,
+                "strokeAlign": "INSIDE",
+                "effects": [
+                  {
+                    "type": "DROP_SHADOW",
+                    "radius": 2,
+                    "offset": {
+                      "x": 0,
+                      "y": 1
+                    },
+                    "color": "#0000001a",
+                    "spread": -1,
+                    "visible": true,
+                    "blendMode": "NORMAL",
+                    "boundVariable": "{shadow.sm.2.color}"
+                  },
+                  {
+                    "type": "DROP_SHADOW",
+                    "radius": 3,
+                    "offset": {
+                      "x": 0,
+                      "y": 1
+                    },
+                    "color": "#0000001a",
+                    "spread": 0,
+                    "visible": true,
+                    "blendMode": "NORMAL",
+                    "boundVariable": "{shadow.sm.1.color}"
+                  }
+                ],
+                "cornerRadius": {
+                  "topLeft": 8,
+                  "topRight": 8,
+                  "bottomLeft": 8,
+                  "bottomRight": 8,
+                  "boundVariable": {
+                    "topLeft": "{border-radius.rounded-md}",
+                    "topRight": "{border-radius.rounded-md}",
+                    "bottomLeft": "{border-radius.rounded-md}",
+                    "bottomRight": "{border-radius.rounded-md}"
+                  }
+                },
+                "layout": {
+                  "mode": "HORIZONTAL",
+                  "paddingTop": 4,
+                  "paddingRight": 6,
+                  "paddingBottom": 4,
+                  "paddingLeft": 6,
+                  "itemSpacing": 6,
+                  "primaryAxisAlignItems": "CENTER",
+                  "counterAxisAlignItems": "CENTER",
+                  "bindings": {
+                    "paddingTop": "{spacing.1}",
+                    "paddingRight": "{spacing.1-5}",
+                    "paddingBottom": "{spacing.1}",
+                    "paddingLeft": "{spacing.1-5}",
+                    "itemSpacing": "{spacing.1-5}"
+                  }
+                },
+                "clipsContent": true,
+                "mainComponent": {
+                  "name": "Variant=Default, Active=On, State=Default",
+                  "figmaKey": "ca3763858ee255eabcd62dc86b14fce789537a71"
+                },
+                "children": [
+                  {
+                    "type": "INSTANCE",
+                    "name": "IconPlaceholder",
+                    "figmaNodeId": "I183:533;753:23394",
+                    "geometry": {
+                      "width": 16,
+                      "height": 16
+                    },
+                    "mainComponent": {
+                      "name": "IconPlaceholder",
+                      "figmaKey": "200be806169ff0eb255db6fa08028a41168fa012"
+                    },
+                    "$note": "Icon-library-swap placeholder. Renderer selects one active library at runtime."
+                  },
+                  {
+                    "type": "TEXT",
+                    "name": "Tabs Text",
+                    "figmaNodeId": "I183:533;183:526",
+                    "geometry": {
+                      "width": 64,
+                      "height": 20
+                    },
+                    "fills": [
+                      {
+                        "type": "SOLID",
+                        "color": "#0a0a0a",
+                        "boundVariable": "{color.base.foreground}"
+                      }
+                    ],
+                    "characters": "Tabs Text",
+                    "font": {
+                      "family": "Open Sans",
+                      "style": "Regular",
+                      "weight": 500,
+                      "size": 14
+                    },
+                    "lineHeight": {
+                      "unit": "PIXELS",
+                      "value": 20
+                    },
+                    "letterSpacing": {
+                      "unit": "PERCENT",
+                      "value": 0
+                    },
+                    "textAlignHorizontal": "CENTER",
+                    "textCase": "ORIGINAL",
+                    "textDecoration": "NONE"
+                  },
+                  {
+                    "type": "INSTANCE",
+                    "name": "Badge Number",
+                    "figmaNodeId": "I183:533;17421:197198",
+                    "geometry": {
+                      "width": 20,
+                      "height": 20
+                    },
+                    "fills": [
+                      {
+                        "type": "SOLID",
+                        "color": "#5a35c0",
+                        "boundVariable": "{color.base.primary}"
+                      }
+                    ],
+                    "strokes": [
+                      {
+                        "type": "SOLID",
+                        "color": "#ffffff",
+                        "opacity": 0,
+                        "boundVariable": "{color.tailwind.base.transparent}"
+                      }
+                    ],
+                    "strokeWeight": 1,
+                    "strokeAlign": "INSIDE",
+                    "cornerRadius": {
+                      "topLeft": 9999,
+                      "topRight": 9999,
+                      "bottomLeft": 9999,
+                      "bottomRight": 9999,
+                      "boundVariable": {
+                        "topLeft": "{border-radius.rounded-full}",
+                        "topRight": "{border-radius.rounded-full}",
+                        "bottomLeft": "{border-radius.rounded-full}",
+                        "bottomRight": "{border-radius.rounded-full}"
+                      }
+                    },
+                    "layout": {
+                      "mode": "HORIZONTAL",
+                      "paddingTop": 0,
+                      "paddingRight": 4,
+                      "paddingBottom": 0,
+                      "paddingLeft": 4,
+                      "itemSpacing": 4,
+                      "primaryAxisAlignItems": "CENTER",
+                      "counterAxisAlignItems": "CENTER",
+                      "bindings": {
+                        "paddingRight": "{spacing.1}",
+                        "paddingLeft": "{spacing.1}",
+                        "itemSpacing": "{spacing.1}"
+                      }
+                    },
+                    "clipsContent": true,
+                    "mainComponent": {
+                      "name": "Variant=Default, State=Default",
+                      "figmaKey": "459d4e81bb48dfb4a8fd40aa95dfd480ad5aa944"
+                    },
+                    "children": [
+                      {
+                        "type": "TEXT",
+                        "name": "8",
+                        "figmaNodeId": "I183:533;17421:197198;17100:10136",
+                        "geometry": {
+                          "width": 7,
+                          "height": 16
+                        },
+                        "fills": [
+                          {
+                            "type": "SOLID",
+                            "color": "#ffffff",
+                            "boundVariable": "{color.base.primary-foreground}"
+                          }
+                        ],
+                        "characters": "8",
+                        "font": {
+                          "family": "Open Sans",
+                          "style": "Regular",
+                          "weight": 500,
+                          "size": 12
+                        },
+                        "lineHeight": {
+                          "unit": "PIXELS",
+                          "value": 16
+                        },
+                        "letterSpacing": {
+                          "unit": "PERCENT",
+                          "value": 0
+                        },
+                        "textAlignHorizontal": "LEFT",
+                        "textCase": "ORIGINAL",
+                        "textDecoration": "NONE"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "INSTANCE",
+                "name": "Tabs / Trigger",
+                "figmaNodeId": "183:535",
+                "geometry": {
+                  "width": 76,
+                  "height": 26
+                },
+                "cornerRadius": {
+                  "topLeft": 8,
+                  "topRight": 8,
+                  "bottomLeft": 8,
+                  "bottomRight": 8,
+                  "boundVariable": {
+                    "topLeft": "{border-radius.rounded-md}",
+                    "topRight": "{border-radius.rounded-md}",
+                    "bottomLeft": "{border-radius.rounded-md}",
+                    "bottomRight": "{border-radius.rounded-md}"
+                  }
+                },
+                "layout": {
+                  "mode": "HORIZONTAL",
+                  "paddingTop": 4,
+                  "paddingRight": 6,
+                  "paddingBottom": 4,
+                  "paddingLeft": 6,
+                  "itemSpacing": 6,
+                  "primaryAxisAlignItems": "CENTER",
+                  "counterAxisAlignItems": "CENTER",
+                  "bindings": {
+                    "paddingTop": "{spacing.1}",
+                    "paddingRight": "{spacing.1-5}",
+                    "paddingBottom": "{spacing.1}",
+                    "paddingLeft": "{spacing.1-5}",
+                    "itemSpacing": "{spacing.1-5}"
+                  }
+                },
+                "clipsContent": false,
+                "mainComponent": {
+                  "name": "Variant=Default, Active=Off, State=Default",
+                  "figmaKey": "140989ede3688ae03cef5c4f185e9b02e2853e80"
+                },
+                "children": [
+                  {
+                    "type": "INSTANCE",
+                    "name": "IconPlaceholder",
+                    "figmaNodeId": "I183:535;753:23450",
+                    "geometry": {
+                      "width": 16,
+                      "height": 16
+                    },
+                    "mainComponent": {
+                      "name": "IconPlaceholder",
+                      "figmaKey": "200be806169ff0eb255db6fa08028a41168fa012"
+                    },
+                    "$note": "Icon-library-swap placeholder. Renderer selects one active library at runtime."
+                  },
+                  {
+                    "type": "TEXT",
+                    "name": "Tabs Text",
+                    "figmaNodeId": "I183:535;183:529",
+                    "geometry": {
+                      "width": 64,
+                      "height": 20
+                    },
+                    "fills": [
+                      {
+                        "type": "SOLID",
+                        "color": "#737373",
+                        "boundVariable": "{color.base.muted-foreground}"
+                      }
+                    ],
+                    "characters": "Tabs Text",
+                    "font": {
+                      "family": "Open Sans",
+                      "style": "Regular",
+                      "weight": 500,
+                      "size": 14
+                    },
+                    "lineHeight": {
+                      "unit": "PIXELS",
+                      "value": 20
+                    },
+                    "letterSpacing": {
+                      "unit": "PERCENT",
+                      "value": 0
+                    },
+                    "textAlignHorizontal": "CENTER",
+                    "textCase": "ORIGINAL",
+                    "textDecoration": "NONE"
+                  },
+                  {
+                    "type": "INSTANCE",
+                    "name": "Badge Number",
+                    "figmaNodeId": "I183:535;17421:197476",
+                    "geometry": {
+                      "width": 20,
+                      "height": 20
+                    },
+                    "fills": [
+                      {
+                        "type": "SOLID",
+                        "color": "#5a35c0",
+                        "boundVariable": "{color.base.primary}"
+                      }
+                    ],
+                    "strokes": [
+                      {
+                        "type": "SOLID",
+                        "color": "#ffffff",
+                        "opacity": 0,
+                        "boundVariable": "{color.tailwind.base.transparent}"
+                      }
+                    ],
+                    "strokeWeight": 1,
+                    "strokeAlign": "INSIDE",
+                    "cornerRadius": {
+                      "topLeft": 9999,
+                      "topRight": 9999,
+                      "bottomLeft": 9999,
+                      "bottomRight": 9999,
+                      "boundVariable": {
+                        "topLeft": "{border-radius.rounded-full}",
+                        "topRight": "{border-radius.rounded-full}",
+                        "bottomLeft": "{border-radius.rounded-full}",
+                        "bottomRight": "{border-radius.rounded-full}"
+                      }
+                    },
+                    "layout": {
+                      "mode": "HORIZONTAL",
+                      "paddingTop": 0,
+                      "paddingRight": 4,
+                      "paddingBottom": 0,
+                      "paddingLeft": 4,
+                      "itemSpacing": 4,
+                      "primaryAxisAlignItems": "CENTER",
+                      "counterAxisAlignItems": "CENTER",
+                      "bindings": {
+                        "paddingRight": "{spacing.1}",
+                        "paddingLeft": "{spacing.1}",
+                        "itemSpacing": "{spacing.1}"
+                      }
+                    },
+                    "clipsContent": true,
+                    "mainComponent": {
+                      "name": "Variant=Default, State=Default",
+                      "figmaKey": "459d4e81bb48dfb4a8fd40aa95dfd480ad5aa944"
+                    },
+                    "children": [
+                      {
+                        "type": "TEXT",
+                        "name": "8",
+                        "figmaNodeId": "I183:535;17421:197476;17100:10136",
+                        "geometry": {
+                          "width": 7,
+                          "height": 16
+                        },
+                        "fills": [
+                          {
+                            "type": "SOLID",
+                            "color": "#ffffff",
+                            "boundVariable": "{color.base.primary-foreground}"
+                          }
+                        ],
+                        "characters": "8",
+                        "font": {
+                          "family": "Open Sans",
+                          "style": "Regular",
+                          "weight": 500,
+                          "size": 12
+                        },
+                        "lineHeight": {
+                          "unit": "PIXELS",
+                          "value": 16
+                        },
+                        "letterSpacing": {
+                          "unit": "PERCENT",
+                          "value": 0
+                        },
+                        "textAlignHorizontal": "LEFT",
+                        "textCase": "ORIGINAL",
+                        "textDecoration": "NONE"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "INSTANCE",
+                "name": "Tabs / Trigger",
+                "figmaNodeId": "183:601",
+                "geometry": {
+                  "width": 76,
+                  "height": 26
+                },
+                "cornerRadius": {
+                  "topLeft": 8,
+                  "topRight": 8,
+                  "bottomLeft": 8,
+                  "bottomRight": 8,
+                  "boundVariable": {
+                    "topLeft": "{border-radius.rounded-md}",
+                    "topRight": "{border-radius.rounded-md}",
+                    "bottomLeft": "{border-radius.rounded-md}",
+                    "bottomRight": "{border-radius.rounded-md}"
+                  }
+                },
+                "layout": {
+                  "mode": "HORIZONTAL",
+                  "paddingTop": 4,
+                  "paddingRight": 6,
+                  "paddingBottom": 4,
+                  "paddingLeft": 6,
+                  "itemSpacing": 6,
+                  "primaryAxisAlignItems": "CENTER",
+                  "counterAxisAlignItems": "CENTER",
+                  "bindings": {
+                    "paddingTop": "{spacing.1}",
+                    "paddingRight": "{spacing.1-5}",
+                    "paddingBottom": "{spacing.1}",
+                    "paddingLeft": "{spacing.1-5}",
+                    "itemSpacing": "{spacing.1-5}"
+                  }
+                },
+                "clipsContent": false,
+                "mainComponent": {
+                  "name": "Variant=Default, Active=Off, State=Default",
+                  "figmaKey": "140989ede3688ae03cef5c4f185e9b02e2853e80"
+                },
+                "children": [
+                  {
+                    "type": "INSTANCE",
+                    "name": "IconPlaceholder",
+                    "figmaNodeId": "I183:601;753:23450",
+                    "geometry": {
+                      "width": 16,
+                      "height": 16
+                    },
+                    "mainComponent": {
+                      "name": "IconPlaceholder",
+                      "figmaKey": "200be806169ff0eb255db6fa08028a41168fa012"
+                    },
+                    "$note": "Icon-library-swap placeholder. Renderer selects one active library at runtime."
+                  },
+                  {
+                    "type": "TEXT",
+                    "name": "Tabs Text",
+                    "figmaNodeId": "I183:601;183:529",
+                    "geometry": {
+                      "width": 64,
+                      "height": 20
+                    },
+                    "fills": [
+                      {
+                        "type": "SOLID",
+                        "color": "#737373",
+                        "boundVariable": "{color.base.muted-foreground}"
+                      }
+                    ],
+                    "characters": "Tabs Text",
+                    "font": {
+                      "family": "Open Sans",
+                      "style": "Regular",
+                      "weight": 500,
+                      "size": 14
+                    },
+                    "lineHeight": {
+                      "unit": "PIXELS",
+                      "value": 20
+                    },
+                    "letterSpacing": {
+                      "unit": "PERCENT",
+                      "value": 0
+                    },
+                    "textAlignHorizontal": "CENTER",
+                    "textCase": "ORIGINAL",
+                    "textDecoration": "NONE"
+                  },
+                  {
+                    "type": "INSTANCE",
+                    "name": "Badge Number",
+                    "figmaNodeId": "I183:601;17421:197476",
+                    "geometry": {
+                      "width": 20,
+                      "height": 20
+                    },
+                    "fills": [
+                      {
+                        "type": "SOLID",
+                        "color": "#5a35c0",
+                        "boundVariable": "{color.base.primary}"
+                      }
+                    ],
+                    "strokes": [
+                      {
+                        "type": "SOLID",
+                        "color": "#ffffff",
+                        "opacity": 0,
+                        "boundVariable": "{color.tailwind.base.transparent}"
+                      }
+                    ],
+                    "strokeWeight": 1,
+                    "strokeAlign": "INSIDE",
+                    "cornerRadius": {
+                      "topLeft": 9999,
+                      "topRight": 9999,
+                      "bottomLeft": 9999,
+                      "bottomRight": 9999,
+                      "boundVariable": {
+                        "topLeft": "{border-radius.rounded-full}",
+                        "topRight": "{border-radius.rounded-full}",
+                        "bottomLeft": "{border-radius.rounded-full}",
+                        "bottomRight": "{border-radius.rounded-full}"
+                      }
+                    },
+                    "layout": {
+                      "mode": "HORIZONTAL",
+                      "paddingTop": 0,
+                      "paddingRight": 4,
+                      "paddingBottom": 0,
+                      "paddingLeft": 4,
+                      "itemSpacing": 4,
+                      "primaryAxisAlignItems": "CENTER",
+                      "counterAxisAlignItems": "CENTER",
+                      "bindings": {
+                        "paddingRight": "{spacing.1}",
+                        "paddingLeft": "{spacing.1}",
+                        "itemSpacing": "{spacing.1}"
+                      }
+                    },
+                    "clipsContent": true,
+                    "mainComponent": {
+                      "name": "Variant=Default, State=Default",
+                      "figmaKey": "459d4e81bb48dfb4a8fd40aa95dfd480ad5aa944"
+                    },
+                    "children": [
+                      {
+                        "type": "TEXT",
+                        "name": "8",
+                        "figmaNodeId": "I183:601;17421:197476;17100:10136",
+                        "geometry": {
+                          "width": 7,
+                          "height": 16
+                        },
+                        "fills": [
+                          {
+                            "type": "SOLID",
+                            "color": "#ffffff",
+                            "boundVariable": "{color.base.primary-foreground}"
+                          }
+                        ],
+                        "characters": "8",
+                        "font": {
+                          "family": "Open Sans",
+                          "style": "Regular",
+                          "weight": 500,
+                          "size": 12
+                        },
+                        "lineHeight": {
+                          "unit": "PIXELS",
+                          "value": 16
+                        },
+                        "letterSpacing": {
+                          "unit": "PERCENT",
+                          "value": 0
+                        },
+                        "textAlignHorizontal": "LEFT",
+                        "textCase": "ORIGINAL",
+                        "textDecoration": "NONE"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "key": "variant=Default,orientation=Vertical",
+      "figmaNodeId": "21133:31196",
+      "node": {
+        "type": "COMPONENT",
+        "name": "Variant=Default, Orientation=Vertical",
+        "figmaNodeId": "21133:31196",
+        "geometry": {
+          "width": 80,
+          "height": 90
+        },
+        "fills": [
+          {
+            "type": "SOLID",
+            "color": "#f5f5f5",
+            "boundVariable": "{color.base.muted}"
+          }
+        ],
+        "cornerRadius": {
+          "topLeft": 10,
+          "topRight": 10,
+          "bottomLeft": 10,
+          "bottomRight": 10,
+          "boundVariable": {
+            "topLeft": "{border-radius.rounded-lg}",
+            "topRight": "{border-radius.rounded-lg}",
+            "bottomLeft": "{border-radius.rounded-lg}",
+            "bottomRight": "{border-radius.rounded-lg}"
+          }
+        },
+        "layout": {
+          "mode": "VERTICAL",
+          "paddingTop": 3,
+          "paddingRight": 3,
+          "paddingBottom": 3,
+          "paddingLeft": 3,
+          "itemSpacing": 0,
+          "primaryAxisAlignItems": "CENTER",
+          "counterAxisAlignItems": "MIN"
+        },
+        "clipsContent": false,
+        "children": [
+          {
+            "type": "FRAME",
+            "name": "Items",
+            "figmaNodeId": "21408:99732",
+            "geometry": {
+              "width": 74,
+              "height": 84
+            },
+            "layout": {
+              "mode": "VERTICAL",
+              "paddingTop": 0,
+              "paddingRight": 0,
+              "paddingBottom": 0,
+              "paddingLeft": 0,
+              "itemSpacing": 0,
+              "primaryAxisAlignItems": "MIN",
+              "counterAxisAlignItems": "MIN"
+            },
+            "clipsContent": false,
+            "children": [
+              {
+                "type": "INSTANCE",
+                "name": "Tabs / Trigger",
+                "figmaNodeId": "21133:31197",
+                "geometry": {
+                  "width": 74,
+                  "height": 28
+                },
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": "#fafafa",
+                    "boundVariable": "{color.custom.background-dark-input-30}"
+                  }
+                ],
+                "strokes": [
+                  {
+                    "type": "SOLID",
+                    "color": "#ffffff",
+                    "opacity": 0,
+                    "boundVariable": "{color.custom.dark-input}"
+                  }
+                ],
+                "strokeWeight": 1,
+                "strokeAlign": "INSIDE",
+                "effects": [
+                  {
+                    "type": "DROP_SHADOW",
+                    "radius": 2,
+                    "offset": {
+                      "x": 0,
+                      "y": 1
+                    },
+                    "color": "#0000001a",
+                    "spread": -1,
+                    "visible": true,
+                    "blendMode": "NORMAL",
+                    "boundVariable": "{shadow.sm.2.color}"
+                  },
+                  {
+                    "type": "DROP_SHADOW",
+                    "radius": 3,
+                    "offset": {
+                      "x": 0,
+                      "y": 1
+                    },
+                    "color": "#0000001a",
+                    "spread": 0,
+                    "visible": true,
+                    "blendMode": "NORMAL",
+                    "boundVariable": "{shadow.sm.1.color}"
+                  }
+                ],
+                "cornerRadius": {
+                  "topLeft": 8,
+                  "topRight": 8,
+                  "bottomLeft": 8,
+                  "bottomRight": 8,
+                  "boundVariable": {
+                    "topLeft": "{border-radius.rounded-md}",
+                    "topRight": "{border-radius.rounded-md}",
+                    "bottomLeft": "{border-radius.rounded-md}",
+                    "bottomRight": "{border-radius.rounded-md}"
+                  }
+                },
+                "layout": {
+                  "mode": "HORIZONTAL",
+                  "paddingTop": 4,
+                  "paddingRight": 6,
+                  "paddingBottom": 4,
+                  "paddingLeft": 6,
+                  "itemSpacing": 6,
+                  "primaryAxisAlignItems": "CENTER",
+                  "counterAxisAlignItems": "CENTER",
+                  "bindings": {
+                    "paddingTop": "{spacing.1}",
+                    "paddingRight": "{spacing.1-5}",
+                    "paddingBottom": "{spacing.1}",
+                    "paddingLeft": "{spacing.1-5}",
+                    "itemSpacing": "{spacing.1-5}"
+                  }
+                },
+                "clipsContent": true,
+                "mainComponent": {
+                  "name": "Variant=Default, Active=On, State=Default",
+                  "figmaKey": "ca3763858ee255eabcd62dc86b14fce789537a71"
+                },
+                "children": [
+                  {
+                    "type": "INSTANCE",
+                    "name": "IconPlaceholder",
+                    "figmaNodeId": "I21133:31197;753:23394",
+                    "geometry": {
+                      "width": 16,
+                      "height": 16
+                    },
+                    "mainComponent": {
+                      "name": "IconPlaceholder",
+                      "figmaKey": "200be806169ff0eb255db6fa08028a41168fa012"
+                    },
+                    "$note": "Icon-swap placeholder"
+                  },
+                  {
+                    "type": "TEXT",
+                    "name": "Tabs Text",
+                    "figmaNodeId": "I21133:31197;183:526",
+                    "geometry": {
+                      "width": 64,
+                      "height": 20
+                    },
+                    "fills": [
+                      {
+                        "type": "SOLID",
+                        "color": "#0a0a0a",
+                        "boundVariable": "{color.base.foreground}"
+                      }
+                    ],
+                    "characters": "Tabs Text",
+                    "font": {
+                      "family": "Open Sans",
+                      "style": "Regular",
+                      "weight": 500,
+                      "size": 14
+                    },
+                    "lineHeight": {
+                      "unit": "PIXELS",
+                      "value": 20
+                    },
+                    "letterSpacing": {
+                      "unit": "PERCENT",
+                      "value": 0
+                    },
+                    "textAlignHorizontal": "CENTER",
+                    "textCase": "ORIGINAL",
+                    "textDecoration": "NONE"
+                  }
+                ]
+              },
+              {
+                "type": "INSTANCE",
+                "name": "Tabs / Trigger",
+                "figmaNodeId": "21133:31198",
+                "geometry": {
+                  "width": 74,
+                  "height": 28
+                },
+                "cornerRadius": {
+                  "topLeft": 8,
+                  "topRight": 8,
+                  "bottomLeft": 8,
+                  "bottomRight": 8,
+                  "boundVariable": {
+                    "topLeft": "{border-radius.rounded-md}",
+                    "topRight": "{border-radius.rounded-md}",
+                    "bottomLeft": "{border-radius.rounded-md}",
+                    "bottomRight": "{border-radius.rounded-md}"
+                  }
+                },
+                "layout": {
+                  "mode": "HORIZONTAL",
+                  "paddingTop": 4,
+                  "paddingRight": 6,
+                  "paddingBottom": 4,
+                  "paddingLeft": 6,
+                  "itemSpacing": 6,
+                  "primaryAxisAlignItems": "CENTER",
+                  "counterAxisAlignItems": "CENTER",
+                  "bindings": {
+                    "paddingTop": "{spacing.1}",
+                    "paddingRight": "{spacing.1-5}",
+                    "paddingBottom": "{spacing.1}",
+                    "paddingLeft": "{spacing.1-5}",
+                    "itemSpacing": "{spacing.1-5}"
+                  }
+                },
+                "clipsContent": false,
+                "mainComponent": {
+                  "name": "Variant=Default, Active=Off, State=Default",
+                  "figmaKey": "140989ede3688ae03cef5c4f185e9b02e2853e80"
+                },
+                "children": [
+                  {
+                    "type": "INSTANCE",
+                    "name": "IconPlaceholder",
+                    "figmaNodeId": "I21133:31198;753:23450",
+                    "geometry": {
+                      "width": 16,
+                      "height": 16
+                    },
+                    "mainComponent": {
+                      "name": "IconPlaceholder",
+                      "figmaKey": "200be806169ff0eb255db6fa08028a41168fa012"
+                    },
+                    "$note": "Icon-swap placeholder"
+                  },
+                  {
+                    "type": "TEXT",
+                    "name": "Tabs Text",
+                    "figmaNodeId": "I21133:31198;183:529",
+                    "geometry": {
+                      "width": 64,
+                      "height": 20
+                    },
+                    "fills": [
+                      {
+                        "type": "SOLID",
+                        "color": "#737373",
+                        "boundVariable": "{color.base.muted-foreground}"
+                      }
+                    ],
+                    "characters": "Tabs Text",
+                    "font": {
+                      "family": "Open Sans",
+                      "style": "Regular",
+                      "weight": 500,
+                      "size": 14
+                    },
+                    "lineHeight": {
+                      "unit": "PIXELS",
+                      "value": 20
+                    },
+                    "letterSpacing": {
+                      "unit": "PERCENT",
+                      "value": 0
+                    },
+                    "textAlignHorizontal": "CENTER",
+                    "textCase": "ORIGINAL",
+                    "textDecoration": "NONE"
+                  }
+                ]
+              },
+              {
+                "type": "INSTANCE",
+                "name": "Tabs / Trigger",
+                "figmaNodeId": "21133:31199",
+                "geometry": {
+                  "width": 74,
+                  "height": 28
+                },
+                "cornerRadius": {
+                  "topLeft": 8,
+                  "topRight": 8,
+                  "bottomLeft": 8,
+                  "bottomRight": 8,
+                  "boundVariable": {
+                    "topLeft": "{border-radius.rounded-md}",
+                    "topRight": "{border-radius.rounded-md}",
+                    "bottomLeft": "{border-radius.rounded-md}",
+                    "bottomRight": "{border-radius.rounded-md}"
+                  }
+                },
+                "layout": {
+                  "mode": "HORIZONTAL",
+                  "paddingTop": 4,
+                  "paddingRight": 6,
+                  "paddingBottom": 4,
+                  "paddingLeft": 6,
+                  "itemSpacing": 6,
+                  "primaryAxisAlignItems": "CENTER",
+                  "counterAxisAlignItems": "CENTER",
+                  "bindings": {
+                    "paddingTop": "{spacing.1}",
+                    "paddingRight": "{spacing.1-5}",
+                    "paddingBottom": "{spacing.1}",
+                    "paddingLeft": "{spacing.1-5}",
+                    "itemSpacing": "{spacing.1-5}"
+                  }
+                },
+                "clipsContent": false,
+                "mainComponent": {
+                  "name": "Variant=Default, Active=Off, State=Default",
+                  "figmaKey": "140989ede3688ae03cef5c4f185e9b02e2853e80"
+                },
+                "children": [
+                  {
+                    "type": "INSTANCE",
+                    "name": "IconPlaceholder",
+                    "figmaNodeId": "I21133:31199;753:23450",
+                    "geometry": {
+                      "width": 16,
+                      "height": 16
+                    },
+                    "mainComponent": {
+                      "name": "IconPlaceholder",
+                      "figmaKey": "200be806169ff0eb255db6fa08028a41168fa012"
+                    },
+                    "$note": "Icon-swap placeholder"
+                  },
+                  {
+                    "type": "TEXT",
+                    "name": "Tabs Text",
+                    "figmaNodeId": "I21133:31199;183:529",
+                    "geometry": {
+                      "width": 64,
+                      "height": 20
+                    },
+                    "fills": [
+                      {
+                        "type": "SOLID",
+                        "color": "#737373",
+                        "boundVariable": "{color.base.muted-foreground}"
+                      }
+                    ],
+                    "characters": "Tabs Text",
+                    "font": {
+                      "family": "Open Sans",
+                      "style": "Regular",
+                      "weight": 500,
+                      "size": 14
+                    },
+                    "lineHeight": {
+                      "unit": "PIXELS",
+                      "value": 20
+                    },
+                    "letterSpacing": {
+                      "unit": "PERCENT",
+                      "value": 0
+                    },
+                    "textAlignHorizontal": "CENTER",
+                    "textCase": "ORIGINAL",
+                    "textDecoration": "NONE"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "key": "variant=Line,orientation=Default",
+      "figmaNodeId": "21133:27312",
+      "node": {
+        "type": "COMPONENT",
+        "name": "Variant=Line, Orientation=Default",
+        "figmaNodeId": "21133:27312",
+        "geometry": {
+          "width": 236,
+          "height": 32
+        },
+        "layout": {
+          "mode": "HORIZONTAL",
+          "paddingTop": 0,
+          "paddingRight": 0,
+          "paddingBottom": 0,
+          "paddingLeft": 0,
+          "itemSpacing": 4,
+          "primaryAxisAlignItems": "MIN",
+          "counterAxisAlignItems": "CENTER",
+          "bindings": {
+            "itemSpacing": "{spacing.1}"
+          }
+        },
+        "clipsContent": false,
+        "children": [
+          {
+            "type": "FRAME",
+            "name": "Items",
+            "figmaNodeId": "21408:99788",
+            "geometry": {
+              "width": 236,
+              "height": 32
+            },
+            "layout": {
+              "mode": "HORIZONTAL",
+              "paddingTop": 0,
+              "paddingRight": 0,
+              "paddingBottom": 0,
+              "paddingLeft": 0,
+              "itemSpacing": 4,
+              "primaryAxisAlignItems": "MIN",
+              "counterAxisAlignItems": "CENTER",
+              "bindings": {
+                "itemSpacing": "{spacing.1}"
+              }
+            },
+            "clipsContent": false,
+            "children": [
+              {
+                "type": "INSTANCE",
+                "name": "Tabs / Trigger",
+                "figmaNodeId": "21133:27313",
+                "geometry": {
+                  "width": 76,
+                  "height": 32
+                },
+                "strokes": [
+                  {
+                    "type": "SOLID",
+                    "color": "#0a0a0a",
+                    "boundVariable": "{color.base.foreground}"
+                  }
+                ],
+                "strokeAlign": "INSIDE",
+                "layout": {
+                  "mode": "HORIZONTAL",
+                  "paddingTop": 6,
+                  "paddingRight": 6,
+                  "paddingBottom": 6,
+                  "paddingLeft": 6,
+                  "itemSpacing": 6,
+                  "primaryAxisAlignItems": "CENTER",
+                  "counterAxisAlignItems": "CENTER",
+                  "bindings": {
+                    "paddingTop": "{spacing.1-5}",
+                    "paddingRight": "{spacing.1-5}",
+                    "paddingBottom": "{spacing.1-5}",
+                    "paddingLeft": "{spacing.1-5}",
+                    "itemSpacing": "{spacing.1-5}"
+                  }
+                },
+                "clipsContent": false,
+                "mainComponent": {
+                  "name": "Variant=Line, Active=On, State=Default",
+                  "figmaKey": "bbc6e519ff889385fcbe22a20b36078138405a1b"
+                },
+                "children": [
+                  {
+                    "type": "INSTANCE",
+                    "name": "IconPlaceholder",
+                    "figmaNodeId": "I21133:27313;21133:21345",
+                    "geometry": {
+                      "width": 16,
+                      "height": 16
+                    },
+                    "mainComponent": {
+                      "name": "IconPlaceholder",
+                      "figmaKey": "200be806169ff0eb255db6fa08028a41168fa012"
+                    },
+                    "$note": "Icon-swap placeholder"
+                  },
+                  {
+                    "type": "TEXT",
+                    "name": "Tabs Text",
+                    "figmaNodeId": "I21133:27313;21133:21346",
+                    "geometry": {
+                      "width": 64,
+                      "height": 20
+                    },
+                    "fills": [
+                      {
+                        "type": "SOLID",
+                        "color": "#0a0a0a",
+                        "boundVariable": "{color.base.foreground}"
+                      }
+                    ],
+                    "characters": "Tabs Text",
+                    "font": {
+                      "family": "Open Sans",
+                      "style": "Regular",
+                      "weight": 500,
+                      "size": 14
+                    },
+                    "lineHeight": {
+                      "unit": "PIXELS",
+                      "value": 20
+                    },
+                    "letterSpacing": {
+                      "unit": "PERCENT",
+                      "value": 0
+                    },
+                    "textAlignHorizontal": "CENTER",
+                    "textCase": "ORIGINAL",
+                    "textDecoration": "NONE"
+                  },
+                  {
+                    "type": "INSTANCE",
+                    "name": "Badge Number",
+                    "figmaNodeId": "I21133:27313;21133:21347",
+                    "geometry": {
+                      "width": 20,
+                      "height": 20
+                    },
+                    "fills": [
+                      {
+                        "type": "SOLID",
+                        "color": "#5a35c0",
+                        "boundVariable": "{color.base.primary}"
+                      }
+                    ],
+                    "strokes": [
+                      {
+                        "type": "SOLID",
+                        "color": "#ffffff",
+                        "opacity": 0,
+                        "boundVariable": "{color.tailwind.base.transparent}"
+                      }
+                    ],
+                    "strokeWeight": 1,
+                    "strokeAlign": "INSIDE",
+                    "cornerRadius": {
+                      "topLeft": 9999,
+                      "topRight": 9999,
+                      "bottomLeft": 9999,
+                      "bottomRight": 9999,
+                      "boundVariable": {
+                        "topLeft": "{border-radius.rounded-full}",
+                        "topRight": "{border-radius.rounded-full}",
+                        "bottomLeft": "{border-radius.rounded-full}",
+                        "bottomRight": "{border-radius.rounded-full}"
+                      }
+                    },
+                    "layout": {
+                      "mode": "HORIZONTAL",
+                      "paddingTop": 0,
+                      "paddingRight": 4,
+                      "paddingBottom": 0,
+                      "paddingLeft": 4,
+                      "itemSpacing": 4,
+                      "primaryAxisAlignItems": "CENTER",
+                      "counterAxisAlignItems": "CENTER",
+                      "bindings": {
+                        "paddingRight": "{spacing.1}",
+                        "paddingLeft": "{spacing.1}",
+                        "itemSpacing": "{spacing.1}"
+                      }
+                    },
+                    "clipsContent": true,
+                    "mainComponent": {
+                      "name": "Variant=Default, State=Default",
+                      "figmaKey": "459d4e81bb48dfb4a8fd40aa95dfd480ad5aa944"
+                    },
+                    "children": [
+                      {
+                        "type": "TEXT",
+                        "name": "8",
+                        "figmaNodeId": "I21133:27313;21133:21347;17100:10136",
+                        "geometry": {
+                          "width": 7,
+                          "height": 16
+                        },
+                        "fills": [
+                          {
+                            "type": "SOLID",
+                            "color": "#ffffff",
+                            "boundVariable": "{color.base.primary-foreground}"
+                          }
+                        ],
+                        "characters": "8",
+                        "font": {
+                          "family": "Open Sans",
+                          "style": "Regular",
+                          "weight": 500,
+                          "size": 12
+                        },
+                        "lineHeight": {
+                          "unit": "PIXELS",
+                          "value": 16
+                        },
+                        "letterSpacing": {
+                          "unit": "PERCENT",
+                          "value": 0
+                        },
+                        "textAlignHorizontal": "LEFT",
+                        "textCase": "ORIGINAL",
+                        "textDecoration": "NONE"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "INSTANCE",
+                "name": "Tabs / Trigger",
+                "figmaNodeId": "21133:27314",
+                "geometry": {
+                  "width": 76,
+                  "height": 32
+                },
+                "layout": {
+                  "mode": "HORIZONTAL",
+                  "paddingTop": 6,
+                  "paddingRight": 6,
+                  "paddingBottom": 6,
+                  "paddingLeft": 6,
+                  "itemSpacing": 6,
+                  "primaryAxisAlignItems": "CENTER",
+                  "counterAxisAlignItems": "CENTER",
+                  "bindings": {
+                    "paddingTop": "{spacing.1-5}",
+                    "paddingRight": "{spacing.1-5}",
+                    "paddingBottom": "{spacing.1-5}",
+                    "paddingLeft": "{spacing.1-5}",
+                    "itemSpacing": "{spacing.1-5}"
+                  }
+                },
+                "clipsContent": false,
+                "mainComponent": {
+                  "name": "Variant=Line, Active=Off, State=Default",
+                  "figmaKey": "5966bd4ff5a38b53c1fa27cbd288d1c878ea77d7"
+                },
+                "children": [
+                  {
+                    "type": "INSTANCE",
+                    "name": "IconPlaceholder",
+                    "figmaNodeId": "I21133:27314;21133:21361",
+                    "geometry": {
+                      "width": 16,
+                      "height": 16
+                    },
+                    "mainComponent": {
+                      "name": "IconPlaceholder",
+                      "figmaKey": "200be806169ff0eb255db6fa08028a41168fa012"
+                    },
+                    "$note": "Icon-swap placeholder"
+                  },
+                  {
+                    "type": "TEXT",
+                    "name": "Tabs Text",
+                    "figmaNodeId": "I21133:27314;21133:21362",
+                    "geometry": {
+                      "width": 64,
+                      "height": 20
+                    },
+                    "fills": [
+                      {
+                        "type": "SOLID",
+                        "color": "#737373",
+                        "boundVariable": "{color.base.muted-foreground}"
+                      }
+                    ],
+                    "characters": "Tabs Text",
+                    "font": {
+                      "family": "Open Sans",
+                      "style": "Regular",
+                      "weight": 500,
+                      "size": 14
+                    },
+                    "lineHeight": {
+                      "unit": "PIXELS",
+                      "value": 20
+                    },
+                    "letterSpacing": {
+                      "unit": "PERCENT",
+                      "value": 0
+                    },
+                    "textAlignHorizontal": "CENTER",
+                    "textCase": "ORIGINAL",
+                    "textDecoration": "NONE"
+                  },
+                  {
+                    "type": "INSTANCE",
+                    "name": "Badge Number",
+                    "figmaNodeId": "I21133:27314;21133:21363",
+                    "geometry": {
+                      "width": 20,
+                      "height": 20
+                    },
+                    "fills": [
+                      {
+                        "type": "SOLID",
+                        "color": "#5a35c0",
+                        "boundVariable": "{color.base.primary}"
+                      }
+                    ],
+                    "strokes": [
+                      {
+                        "type": "SOLID",
+                        "color": "#ffffff",
+                        "opacity": 0,
+                        "boundVariable": "{color.tailwind.base.transparent}"
+                      }
+                    ],
+                    "strokeWeight": 1,
+                    "strokeAlign": "INSIDE",
+                    "cornerRadius": {
+                      "topLeft": 9999,
+                      "topRight": 9999,
+                      "bottomLeft": 9999,
+                      "bottomRight": 9999,
+                      "boundVariable": {
+                        "topLeft": "{border-radius.rounded-full}",
+                        "topRight": "{border-radius.rounded-full}",
+                        "bottomLeft": "{border-radius.rounded-full}",
+                        "bottomRight": "{border-radius.rounded-full}"
+                      }
+                    },
+                    "layout": {
+                      "mode": "HORIZONTAL",
+                      "paddingTop": 0,
+                      "paddingRight": 4,
+                      "paddingBottom": 0,
+                      "paddingLeft": 4,
+                      "itemSpacing": 4,
+                      "primaryAxisAlignItems": "CENTER",
+                      "counterAxisAlignItems": "CENTER",
+                      "bindings": {
+                        "paddingRight": "{spacing.1}",
+                        "paddingLeft": "{spacing.1}",
+                        "itemSpacing": "{spacing.1}"
+                      }
+                    },
+                    "clipsContent": true,
+                    "mainComponent": {
+                      "name": "Variant=Default, State=Default",
+                      "figmaKey": "459d4e81bb48dfb4a8fd40aa95dfd480ad5aa944"
+                    },
+                    "children": [
+                      {
+                        "type": "TEXT",
+                        "name": "8",
+                        "figmaNodeId": "I21133:27314;21133:21363;17100:10136",
+                        "geometry": {
+                          "width": 7,
+                          "height": 16
+                        },
+                        "fills": [
+                          {
+                            "type": "SOLID",
+                            "color": "#ffffff",
+                            "boundVariable": "{color.base.primary-foreground}"
+                          }
+                        ],
+                        "characters": "8",
+                        "font": {
+                          "family": "Open Sans",
+                          "style": "Regular",
+                          "weight": 500,
+                          "size": 12
+                        },
+                        "lineHeight": {
+                          "unit": "PIXELS",
+                          "value": 16
+                        },
+                        "letterSpacing": {
+                          "unit": "PERCENT",
+                          "value": 0
+                        },
+                        "textAlignHorizontal": "LEFT",
+                        "textCase": "ORIGINAL",
+                        "textDecoration": "NONE"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "INSTANCE",
+                "name": "Tabs / Trigger",
+                "figmaNodeId": "21133:27315",
+                "geometry": {
+                  "width": 76,
+                  "height": 32
+                },
+                "layout": {
+                  "mode": "HORIZONTAL",
+                  "paddingTop": 6,
+                  "paddingRight": 6,
+                  "paddingBottom": 6,
+                  "paddingLeft": 6,
+                  "itemSpacing": 6,
+                  "primaryAxisAlignItems": "CENTER",
+                  "counterAxisAlignItems": "CENTER",
+                  "bindings": {
+                    "paddingTop": "{spacing.1-5}",
+                    "paddingRight": "{spacing.1-5}",
+                    "paddingBottom": "{spacing.1-5}",
+                    "paddingLeft": "{spacing.1-5}",
+                    "itemSpacing": "{spacing.1-5}"
+                  }
+                },
+                "clipsContent": false,
+                "mainComponent": {
+                  "name": "Variant=Line, Active=Off, State=Default",
+                  "figmaKey": "5966bd4ff5a38b53c1fa27cbd288d1c878ea77d7"
+                },
+                "children": [
+                  {
+                    "type": "INSTANCE",
+                    "name": "IconPlaceholder",
+                    "figmaNodeId": "I21133:27315;21133:21361",
+                    "geometry": {
+                      "width": 16,
+                      "height": 16
+                    },
+                    "mainComponent": {
+                      "name": "IconPlaceholder",
+                      "figmaKey": "200be806169ff0eb255db6fa08028a41168fa012"
+                    },
+                    "$note": "Icon-swap placeholder"
+                  },
+                  {
+                    "type": "TEXT",
+                    "name": "Tabs Text",
+                    "figmaNodeId": "I21133:27315;21133:21362",
+                    "geometry": {
+                      "width": 64,
+                      "height": 20
+                    },
+                    "fills": [
+                      {
+                        "type": "SOLID",
+                        "color": "#737373",
+                        "boundVariable": "{color.base.muted-foreground}"
+                      }
+                    ],
+                    "characters": "Tabs Text",
+                    "font": {
+                      "family": "Open Sans",
+                      "style": "Regular",
+                      "weight": 500,
+                      "size": 14
+                    },
+                    "lineHeight": {
+                      "unit": "PIXELS",
+                      "value": 20
+                    },
+                    "letterSpacing": {
+                      "unit": "PERCENT",
+                      "value": 0
+                    },
+                    "textAlignHorizontal": "CENTER",
+                    "textCase": "ORIGINAL",
+                    "textDecoration": "NONE"
+                  },
+                  {
+                    "type": "INSTANCE",
+                    "name": "Badge Number",
+                    "figmaNodeId": "I21133:27315;21133:21363",
+                    "geometry": {
+                      "width": 20,
+                      "height": 20
+                    },
+                    "fills": [
+                      {
+                        "type": "SOLID",
+                        "color": "#5a35c0",
+                        "boundVariable": "{color.base.primary}"
+                      }
+                    ],
+                    "strokes": [
+                      {
+                        "type": "SOLID",
+                        "color": "#ffffff",
+                        "opacity": 0,
+                        "boundVariable": "{color.tailwind.base.transparent}"
+                      }
+                    ],
+                    "strokeWeight": 1,
+                    "strokeAlign": "INSIDE",
+                    "cornerRadius": {
+                      "topLeft": 9999,
+                      "topRight": 9999,
+                      "bottomLeft": 9999,
+                      "bottomRight": 9999,
+                      "boundVariable": {
+                        "topLeft": "{border-radius.rounded-full}",
+                        "topRight": "{border-radius.rounded-full}",
+                        "bottomLeft": "{border-radius.rounded-full}",
+                        "bottomRight": "{border-radius.rounded-full}"
+                      }
+                    },
+                    "layout": {
+                      "mode": "HORIZONTAL",
+                      "paddingTop": 0,
+                      "paddingRight": 4,
+                      "paddingBottom": 0,
+                      "paddingLeft": 4,
+                      "itemSpacing": 4,
+                      "primaryAxisAlignItems": "CENTER",
+                      "counterAxisAlignItems": "CENTER",
+                      "bindings": {
+                        "paddingRight": "{spacing.1}",
+                        "paddingLeft": "{spacing.1}",
+                        "itemSpacing": "{spacing.1}"
+                      }
+                    },
+                    "clipsContent": true,
+                    "mainComponent": {
+                      "name": "Variant=Default, State=Default",
+                      "figmaKey": "459d4e81bb48dfb4a8fd40aa95dfd480ad5aa944"
+                    },
+                    "children": [
+                      {
+                        "type": "TEXT",
+                        "name": "8",
+                        "figmaNodeId": "I21133:27315;21133:21363;17100:10136",
+                        "geometry": {
+                          "width": 7,
+                          "height": 16
+                        },
+                        "fills": [
+                          {
+                            "type": "SOLID",
+                            "color": "#ffffff",
+                            "boundVariable": "{color.base.primary-foreground}"
+                          }
+                        ],
+                        "characters": "8",
+                        "font": {
+                          "family": "Open Sans",
+                          "style": "Regular",
+                          "weight": 500,
+                          "size": 12
+                        },
+                        "lineHeight": {
+                          "unit": "PIXELS",
+                          "value": 16
+                        },
+                        "letterSpacing": {
+                          "unit": "PERCENT",
+                          "value": 0
+                        },
+                        "textAlignHorizontal": "LEFT",
+                        "textCase": "ORIGINAL",
+                        "textDecoration": "NONE"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

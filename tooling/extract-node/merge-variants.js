@@ -134,11 +134,26 @@ function main() {
   const bundleDir = path.resolve(args.bundle);
   const inputsDir = path.resolve(args.inputs);
   const queue = loadQueue(bundleDir);
-  const allowedKeys = queue ? new Set([
-    ...queue.pending.map((p) => p.key),
-    // Also accept already-emitted keys (re-extraction permitted)
-    ...((queue.alreadyEmitted || []).map((k) => k)),
-  ]) : null;
+  // Build the allowed key set: pending cells from the queue + every key already
+  // present in any *.variants*.json (allows re-extraction of sampled cells).
+  let allowedKeys = null;
+  if (queue) {
+    allowedKeys = new Set(queue.pending.map((p) => p.key));
+    const componentDirPre = path.join(bundleDir, 'data', 'components');
+    if (fs.existsSync(componentDirPre)) {
+      for (const f of fs.readdirSync(componentDirPre)) {
+        if (!f.match(/\.variants(?:-samples)?\.json$/)) continue;
+        try {
+          const data = readJson(path.join(componentDirPre, f));
+          for (const v of data.variants || []) {
+            if (v.key) allowedKeys.add(v.key);
+          }
+        } catch (e) {
+          // ignore malformed prior file
+        }
+      }
+    }
+  }
 
   const cells = loadCells(inputsDir);
   if (cells.length === 0) {
