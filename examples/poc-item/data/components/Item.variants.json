@@ -1,0 +1,608 @@
+{
+  "$schema": "../../../verification/schema/variants.schema.json",
+  "componentId": "item",
+  "variantCount": 9,
+  "variantsEmittedCount": 4,
+  "variants": [
+    {
+      "key": "variant=Default,size=default",
+      "figmaNodeId": "18672:6323",
+      "node": {
+        "type": "COMPONENT",
+        "name": "Variant=Default, Size=default",
+        "figmaNodeId": "18672:6323",
+        "geometry": {
+          "width": 460,
+          "height": 64
+        },
+        "cornerRadius": {
+          "topLeft": 10,
+          "topRight": 10,
+          "bottomLeft": 10,
+          "bottomRight": 10,
+          "boundVariable": {
+            "topLeft": "{border-radius.rounded-lg}",
+            "topRight": "{border-radius.rounded-lg}",
+            "bottomLeft": "{border-radius.rounded-lg}",
+            "bottomRight": "{border-radius.rounded-lg}"
+          }
+        },
+        "layout": {
+          "mode": "VERTICAL",
+          "paddingTop": 10,
+          "paddingRight": 12,
+          "paddingBottom": 10,
+          "paddingLeft": 12,
+          "itemSpacing": 10,
+          "primaryAxisAlignItems": "MIN",
+          "counterAxisAlignItems": "MIN",
+          "bindings": {
+            "paddingTop": "{spacing.2-5}",
+            "paddingRight": "{spacing.3}",
+            "paddingBottom": "{spacing.2-5}",
+            "paddingLeft": "{spacing.3}",
+            "itemSpacing": "{spacing.2-5}"
+          }
+        },
+        "clipsContent": true,
+        "children": [
+          {
+            "type": "FRAME",
+            "name": "Flex",
+            "figmaNodeId": "21147:299917",
+            "geometry": {
+              "width": 436,
+              "height": 44
+            },
+            "layout": {
+              "mode": "HORIZONTAL",
+              "itemSpacing": 8,
+              "paddingTop": 0,
+              "paddingRight": 0,
+              "paddingBottom": 0,
+              "paddingLeft": 0,
+              "primaryAxisAlignItems": "MIN",
+              "counterAxisAlignItems": "MIN",
+              "bindings": {
+                "itemSpacing": "{spacing.2}"
+              }
+            },
+            "clipsContent": false,
+            "children": [
+              {
+                "type": "INSTANCE",
+                "name": "Item / Media",
+                "figmaNodeId": "18672:6255",
+                "geometry": {
+                  "width": 32,
+                  "height": 32
+                },
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": "#f5f5f5",
+                    "boundVariable": "{color.base.muted}"
+                  }
+                ],
+                "strokes": [
+                  {
+                    "type": "SOLID",
+                    "color": "#e5e5e5",
+                    "boundVariable": "{color.base.border}"
+                  }
+                ],
+                "strokeWeight": 1,
+                "strokeAlign": "INSIDE",
+                "cornerRadius": {
+                  "topLeft": 6,
+                  "topRight": 6,
+                  "bottomLeft": 6,
+                  "bottomRight": 6,
+                  "boundVariable": {
+                    "topLeft": "{border-radius.rounded-sm}",
+                    "topRight": "{border-radius.rounded-sm}",
+                    "bottomLeft": "{border-radius.rounded-sm}",
+                    "bottomRight": "{border-radius.rounded-sm}"
+                  }
+                },
+                "mainComponent": {
+                  "name": "Variant=Icon"
+                },
+                "$note": "INSTANCE trimmed"
+              },
+              {
+                "type": "FRAME",
+                "name": "ItemContent",
+                "figmaNodeId": "18672:6042",
+                "geometry": {
+                  "width": 268,
+                  "height": 40
+                },
+                "layout": {
+                  "mode": "VERTICAL",
+                  "itemSpacing": 4,
+                  "paddingTop": 0,
+                  "paddingRight": 0,
+                  "paddingBottom": 0,
+                  "paddingLeft": 0,
+                  "primaryAxisAlignItems": "CENTER",
+                  "counterAxisAlignItems": "MIN",
+                  "bindings": {
+                    "itemSpacing": "{spacing.1}"
+                  }
+                },
+                "clipsContent": false,
+                "children": [
+                  {
+                    "type": "TEXT",
+                    "name": "Item title",
+                    "figmaNodeId": "18672:6035",
+                    "geometry": {
+                      "width": 268,
+                      "height": 16
+                    },
+                    "fills": [
+                      {
+                        "type": "SOLID",
+                        "color": "#0a0a0a",
+                        "boundVariable": "{color.base.foreground}"
+                      }
+                    ],
+                    "characters": "Item title",
+                    "font": {
+                      "family": "Open Sans",
+                      "weight": 500,
+                      "size": 14
+                    },
+                    "lineHeight": {
+                      "unit": "PIXELS",
+                      "value": 16
+                    },
+                    "textAlignHorizontal": "LEFT",
+                    "textDecoration": "NONE"
+                  },
+                  {
+                    "type": "TEXT",
+                    "name": "Item description",
+                    "figmaNodeId": "18672:6036",
+                    "geometry": {
+                      "width": 268,
+                      "height": 20
+                    },
+                    "fills": [
+                      {
+                        "type": "SOLID",
+                        "color": "#737373",
+                        "boundVariable": "{color.base.muted-foreground}"
+                      }
+                    ],
+                    "characters": "Item description",
+                    "font": {
+                      "family": "Open Sans",
+                      "weight": 400,
+                      "size": 14
+                    },
+                    "lineHeight": {
+                      "unit": "PIXELS",
+                      "value": 20
+                    },
+                    "textAlignHorizontal": "LEFT",
+                    "textDecoration": "NONE"
+                  }
+                ]
+              },
+              {
+                "type": "INSTANCE",
+                "name": "Item / Actions",
+                "figmaNodeId": "18672:6305",
+                "geometry": {
+                  "width": 120,
+                  "height": 44
+                },
+                "mainComponent": {
+                  "name": "Type=Buttons"
+                },
+                "$note": "INSTANCE trimmed"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "key": "variant=Default,size=sm",
+      "figmaNodeId": "18672:198687",
+      "node": {
+        "type": "COMPONENT",
+        "name": "Variant=Default, Size=sm",
+        "figmaNodeId": "18672:198687",
+        "geometry": {
+          "width": 460,
+          "height": 64
+        },
+        "cornerRadius": {
+          "topLeft": 10,
+          "topRight": 10,
+          "bottomLeft": 10,
+          "bottomRight": 10,
+          "boundVariable": {
+            "topLeft": "{border-radius.rounded-lg}",
+            "topRight": "{border-radius.rounded-lg}",
+            "bottomLeft": "{border-radius.rounded-lg}",
+            "bottomRight": "{border-radius.rounded-lg}"
+          }
+        },
+        "layout": {
+          "mode": "VERTICAL",
+          "paddingTop": 10,
+          "paddingRight": 12,
+          "paddingBottom": 10,
+          "paddingLeft": 12,
+          "itemSpacing": 10,
+          "primaryAxisAlignItems": "MIN",
+          "counterAxisAlignItems": "MIN",
+          "bindings": {
+            "paddingTop": "{spacing.2-5}",
+            "paddingRight": "{spacing.3}",
+            "paddingBottom": "{spacing.2-5}",
+            "paddingLeft": "{spacing.3}",
+            "itemSpacing": "{spacing.2-5}"
+          }
+        },
+        "clipsContent": true,
+        "children": [
+          {
+            "type": "INSTANCE",
+            "name": "Item / Media",
+            "figmaNodeId": "18672:198688",
+            "mainComponent": {
+              "name": "Variant=Icon"
+            },
+            "$note": "INSTANCE trimmed"
+          },
+          {
+            "type": "FRAME",
+            "name": "ItemContent",
+            "figmaNodeId": "18672:198689",
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "Item title",
+                "figmaNodeId": "18672:198690",
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": "#0a0a0a",
+                    "boundVariable": "{color.base.foreground}"
+                  }
+                ],
+                "characters": "Item title",
+                "font": {
+                  "family": "Open Sans",
+                  "weight": 500,
+                  "size": 14
+                },
+                "lineHeight": {
+                  "unit": "PIXELS",
+                  "value": 16
+                },
+                "textDecoration": "NONE"
+              },
+              {
+                "type": "TEXT",
+                "name": "Item description",
+                "figmaNodeId": "18672:198691",
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": "#737373",
+                    "boundVariable": "{color.base.muted-foreground}"
+                  }
+                ],
+                "characters": "Item description",
+                "font": {
+                  "family": "Open Sans",
+                  "weight": 400,
+                  "size": 14
+                },
+                "lineHeight": {
+                  "unit": "PIXELS",
+                  "value": 20
+                },
+                "textDecoration": "NONE"
+              }
+            ]
+          },
+          {
+            "type": "INSTANCE",
+            "name": "Item / Actions",
+            "figmaNodeId": "18672:198692",
+            "mainComponent": {
+              "name": "Type=Buttons"
+            },
+            "$note": "INSTANCE trimmed"
+          }
+        ]
+      }
+    },
+    {
+      "key": "variant=Muted,size=default",
+      "figmaNodeId": "18672:198628",
+      "node": {
+        "type": "COMPONENT",
+        "name": "Variant=Muted, Size=default",
+        "figmaNodeId": "18672:198628",
+        "geometry": {
+          "width": 460,
+          "height": 64
+        },
+        "fills": [
+          {
+            "type": "SOLID",
+            "color": "#f5f5f5",
+            "boundVariable": "{color.base.muted}"
+          },
+          {
+            "type": "SOLID",
+            "color": "#ffffff",
+            "opacity": 0.5,
+            "boundVariable": "{color.alpha.50}"
+          }
+        ],
+        "cornerRadius": {
+          "topLeft": 10,
+          "topRight": 10,
+          "bottomLeft": 10,
+          "bottomRight": 10,
+          "boundVariable": {
+            "topLeft": "{border-radius.rounded-lg}",
+            "topRight": "{border-radius.rounded-lg}",
+            "bottomLeft": "{border-radius.rounded-lg}",
+            "bottomRight": "{border-radius.rounded-lg}"
+          }
+        },
+        "layout": {
+          "mode": "VERTICAL",
+          "paddingTop": 10,
+          "paddingRight": 12,
+          "paddingBottom": 10,
+          "paddingLeft": 12,
+          "itemSpacing": 10,
+          "primaryAxisAlignItems": "MIN",
+          "counterAxisAlignItems": "MIN",
+          "bindings": {
+            "paddingTop": "{spacing.2-5}",
+            "paddingRight": "{spacing.3}",
+            "paddingBottom": "{spacing.2-5}",
+            "paddingLeft": "{spacing.3}",
+            "itemSpacing": "{spacing.2-5}"
+          }
+        },
+        "clipsContent": true,
+        "children": [
+          {
+            "type": "INSTANCE",
+            "name": "Item / Media",
+            "figmaNodeId": "18672:198629",
+            "mainComponent": {
+              "name": "Variant=Icon"
+            },
+            "$note": "INSTANCE trimmed"
+          },
+          {
+            "type": "FRAME",
+            "name": "ItemContent",
+            "figmaNodeId": "18672:198630",
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "Item title",
+                "figmaNodeId": "18672:198631",
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": "#0a0a0a",
+                    "boundVariable": "{color.base.foreground}"
+                  }
+                ],
+                "characters": "Item title",
+                "font": {
+                  "family": "Open Sans",
+                  "weight": 500,
+                  "size": 14
+                },
+                "lineHeight": {
+                  "unit": "PIXELS",
+                  "value": 16
+                },
+                "textDecoration": "NONE"
+              },
+              {
+                "type": "TEXT",
+                "name": "Item description",
+                "figmaNodeId": "18672:198632",
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": "#737373",
+                    "boundVariable": "{color.base.muted-foreground}"
+                  }
+                ],
+                "characters": "Item description",
+                "font": {
+                  "family": "Open Sans",
+                  "weight": 400,
+                  "size": 14
+                },
+                "lineHeight": {
+                  "unit": "PIXELS",
+                  "value": 20
+                },
+                "textDecoration": "NONE"
+              }
+            ]
+          },
+          {
+            "type": "INSTANCE",
+            "name": "Item / Actions",
+            "figmaNodeId": "18672:198633",
+            "mainComponent": {
+              "name": "Type=Buttons"
+            },
+            "$note": "INSTANCE trimmed"
+          }
+        ]
+      }
+    },
+    {
+      "key": "variant=Outline,size=default",
+      "figmaNodeId": "18672:198608",
+      "node": {
+        "type": "COMPONENT",
+        "name": "Variant=Outline, Size=default",
+        "figmaNodeId": "18672:198608",
+        "geometry": {
+          "width": 460,
+          "height": 64
+        },
+        "strokes": [
+          {
+            "type": "SOLID",
+            "color": "#e5e5e5",
+            "boundVariable": "{color.base.border}"
+          }
+        ],
+        "strokeWeight": 1,
+        "strokeAlign": "INSIDE",
+        "cornerRadius": {
+          "topLeft": 10,
+          "topRight": 10,
+          "bottomLeft": 10,
+          "bottomRight": 10,
+          "boundVariable": {
+            "topLeft": "{border-radius.rounded-lg}",
+            "topRight": "{border-radius.rounded-lg}",
+            "bottomLeft": "{border-radius.rounded-lg}",
+            "bottomRight": "{border-radius.rounded-lg}"
+          }
+        },
+        "layout": {
+          "mode": "VERTICAL",
+          "paddingTop": 10,
+          "paddingRight": 12,
+          "paddingBottom": 10,
+          "paddingLeft": 12,
+          "itemSpacing": 10,
+          "primaryAxisAlignItems": "MIN",
+          "counterAxisAlignItems": "MIN",
+          "bindings": {
+            "paddingTop": "{spacing.2-5}",
+            "paddingRight": "{spacing.3}",
+            "paddingBottom": "{spacing.2-5}",
+            "paddingLeft": "{spacing.3}",
+            "itemSpacing": "{spacing.2-5}"
+          }
+        },
+        "clipsContent": true,
+        "children": [
+          {
+            "type": "FRAME",
+            "name": "Flex",
+            "figmaNodeId": "21147:299916",
+            "geometry": {
+              "width": 436,
+              "height": 44
+            },
+            "layout": {
+              "mode": "HORIZONTAL",
+              "itemSpacing": 8,
+              "paddingTop": 0,
+              "paddingRight": 0,
+              "paddingBottom": 0,
+              "paddingLeft": 0,
+              "primaryAxisAlignItems": "MIN",
+              "counterAxisAlignItems": "MIN",
+              "bindings": {
+                "itemSpacing": "{spacing.2}"
+              }
+            },
+            "clipsContent": false,
+            "children": [
+              {
+                "type": "INSTANCE",
+                "name": "Item / Media",
+                "figmaNodeId": "18672:198609",
+                "mainComponent": {
+                  "name": "Variant=Icon"
+                },
+                "$note": "INSTANCE trimmed"
+              },
+              {
+                "type": "FRAME",
+                "name": "ItemContent",
+                "figmaNodeId": "18672:198610",
+                "children": [
+                  {
+                    "type": "TEXT",
+                    "name": "Item title",
+                    "figmaNodeId": "18672:198611",
+                    "fills": [
+                      {
+                        "type": "SOLID",
+                        "color": "#0a0a0a",
+                        "boundVariable": "{color.base.foreground}"
+                      }
+                    ],
+                    "characters": "Item title",
+                    "font": {
+                      "family": "Open Sans",
+                      "weight": 500,
+                      "size": 14
+                    },
+                    "lineHeight": {
+                      "unit": "PIXELS",
+                      "value": 16
+                    },
+                    "textDecoration": "NONE"
+                  },
+                  {
+                    "type": "TEXT",
+                    "name": "Item description",
+                    "figmaNodeId": "18672:198612",
+                    "fills": [
+                      {
+                        "type": "SOLID",
+                        "color": "#737373",
+                        "boundVariable": "{color.base.muted-foreground}"
+                      }
+                    ],
+                    "characters": "Item description",
+                    "font": {
+                      "family": "Open Sans",
+                      "weight": 400,
+                      "size": 14
+                    },
+                    "lineHeight": {
+                      "unit": "PIXELS",
+                      "value": 20
+                    },
+                    "textDecoration": "NONE"
+                  }
+                ]
+              },
+              {
+                "type": "INSTANCE",
+                "name": "Item / Actions",
+                "figmaNodeId": "18672:198613",
+                "mainComponent": {
+                  "name": "Type=Buttons"
+                },
+                "$note": "INSTANCE trimmed"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
