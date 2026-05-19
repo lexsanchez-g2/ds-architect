@@ -846,7 +846,8 @@ ul.toc, ul.toc-section-list { list-style: none; padding: 0; margin: 0; }
 .toc-bar-fill { display: block; height: 100%; background: linear-gradient(90deg, #5a35c0, #c084fc); }
 
 /* ===== Main ===== */
-.main { padding: 48px 56px 120px; max-width: 1100px; min-width: 0; }
+.main { padding: 48px 56px 120px; min-width: 0; max-width: none; }
+.bundle-section, .cell, .cell-panes, .prop-table-wrap, .audit-signals, .chip-row, .cell-stack { width: 100%; }
 .bundle-section { margin-bottom: 72px; scroll-margin-top: 24px; }
 .bundle-head { padding-bottom: 20px; margin-bottom: 24px; border-bottom: 1px solid var(--border); }
 .bundle-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
@@ -919,7 +920,7 @@ ul.toc, ul.toc-section-list { list-style: none; padding: 0; margin: 0; }
 .cell-title .k { color: var(--ink-3); }
 .cell-title .v { color: var(--ink); font-weight: 600; }
 .cell-title .sep { color: var(--border); padding: 0 6px; }
-.cell-blurb { font-size: 13.5px; line-height: 1.55; color: var(--ink-2); margin: 4px 0 0; max-width: 720px; }
+.cell-blurb { font-size: 13.5px; line-height: 1.55; color: var(--ink-2); margin: 4px 0 0; max-width: 920px; }
 .cell-blurb code { background: var(--surface-2); padding: 1px 5px; border-radius: 4px; font-size: 12px; border: 1px solid var(--border-2); }
 
 /* ===== Visual + CSS panes ===== */
@@ -940,13 +941,13 @@ ul.toc, ul.toc-section-list { list-style: none; padding: 0; margin: 0; }
   background-size: 24px 24px;
   padding: 32px;
   position: relative;
+  min-height: 220px;
+  overflow: auto;
 }
-.visual-stage::after {
-  content: ''; position: absolute; inset: 0; pointer-events: none;
-  background: radial-gradient(ellipse at center, transparent 40%, rgba(255,255,255,.85) 100%);
-}
-.cell-visual-element { position: relative; z-index: 1; box-shadow: var(--shadow-2); transition: transform .2s ease; }
-.cell-visual-element:hover { transform: scale(1.04); }
+.visual-stage::after { display: none; }
+.cell-visual-element { position: relative; z-index: 1; box-shadow: var(--shadow-2); transition: transform .2s ease; max-width: 100%; }
+.cell-visual-element:hover { transform: scale(1.02); }
+.cv-node { position: relative; }
 .pane-foot { font-family: var(--font-mono); font-size: 10px; color: var(--ink-4); padding: 8px 14px; border-top: 1px solid var(--border-2); display: flex; justify-content: space-between; background: var(--surface-2); }
 
 .pane-css { background: var(--code-bg); color: var(--code-ink); }
